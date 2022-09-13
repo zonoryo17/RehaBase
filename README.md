@@ -20,3 +20,4 @@ URL:
 - ~~Next.jsのプロジェクト立ち上げ/GitHubの作成/招待（GitHub名：@makomoriに招待送ってください）~~
 - プルリクエスト
 - git-flowで進める
+- Login/Signup機能の実装
