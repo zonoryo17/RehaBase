@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
 import {
-  Box,
   Button,
   Container,
   Flex,
@@ -13,24 +12,68 @@ import {
 } from '@chakra-ui/react'
 import { supabase } from '../src/utils/supabaseClient'
 import Link from 'next/link'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 
-const Login: NextPage = () => {
-  const handleClickLogin = () => {}
+const LoginPage: NextPage = () => {
+  const [isLoding, setIsLoding] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const router = useRouter()
+
+  const handleClickLogin = async (e: any) => {
+    e.preventDefault()
+    try {
+      setIsLoding(true)
+      const { session, error } = await supabase.auth.signIn({
+        email: email,
+        password: password,
+      })
+      alert('ログイン処理が完了しました')
+      router.push('/')
+    } catch (error: any) {
+      alert(error.error_description || error.message)
+      console.log('パスワードログインでエラーが発生しました')
+    } finally {
+      setIsLoding(false)
+    }
+  }
 
   const signInWithGoogle = async () => {
-    const { user, session, error } = await supabase.auth.signIn({
-      provider: 'google',
-    })
+    try {
+      setIsLoding(true)
+      const { user, session, error } = await supabase.auth.signIn({
+        provider: 'google',
+      })
+      console.log('Googleでのログインが完了しました')
+    } catch (error: any) {
+      alert(error.error_description || error.message)
+      console.log('Googleログインでエラーが発生しました')
+    } finally {
+      setIsLoding(false)
+    }
   }
 
   const signInWithGithub = async () => {
-    const { user, session, error } = await supabase.auth.signIn({
-      provider: 'github',
-    })
+    try {
+      setIsLoding(true)
+      const { user, session, error } = await supabase.auth.signIn({
+        provider: 'github',
+      })
+      console.log('GitHubでのログインが完了しました')
+    } catch (error: any) {
+      alert(error.error_description || error.message)
+      console.log('GitHubログインでエラーが発生しました')
+    } finally {
+      setIsLoding(false)
+    }
   }
+
   const signout = async () => {
     const { error } = await supabase.auth.signOut()
   }
+
   return (
     <Flex alignItems="center">
       <Container>
@@ -45,18 +88,33 @@ const Login: NextPage = () => {
       </Container>
       <Container bg="gray.200" borderRadius="10">
         <Flex direction="column" py="10">
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel>Email</FormLabel>
-            <Input type="email" bg="white" placeholder="example@gmail.com" />
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              bg="white"
+              placeholder="example@gmail.com"
+            />
             <FormLabel>Password</FormLabel>
-            <Input type="password" bg="white" placeholder="********" />
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              bg="white"
+              placeholder="********"
+            />
           </FormControl>
           <Flex mt="5">
-            <Button onClick={handleClickLogin}>ログイン</Button>
-            {/* <Button onClick={signout}>ログアウト</Button> */}
+            {isLogin ? (
+              <Button onClick={handleClickLogin}>ログイン</Button>
+            ) : (
+              <Button onClick={signout}>ログアウト</Button>
+            )}
             <Spacer />
             <Flex direction="column">
-              <Link href="">新規登録</Link>
+              <Link href="/signup">新規登録</Link>
               <Link href="/">パスワードを忘れた</Link>
             </Flex>
           </Flex>
@@ -83,4 +141,4 @@ const Login: NextPage = () => {
   )
 }
 
-export default Login
+export default LoginPage
