@@ -11,7 +11,6 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { supabase } from '../src/utils/supabaseClient'
-import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
@@ -53,7 +52,7 @@ const SignUpPage: NextPage = () => {
       </Container>
       <Container bg="gray.200" borderRadius="10">
         <Flex direction="column" py="10">
-          <FormControl isRequired>
+          <FormControl onSubmit={handleClickSignUp} isRequired>
             <FormLabel>Email</FormLabel>
             <Input
               type="email"
@@ -61,6 +60,7 @@ const SignUpPage: NextPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               bg="white"
               placeholder="example@gmail.com"
+              isRequired
             />
             <FormLabel>Password</FormLabel>
             <Input
@@ -69,10 +69,13 @@ const SignUpPage: NextPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               bg="white"
               placeholder="********"
+              isRequired
             />
           </FormControl>
           <Flex mt="5">
-            <Button onClick={handleClickSignUp}>登録</Button>
+            <Button type="submit" onClick={handleClickSignUp}>
+              登録
+            </Button>
           </Flex>
         </Flex>
       </Container>
