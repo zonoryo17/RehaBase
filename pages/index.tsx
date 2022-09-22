@@ -7,7 +7,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     setSession(supabase.auth.session())
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
   }, [])
