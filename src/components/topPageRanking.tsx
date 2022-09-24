@@ -11,19 +11,12 @@ import {
   Th,
   Thead,
   Tr,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 const TopPageRanking = ({ name, icon, image, address }: any) => {
   return (
     <Box>
-      <Box
-        border="solid 1px"
-        alignItems="center"
-        borderRadius="20px"
-        boxShadow="md"
-        py="3"
-        px="5"
-      >
+      <Box border="solid 1px" alignItems="center" rounded="20px" boxShadow="md" py="3" px="5">
         <Flex alignItems="center" justifyContent="center" mb="5">
           <Image src={icon} alt="ランキングのアイコン" w="50px" />
           <Text fontSize="2xl" ml="5">
@@ -67,7 +60,7 @@ const TopPageRanking = ({ name, icon, image, address }: any) => {
         </Flex>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default TopPageRanking
+export default TopPageRanking;

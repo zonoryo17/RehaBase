@@ -1,15 +1,9 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Input,
-  Text,
-  transition,
-} from '@chakra-ui/react'
+import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import TopPageRanking from '../src/components/topPageRanking'
+import Slider from '../src/components/topSlideShow'
+
 import { supabase } from '../src/utils/supabaseClient'
 import type { Session } from '../node_modules/@supabase/gotrue-js/src/lib/types'
 
@@ -29,17 +23,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div
-      style={{
-        minWidth: '100vw',
-        minHeight: '100vh',
-        backgroundColor: '#F5F5F5',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <Box>
       {session ? (
         <>
           <Box position="relative">
@@ -116,11 +100,12 @@ const Home: NextPage = () => {
               />
             </Flex>
           </Box>
+          <Slider />
         </>
       ) : (
         <div>ログイン失敗</div>
       )}
-    </div>
+    </Box>
   )
 }
 
