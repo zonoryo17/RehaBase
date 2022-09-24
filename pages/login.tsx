@@ -17,7 +17,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 const LoginPage: NextPage = () => {
-  const [isLoding, setIsLoding] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,7 +27,7 @@ const LoginPage: NextPage = () => {
   const handleClickLogin = async (e: any) => {
     e.preventDefault()
     try {
-      setIsLoding(true)
+      setIsLoading(true)
       const { session, error } = await supabase.auth.signIn({
         email: email,
         password: password,
@@ -40,17 +40,17 @@ const LoginPage: NextPage = () => {
         isClosable: true,
         variant: 'left-accent',
       })
-      await router.push('/')
+      router.push('/')
     } catch (error: any) {
       alert(error.error_description || error.message)
     } finally {
-      setIsLoding(false)
+      setIsLoading(false)
     }
   }
 
   const signInWithGoogle = async () => {
     try {
-      setIsLoding(true)
+      setIsLoading(true)
       const { user, session, error } = await supabase.auth.signIn({
         provider: 'google',
       })
@@ -65,13 +65,13 @@ const LoginPage: NextPage = () => {
       alert(error.error_description || error.message)
       console.log('Googleログインでエラーが発生しました')
     } finally {
-      setIsLoding(false)
+      setIsLoading(false)
     }
   }
 
   const signInWithGithub = async () => {
     try {
-      setIsLoding(true)
+      setIsLoading(true)
       const { user, session, error } = await supabase.auth.signIn({
         provider: 'github',
       })
@@ -86,7 +86,7 @@ const LoginPage: NextPage = () => {
       alert(error.error_description || error.message)
       console.log('GitHubログインでエラーが発生しました')
     } finally {
-      setIsLoding(false)
+      setIsLoading(false)
     }
   }
 
@@ -153,7 +153,7 @@ const LoginPage: NextPage = () => {
           </FormControl>
           <Flex mt="5">
             {isLogin ? (
-              <Button onClick={handleClickLogin} disabled={isLoding}>
+              <Button onClick={handleClickLogin} disabled={isLoading}>
                 ログイン
               </Button>
             ) : (

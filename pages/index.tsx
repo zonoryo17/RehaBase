@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { supabase } from '../src/utils/supabaseClient'
+import type { Session } from '../node_modules/@supabase/gotrue-js/src/lib/types'
 
 const Home: NextPage = () => {
-  const [session, setSession]: any = useState(null)
+  const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
     setSession(supabase.auth.session())
