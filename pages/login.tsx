@@ -9,6 +9,7 @@ import {
   Input,
   Spacer,
   Text,
+  useToast,
 } from '@chakra-ui/react'
 import { supabase } from '../src/utils/supabaseClient'
 import Link from 'next/link'
@@ -21,6 +22,7 @@ const LoginPage: NextPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
+  const toast = useToast()
 
   const handleClickLogin = async (e: any) => {
     e.preventDefault()
@@ -30,11 +32,17 @@ const LoginPage: NextPage = () => {
         email: email,
         password: password,
       })
-      alert('ログイン処理が完了しました')
-      router.push('/')
+      if (error) throw error
+      toast({
+        title: 'ログイン処理が完了しました',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        variant: 'left-accent',
+      })
+      await router.push('/')
     } catch (error: any) {
       alert(error.error_description || error.message)
-      console.log('パスワードログインでエラーが発生しました')
     } finally {
       setIsLoding(false)
     }
@@ -46,7 +54,13 @@ const LoginPage: NextPage = () => {
       const { user, session, error } = await supabase.auth.signIn({
         provider: 'google',
       })
-      console.log('Googleでのログインが完了しました')
+      toast({
+        title: 'Googleログインが完了しました',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        variant: 'left-accent',
+      })
     } catch (error: any) {
       alert(error.error_description || error.message)
       console.log('Googleログインでエラーが発生しました')
@@ -61,7 +75,13 @@ const LoginPage: NextPage = () => {
       const { user, session, error } = await supabase.auth.signIn({
         provider: 'github',
       })
-      console.log('GitHubでのログインが完了しました')
+      toast({
+        title: 'GitHubログインが完了しました',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        variant: 'left-accent',
+      })
     } catch (error: any) {
       alert(error.error_description || error.message)
       console.log('GitHubログインでエラーが発生しました')
@@ -76,15 +96,38 @@ const LoginPage: NextPage = () => {
 
   return (
     <Flex alignItems="center">
-      <Container>
+      <Container maxW="100%">
         <Image
           boxSize="600px"
           objectFit="contain"
           src="/login.jpg"
-          alt="Dan Abramov"
+          alt="ログイントップ画像"
+          mx="auto"
         />
-        <Text>サービスタイトル</Text>
-        <Text>サービスコピー</Text>
+        <Flex direction="column">
+          <Text
+            fontSize="3xl"
+            textAlign="center"
+            position="relative"
+            top="-500"
+            bg="gray.50"
+            borderRadius="10"
+            opacity="0.8"
+          >
+            あなたの声で作るリハビリ施設検索サイト
+          </Text>
+          <Text
+            fontSize="5xl"
+            textAlign="center"
+            position="relative"
+            top="-450"
+            bg="gray.100"
+            borderRadius="10"
+            opacity="0.8"
+          >
+            サービスタイトル
+          </Text>
+        </Flex>
       </Container>
       <Container bg="gray.200" borderRadius="10">
         <Flex direction="column" py="10">
@@ -96,6 +139,7 @@ const LoginPage: NextPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               bg="white"
               placeholder="example@gmail.com"
+              isRequired
             />
             <FormLabel>Password</FormLabel>
             <Input
@@ -104,11 +148,14 @@ const LoginPage: NextPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               bg="white"
               placeholder="********"
+              isRequired
             />
           </FormControl>
           <Flex mt="5">
             {isLogin ? (
-              <Button onClick={handleClickLogin}>ログイン</Button>
+              <Button onClick={handleClickLogin} disabled={isLoding}>
+                ログイン
+              </Button>
             ) : (
               <Button onClick={signout}>ログアウト</Button>
             )}
