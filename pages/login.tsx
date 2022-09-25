@@ -15,6 +15,7 @@ import { supabase } from '../src/utils/supabaseClient';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Layout from '../src/components/layout';
 
 const LoginPage: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
