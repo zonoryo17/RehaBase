@@ -1,17 +1,4 @@
-import {
-  Box,
-  Flex,
-  Image,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Box, Flex, Image, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 
 const TopPageRanking = ({ name, icon, image, address }: any) => {
   return (

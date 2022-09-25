@@ -62,7 +62,7 @@ const Home: NextPage = () => {
               </Flex>
             </Box>
           </Box>
-          <Box mt="10">
+          <Box mt="10" px="10">
             <Text fontSize="3xl" fontWeight="bold" mb="5">
               総合ランキング
             </Text>
