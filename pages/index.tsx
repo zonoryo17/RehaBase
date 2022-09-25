@@ -1,26 +1,25 @@
-import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react'
-import type { NextPage } from 'next'
-import { useEffect, useState } from 'react'
-import TopPageRanking from '../src/components/topPageRanking'
-import Slider from '../src/components/topSlideShow'
-
-import { supabase } from '../src/utils/supabaseClient'
-import type { Session } from '../node_modules/@supabase/gotrue-js/src/lib/types'
+import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react';
+import type { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+import TopPageRanking from '../src/components/topPageRanking';
+import Slider from '../src/components/topSlideShow';
+import { supabase } from '../src/utils/supabaseClient';
+import type { Session } from '../node_modules/@supabase/gotrue-js/src/lib/types';
 
 const Home: NextPage = () => {
-  const [session, setSession]: any = useState(null)
-  const [search, setSearch]: any = useState('')
+  const [session, setSession] = useState<Session | null>(null);
+  const [search, setSearch] = useState<string | ReadonlyArray<string> | number | undefined>(''); //node_modules/@types/react/index.d.tsを参照
 
   useEffect(() => {
-    setSession(supabase.auth.session())
+    setSession(supabase.auth.session());
     supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-  }, [])
+      setSession(session);
+    });
+  }, []);
 
   const handleClickSearch = () => {
-    alert('検索ボタンが押されました')
-  }
+    alert('検索ボタンが押されました');
+  };
 
   return (
     <Box>
@@ -28,20 +27,8 @@ const Home: NextPage = () => {
         <>
           <Box position="relative">
             <Image src="/topImage.jpg" alt="トップイメージ" width="100%" />
-            <Box
-              p="10"
-              position="absolute"
-              top="60%"
-              left="50%"
-              transform="translate(-50%, -50%)"
-            >
-              <Text
-                fontSize="5xl"
-                textAlign="center"
-                textColor="white"
-                textShadow="3px 3px 4px #171717"
-                mb="32"
-              >
+            <Box p="10" position="absolute" top="60%" left="50%" transform="translate(-50%, -50%)">
+              <Text fontSize="5xl" textAlign="center" textColor="white" textShadow="3px 3px 4px #171717" mb="32">
                 あなたの声でつくる
                 <br />
                 リハビリ情報共有サイト
@@ -86,18 +73,8 @@ const Home: NextPage = () => {
                 image={'/JCHO_Osaka_Hospital.jpg'}
                 address={'大阪'}
               />
-              <TopPageRanking
-                name="東京病院"
-                icon={'/crown2.jpg'}
-                image={'/Tokyo_Hospital.jpg'}
-                address={'東京'}
-              />
-              <TopPageRanking
-                name="福岡病院"
-                icon={'/crown3.jpg'}
-                image={'/Fukuoka_Hospital.jpg'}
-                address={'福岡'}
-              />
+              <TopPageRanking name="東京病院" icon={'/crown2.jpg'} image={'/Tokyo_Hospital.jpg'} address={'東京'} />
+              <TopPageRanking name="福岡病院" icon={'/crown3.jpg'} image={'/Fukuoka_Hospital.jpg'} address={'福岡'} />
             </Flex>
           </Box>
           <Slider />
@@ -106,7 +83,7 @@ const Home: NextPage = () => {
         <div>ログイン失敗</div>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
