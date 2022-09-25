@@ -102,7 +102,7 @@ const LoginPage: NextPage = () => {
           boxSize="600px"
           objectFit="contain"
           src="/login.jpg"
-          alt="ログイントップ画"
+          alt="ログイントップ画像"
           mx="auto"
         />
         <Flex direction="column">
