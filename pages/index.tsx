@@ -25,7 +25,7 @@ const Home: NextPage = () => {
         alignItems: 'center',
       }}
     >
-      {session ? <div>ログイン成功</div> : <div>ログイン失敗</div>}
+      {session ? <div>ログイン成</div> : <div>ログイン失敗</div>}
     </div>
   )
 }
