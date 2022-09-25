@@ -15,6 +15,7 @@ import { supabase } from '../src/utils/supabaseClient'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import Layout from '../src/components/layout'
 
 const LoginPage: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -101,7 +102,7 @@ const LoginPage: NextPage = () => {
           boxSize="600px"
           objectFit="contain"
           src="/login.jpg"
-          alt="ログイントップ画像"
+          alt="ログイントップ画"
           mx="auto"
         />
         <Flex direction="column">
