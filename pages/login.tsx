@@ -1,4 +1,4 @@
-import { NextPage } from 'next'
+import { NextPage } from 'next';
 import {
   Button,
   Container,
@@ -9,82 +9,119 @@ import {
   Input,
   Spacer,
   Text,
-} from '@chakra-ui/react'
-import { supabase } from '../src/utils/supabaseClient'
-import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
+  useToast,
+} from '@chakra-ui/react';
+import { supabase } from '../src/utils/supabaseClient';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const LoginPage: NextPage = () => {
-  const [isLoding, setIsLoding] = useState(false)
-  const [isLogin, setIsLogin] = useState(true)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const toast = useToast();
 
   const handleClickLogin = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      setIsLoding(true)
-      const { session, error } = await supabase.auth.signIn({
+      setIsLoading(true);
+      const { error } = await supabase.auth.signIn({
         email: email,
         password: password,
-      })
-      alert('ログイン処理が完了しました')
-      router.push('/')
+      });
+      if (error) throw error;
+      toast({
+        title: 'ログイン処理が完了しました',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        variant: 'left-accent',
+      });
+      router.push('/');
     } catch (error: any) {
-      alert(error.error_description || error.message)
-      console.log('パスワードログインでエラーが発生しました')
+      alert(error.error_description || error.message);
     } finally {
-      setIsLoding(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const signInWithGoogle = async () => {
     try {
-      setIsLoding(true)
-      const { user, session, error } = await supabase.auth.signIn({
+      setIsLoading(true);
+      await supabase.auth.signIn({
         provider: 'google',
-      })
-      console.log('Googleでのログインが完了しました')
+      });
+      toast({
+        title: 'Googleログインが完了しました',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        variant: 'left-accent',
+      });
     } catch (error: any) {
-      alert(error.error_description || error.message)
-      console.log('Googleログインでエラーが発生しました')
+      alert(error.error_description || error.message);
+      console.log('Googleログインでエラーが発生しました');
     } finally {
-      setIsLoding(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const signInWithGithub = async () => {
     try {
-      setIsLoding(true)
-      const { user, session, error } = await supabase.auth.signIn({
+      setIsLoading(true);
+      await supabase.auth.signIn({
         provider: 'github',
-      })
-      console.log('GitHubでのログインが完了しました')
+      });
+      toast({
+        title: 'GitHubログインが完了しました',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        variant: 'left-accent',
+      });
     } catch (error: any) {
-      alert(error.error_description || error.message)
-      console.log('GitHubログインでエラーが発生しました')
+      alert(error.error_description || error.message);
+      console.log('GitHubログインでエラーが発生しました');
     } finally {
-      setIsLoding(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const signout = async () => {
-    const { error } = await supabase.auth.signOut()
-  }
+    await supabase.auth.signOut();
+  };
 
   return (
     <Flex alignItems="center">
-      <Container>
-        <Image
-          boxSize="600px"
-          objectFit="contain"
-          src="/login.jpg"
-          alt="Dan Abramov"
-        />
-        <Text>サービスタイトル</Text>
-        <Text>サービスコピー</Text>
+      <Container maxW="100%">
+        <Image boxSize="600px" objectFit="contain" src="/login.jpg" alt="ログイントップ画像" mx="auto" />
+        <Flex direction="column">
+          <Text
+            fontSize="3xl"
+            textAlign="center"
+            position="relative"
+            top="-500"
+            bg="gray.50"
+            borderRadius="10"
+            opacity="0.8"
+          >
+            あなたの声で作るリハビリ施設検索サイト
+          </Text>
+          <Text
+            fontSize="5xl"
+            textAlign="center"
+            position="relative"
+            top="-450"
+            bg="gray.100"
+            borderRadius="10"
+            opacity="0.8"
+          >
+            サービスタイトル
+          </Text>
+        </Flex>
       </Container>
       <Container bg="gray.200" borderRadius="10">
         <Flex direction="column" py="10">
@@ -96,6 +133,7 @@ const LoginPage: NextPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               bg="white"
               placeholder="example@gmail.com"
+              isRequired
             />
             <FormLabel>Password</FormLabel>
             <Input
@@ -104,11 +142,14 @@ const LoginPage: NextPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               bg="white"
               placeholder="********"
+              isRequired
             />
           </FormControl>
           <Flex mt="5">
             {isLogin ? (
-              <Button onClick={handleClickLogin}>ログイン</Button>
+              <Button onClick={handleClickLogin} disabled={isLoading}>
+                ログイン
+              </Button>
             ) : (
               <Button onClick={signout}>ログアウト</Button>
             )}
@@ -121,13 +162,7 @@ const LoginPage: NextPage = () => {
           <Flex justify="center" mt="5">
             <Button>テストユーザーログイン</Button>
           </Flex>
-          <Text
-            border="1px"
-            borderColor="gray.800"
-            mx="auto"
-            my="5"
-            w="90%"
-          ></Text>
+          <Text border="1px" borderColor="gray.800" mx="auto" my="5" w="90%"></Text>
           <Flex justify="space-between" mx="10">
             <Button onClick={signInWithGoogle}>Google</Button>
             <Button onClick={signInWithGithub}>GitHub</Button>
@@ -138,7 +173,7 @@ const LoginPage: NextPage = () => {
         </Flex>
       </Container>
     </Flex>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
