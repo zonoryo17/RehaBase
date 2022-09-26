@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import TopPageRanking from '../src/components/topPageRanking';
 import Slider from '../src/components/topSlideShow';
 import { supabase } from '../src/utils/supabaseClient';
-import type { Session } from '../node_modules/@supabase/gotrue-js/src/lib/types';
+import type { Session } from '@supabase/types';
 
 const Home: NextPage = () => {
   const [session, setSession] = useState<Session | null>(null);
-  const [search, setSearch] = useState<string | ReadonlyArray<string> | number | undefined>(''); //node_modules/@types/react/index.d.tsを参照
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
 
   return (
     <Box>
-      {session ? (
+      {session && (
         <>
           <Box position="relative">
             <Image src="/topImage.jpg" alt="トップイメージ" width="100%" />
@@ -79,9 +79,8 @@ const Home: NextPage = () => {
           </Box>
           <Slider />
         </>
-      ) : (
-        <div>ログイン失敗</div>
       )}
+      {!session && <div>ログイン失敗</div>}
     </Box>
   );
 };
