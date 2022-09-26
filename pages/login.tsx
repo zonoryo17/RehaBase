@@ -1,4 +1,4 @@
-import { NextPage } from 'next'
+import { NextPage } from 'next';
 import {
   Button,
   Container,
@@ -10,101 +10,95 @@ import {
   Spacer,
   Text,
   useToast,
-} from '@chakra-ui/react'
-import { supabase } from '../src/utils/supabaseClient'
-import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import Layout from '../src/components/layout'
+} from '@chakra-ui/react';
+import { supabase } from '../src/utils/supabaseClient';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Layout from '../src/components/layout';
 
 const LoginPage: NextPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLogin, setIsLogin] = useState(true)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const router = useRouter()
-  const toast = useToast()
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const toast = useToast();
 
   const handleClickLogin = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      setIsLoading(true)
-      const { session, error } = await supabase.auth.signIn({
+      setIsLoading(true);
+      const { error } = await supabase.auth.signIn({
         email: email,
         password: password,
-      })
-      if (error) throw error
+      });
+      if (error) throw error;
       toast({
         title: 'ログイン処理が完了しました',
         status: 'success',
         duration: 6000,
         isClosable: true,
         variant: 'left-accent',
-      })
-      router.push('/')
+      });
+      router.push('/');
     } catch (error: any) {
-      alert(error.error_description || error.message)
+      alert(error.error_description || error.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const signInWithGoogle = async () => {
     try {
-      setIsLoading(true)
-      const { user, session, error } = await supabase.auth.signIn({
+      setIsLoading(true);
+      await supabase.auth.signIn({
         provider: 'google',
-      })
+      });
       toast({
         title: 'Googleログインが完了しました',
         status: 'success',
         duration: 6000,
         isClosable: true,
         variant: 'left-accent',
-      })
+      });
     } catch (error: any) {
-      alert(error.error_description || error.message)
-      console.log('Googleログインでエラーが発生しました')
+      alert(error.error_description || error.message);
+      console.log('Googleログインでエラーが発生しました');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const signInWithGithub = async () => {
     try {
-      setIsLoading(true)
-      const { user, session, error } = await supabase.auth.signIn({
+      setIsLoading(true);
+      await supabase.auth.signIn({
         provider: 'github',
-      })
+      });
       toast({
         title: 'GitHubログインが完了しました',
         status: 'success',
         duration: 6000,
         isClosable: true,
         variant: 'left-accent',
-      })
+      });
     } catch (error: any) {
-      alert(error.error_description || error.message)
-      console.log('GitHubログインでエラーが発生しました')
+      alert(error.error_description || error.message);
+      console.log('GitHubログインでエラーが発生しました');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const signout = async () => {
-    const { error } = await supabase.auth.signOut()
-  }
+    await supabase.auth.signOut();
+  };
 
   return (
     <Flex alignItems="center">
       <Container maxW="100%">
-        <Image
-          boxSize="600px"
-          objectFit="contain"
-          src="/login.jpg"
-          alt="ログイントップ画像"
-          mx="auto"
-        />
+        <Image boxSize="600px" objectFit="contain" src="/login.jpg" alt="ログイントップ画像" mx="auto" />
         <Flex direction="column">
           <Text
             fontSize="3xl"
@@ -169,13 +163,7 @@ const LoginPage: NextPage = () => {
           <Flex justify="center" mt="5">
             <Button>テストユーザーログイン</Button>
           </Flex>
-          <Text
-            border="1px"
-            borderColor="gray.800"
-            mx="auto"
-            my="5"
-            w="90%"
-          ></Text>
+          <Text border="1px" borderColor="gray.800" mx="auto" my="5" w="90%"></Text>
           <Flex justify="space-between" mx="10">
             <Button onClick={signInWithGoogle}>Google</Button>
             <Button onClick={signInWithGithub}>GitHub</Button>
@@ -186,7 +174,7 @@ const LoginPage: NextPage = () => {
         </Flex>
       </Container>
     </Flex>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
