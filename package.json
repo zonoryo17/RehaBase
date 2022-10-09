@@ -10,6 +10,7 @@
     "format": "eslint --cache --fix 'src/**/*.{js,jsx,ts,tsx}' && prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
+    "@chakra-ui/modal": "^2.2.1",
     "@chakra-ui/react": "^2.3.2",
     "@emotion/react": "11",
     "@emotion/styled": "11",

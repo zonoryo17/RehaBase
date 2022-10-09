@@ -11,9 +11,11 @@ import {
   Tabs,
   Text,
 } from '@chakra-ui/react';
+import BasicUsage from '@src/components/updateModal';
 import { supabase } from '@src/utils/supabaseClient';
 import { NextPage } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const FacilityDetailPage: NextPage = () => {
@@ -24,18 +26,21 @@ const FacilityDetailPage: NextPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
+  const query = router.query;
+  console.log(query);
+
   useEffect(() => {
     fetchFacilityData();
-  }, []);
+  }, [query]);
 
   const fetchFacilityData = async () => {
-    const { id }: any = await supabase.from('Facilities').select('id').single();
     try {
       setLoading(true);
       const { data, error } = await supabase
         .from('Facilities')
         .select('*')
-        .eq('id', id)
+        .eq('id', query.facilityId)
         .single();
       console.log(data);
       if (data) {
@@ -61,10 +66,10 @@ const FacilityDetailPage: NextPage = () => {
         boxShadow="md"
       >
         <Heading display="flex" mt="10px" mb="5px" px="20px">
-          <Text fontSize="2xl">病院名：{name}</Text>
+          <Text fontSize="2xl">{name}</Text>
           <Spacer />
-          <Link href="/facilities/update/">
-            <Button>更新</Button>
+          <Link href={`/facilities/update/${query}`}>
+            <BasicUsage />
           </Link>
         </Heading>
         <Tabs align="end" variant="enclosed" colorScheme="green">
