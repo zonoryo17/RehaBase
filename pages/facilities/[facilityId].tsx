@@ -1,7 +1,7 @@
 import {
   Box,
+  Button,
   Center,
-  Flex,
   Heading,
   Spacer,
   Tab,
@@ -11,9 +11,45 @@ import {
   Tabs,
   Text,
 } from '@chakra-ui/react';
+import { supabase } from '@src/utils/supabaseClient';
 import { NextPage } from 'next';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-const FacilityPage: NextPage = () => {
+const FacilityDetailPage: NextPage = () => {
+  const [name, setName] = useState('');
+  const [menu, setMenu] = useState('');
+  const [price, setPrice] = useState('');
+  const [address, setAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFacilityData();
+  }, []);
+
+  const fetchFacilityData = async () => {
+    const { id }: any = await supabase.from('Facilities').select('id').single();
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('Facilities')
+        .select('*')
+        .eq('id', id)
+        .single();
+      console.log(data);
+      if (data) {
+        setName(data.name);
+        setMenu(data.menu);
+        setPrice(data.price);
+        setAddress(data.address);
+        setPhoneNumber(data.phone_number);
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
   return (
     <Center>
       <Box
@@ -24,8 +60,12 @@ const FacilityPage: NextPage = () => {
         borderRadius="20px"
         boxShadow="md"
       >
-        <Heading mt="10px" mb="5px" px="20px">
-          <Text fontSize="2xl">大阪病院</Text>
+        <Heading display="flex" mt="10px" mb="5px" px="20px">
+          <Text fontSize="2xl">病院名：{name}</Text>
+          <Spacer />
+          <Link href="/facilities/update/">
+            <Button>更新</Button>
+          </Link>
         </Heading>
         <Tabs align="end" variant="enclosed" colorScheme="green">
           <TabList>
@@ -37,19 +77,20 @@ const FacilityPage: NextPage = () => {
           </TabList>
           <TabPanels textAlign="start">
             <TabPanel>
-              <p>概要</p>
+              <p>病院名：{name}</p>
             </TabPanel>
             <TabPanel>
-              <p>内容</p>
+              <p>リハビリ内容：{menu}</p>
             </TabPanel>
             <TabPanel>
-              <p>費用</p>
+              <p>費用：{price}</p>
             </TabPanel>
             <TabPanel>
               <p>写真</p>
             </TabPanel>
             <TabPanel>
-              <p>地図</p>
+              <p>住所：{address}</p>
+              <p>電話番号：{phoneNumber}</p>
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -58,4 +99,4 @@ const FacilityPage: NextPage = () => {
   );
 };
 
-export default FacilityPage;
+export default FacilityDetailPage;

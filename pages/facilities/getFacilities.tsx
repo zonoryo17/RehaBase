@@ -1,11 +1,12 @@
 import { supabase } from '../../src/utils/supabaseClient';
 import { useEffect, useState } from 'react';
 import { NextPage } from 'next';
+import { Link } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 type Facility = {
   id: string;
-  title: string;
-  content: string;
+  name: string;
   menu: string;
   price: number;
   address?: string;
@@ -24,7 +25,7 @@ const getFacilities: NextPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      let { data: Facilities, error } = await supabase
+      const { data: Facilities, error } = await supabase
         .from('Facilities')
         .select('*');
       setFacilities(Facilities);
@@ -39,24 +40,18 @@ const getFacilities: NextPage = () => {
 
   return (
     <>
-      <p>Hello, world</p>
+      <p>施設情報一覧</p>
       <div>
         <ul>
-          {facilities.map((facility: any) => (
-            <>
-              <li key={facility.id}>
-                <p>{facility.name}</p>
+          {facilities.map((data: any) => (
+            <Link href={`./${data.id}`} key={data.id}>
+              <li>
+                <p>{data.name}</p>
+                <p>{data.address}</p>
               </li>
-              <li key={facility.id}>
-                <p>{facility.price}</p>
-              </li>
-              <li key={facility.id}>
-                <p>{facility.menu}</p>
-              </li>
-            </>
+            </Link>
           ))}
         </ul>
-        <p>End World</p>
       </div>
     </>
   );
