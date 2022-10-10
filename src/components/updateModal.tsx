@@ -24,7 +24,7 @@ import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-const BasicUsage = () => {
+const BasicUsage = ({ facilityProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialState = {
@@ -40,10 +40,11 @@ const BasicUsage = () => {
     menu5: '',
     price5: '',
     address: '',
-    phone_number: '',
+    phoneNumber: '',
   };
 
   const router = useRouter();
+  const query = router.query;
   const [facility, setFacility] = useState(initialState);
 
   const {
@@ -59,7 +60,7 @@ const BasicUsage = () => {
     menu5,
     price5,
     address,
-    phone_number,
+    phoneNumber,
   } = facility;
 
   const handleChange = (e: { target: HTMLInputElement }) => {
@@ -84,10 +85,10 @@ const BasicUsage = () => {
             menu5,
             price5,
             address,
-            phone_number,
+            phoneNumber,
           },
         ])
-        .eq('id', 'e139e5b8-27bd-407a-bd1d-25861d6e3821')
+        .eq('id', query.facilityId)
         .single();
       if (error) throw error;
       alert('Facility updated successfully');
@@ -100,7 +101,7 @@ const BasicUsage = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>更新</Button>
+      <Button onClick={onOpen}>施設情報を更新</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalOverlay />
@@ -117,7 +118,7 @@ const BasicUsage = () => {
                   <Input
                     type="text"
                     name="name"
-                    value={name}
+                    value={facilityProps.name}
                     onChange={handleChange}
                     placeholder="○○病院"
                   />
@@ -125,7 +126,7 @@ const BasicUsage = () => {
                   <Input
                     type="text"
                     name="menu"
-                    value={menu}
+                    value={facilityProps.menu}
                     onChange={handleChange}
                     placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                   />
@@ -133,7 +134,7 @@ const BasicUsage = () => {
                   <Input
                     type="text"
                     name="price"
-                    value={price}
+                    value={facilityProps.price}
                     onChange={handleChange}
                     placeholder="○○○○円"
                   />
@@ -152,7 +153,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="menu2"
-                          value={menu2}
+                          value={facilityProps.menu2}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -160,7 +161,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="price2"
-                          value={price2}
+                          value={facilityProps.price2}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -181,7 +182,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="menu3"
-                          value={menu3}
+                          value={facilityProps.menu3}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -189,7 +190,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="price3"
-                          value={price3}
+                          value={facilityProps.price3}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -209,7 +210,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="menu4"
-                          value={menu4}
+                          value={facilityProps.menu4}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -217,7 +218,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="price4"
-                          value={price4}
+                          value={facilityProps.price4}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -237,7 +238,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="menu5"
-                          value={menu5}
+                          value={facilityProps.menu5}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -245,7 +246,7 @@ const BasicUsage = () => {
                         <Input
                           type="text"
                           name="price5"
-                          value={price5}
+                          value={facilityProps.price5}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -256,15 +257,15 @@ const BasicUsage = () => {
                   <Input
                     type="text"
                     name="address"
-                    value={address}
+                    value={facilityProps.address}
                     onChange={handleChange}
                     placeholder="東京都新宿区○○○○"
                   />
                   <Text>電話番号: </Text>
                   <Input
                     type="text"
-                    name="phone_number"
-                    value={phone_number}
+                    name="phoneNumber"
+                    value={facilityProps.phoneNumber}
                     onChange={handleChange}
                     placeholder="01-1234-5678"
                   />

@@ -69,7 +69,9 @@ const FacilityDetailPage: NextPage = () => {
           <Text fontSize="2xl">{name}</Text>
           <Spacer />
           <Link href={`/facilities/update/${query}`}>
-            <BasicUsage />
+            <BasicUsage
+              facilityProps={{ name, menu, price, address, phoneNumber }}
+            />
           </Link>
         </Heading>
         <Tabs align="end" variant="enclosed" colorScheme="green">

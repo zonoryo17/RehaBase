@@ -81,7 +81,7 @@ const Create = () => {
       if (error) throw error;
       alert('Facility created successfully');
       setFacility(initialState);
-      router.push('/');
+      router.push('/facilities');
     } catch (error: any) {
       alert(error.message);
     }
