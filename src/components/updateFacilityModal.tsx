@@ -24,49 +24,35 @@ import {
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FacilityProps } from '../../types/facility';
+import { Facility } from '../../types/facility';
 
-const UpdateModal = ({ facilityProps }: FacilityProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+type Props = {
+  facility: Facility;
+};
 
-  const initialState = {
-    name: '',
-    explanation: '',
-    menu: '',
-    price: '',
-    menu2: '',
-    price2: '',
-    menu3: '',
-    price3: '',
-    menu4: '',
-    price4: '',
-    menu5: '',
-    price5: '',
-    address: '',
-    phone_number: '',
-  };
-
-  const [facility, setFacility] = useState(initialState);
-  const router = useRouter();
-  const query = router.query;
-  const toast = useToast();
-
+const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
+  const [facility, setFacility] = useState(originalFacility);
   const {
     name,
     explanation,
     menu,
-    price,
     menu2,
-    price2,
-    menu3,
-    price3,
     menu4,
-    price4,
     menu5,
+    price,
+    price2,
+    price3,
+    menu3,
+    price4,
     price5,
     address,
     phone_number,
   } = facility;
+
+  const router = useRouter();
+  const query = router.query;
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleChange = (e: {
     target: HTMLInputElement | HTMLTextAreaElement;
@@ -81,20 +67,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
         .from('Facilities')
         .update([
           {
-            name,
-            explanation,
-            menu,
-            price,
-            menu2,
-            price2,
-            menu3,
-            price3,
-            menu4,
-            price4,
-            menu5,
-            price5,
-            address,
-            phone_number,
+            ...facility,
           },
         ])
         .eq('id', query.facilityId)
@@ -108,7 +81,6 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
         duration: 5000,
         isClosable: true,
       });
-      setFacility(initialState);
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -136,14 +108,14 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                   <Input
                     type="text"
                     name="name"
-                    value={facilityProps.name}
+                    value={name}
                     onChange={handleChange}
                     placeholder="○○病院"
                   />
                   <Text>施設紹介: </Text>
                   <Textarea
                     name="explanation"
-                    value={facility.explanation}
+                    value={explanation}
                     onChange={handleChange}
                     placeholder="施設の紹介を入力"
                   />
@@ -159,7 +131,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                   <Input
                     type="text"
                     name="price"
-                    value={facilityProps.facility?.price}
+                    value={price}
                     onChange={handleChange}
                     placeholder="○○○○円"
                   />
@@ -178,7 +150,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="menu2"
-                          value={facilityProps.facility?.menu2}
+                          value={menu2}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -186,13 +158,12 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="price2"
-                          value={facilityProps.facility?.price2}
+                          value={price2}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
                       </AccordionPanel>
                     </AccordionItem>
-
                     <AccordionItem>
                       <h2>
                         <AccordionButton>
@@ -207,7 +178,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="menu3"
-                          value={facilityProps.facility?.menu3}
+                          value={menu3}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -215,7 +186,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="price3"
-                          value={facilityProps.facility?.price3}
+                          value={price3}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -235,7 +206,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="menu4"
-                          value={facilityProps.facility?.menu4}
+                          value={menu4}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -243,7 +214,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="price4"
-                          value={facilityProps.facility?.price4}
+                          value={price4}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -263,7 +234,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="menu5"
-                          value={facilityProps.facility?.menu5}
+                          value={menu5}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -271,7 +242,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                         <Input
                           type="text"
                           name="price5"
-                          value={facilityProps.facility?.price5}
+                          value={price5}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -282,7 +253,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                   <Input
                     type="text"
                     name="address"
-                    value={facilityProps.facility?.address}
+                    value={address}
                     onChange={handleChange}
                     placeholder="東京都新宿区○○○○"
                   />
@@ -290,7 +261,7 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
                   <Input
                     type="text"
                     name="phone_number"
-                    value={facilityProps.facility?.phone_number}
+                    value={phone_number}
                     onChange={handleChange}
                     placeholder="01-1234-5678"
                   />
@@ -313,4 +284,4 @@ const UpdateModal = ({ facilityProps }: FacilityProps) => {
   );
 };
 
-export default UpdateModal;
+export default UpdateFacilityModal;

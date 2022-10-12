@@ -15,10 +15,10 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { supabase } from '@src/utils/supabaseClient';
 import { Facility } from '../../types/facility';
+import { supabase } from '@src/utils/supabaseClient';
 import DeleteFacilityButton from '@src/components/deleteFacility';
-import UpdateModal from '@src/components/updateModal';
+import UpdateFacilityModal from '@src/components/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 
 const FacilityDetailPage: NextPage = () => {
@@ -72,9 +72,7 @@ const FacilityDetailPage: NextPage = () => {
           <Heading display="flex" mt="10px" mb="5px" px="20px">
             <Text fontSize="2xl">{facility?.name}</Text>
             <Spacer />
-            <Link href={`/facilities/update/${query}`}>
-              <UpdateModal facilityProps={{ facility }} />
-            </Link>
+            {facility && <UpdateFacilityModal facility={facility} />}
             <DeleteFacilityButton />
           </Heading>
           <Tabs align="end" variant="enclosed" colorScheme="green">
