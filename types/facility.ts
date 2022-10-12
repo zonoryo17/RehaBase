@@ -14,6 +14,6 @@ export type Facility = {
   explanation?: string;
   address?: string;
   phone_number?: string;
-  created_at: Date;
+  created_at?: Date;
   facilityId?: string | string[];
 };

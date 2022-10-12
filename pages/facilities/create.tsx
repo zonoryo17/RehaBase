@@ -20,8 +20,9 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Facility } from '../../types/facility';
+import { NextPage } from 'next';
 
-const Create = () => {
+const Create: NextPage = () => {
   const initialState = {
     name: '',
     explanation: '',
@@ -38,10 +39,7 @@ const Create = () => {
     address: '',
     phone_number: '',
   };
-
   const [facility, setFacility] = useState(initialState);
-  const router = useRouter();
-  const toast = useToast();
   const {
     name,
     explanation,
@@ -59,6 +57,9 @@ const Create = () => {
     phone_number,
   } = facility;
 
+  const router = useRouter();
+  const toast = useToast();
+
   const handleChange = (e: {
     target: HTMLInputElement | HTMLTextAreaElement;
   }) => {
@@ -71,20 +72,7 @@ const Create = () => {
         .from<Facility>('Facilities')
         .insert([
           {
-            name,
-            explanation,
-            menu,
-            price,
-            menu2,
-            price2,
-            menu3,
-            price3,
-            menu4,
-            price4,
-            menu5,
-            price5,
-            address,
-            phone_number,
+            ...facility,
           },
         ])
         .single();
