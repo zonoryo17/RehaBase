@@ -1,6 +1,7 @@
 import { supabase } from '../../src/utils/supabaseClient';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { BsArrowLeftCircle } from 'react-icons/bs';
 import {
   Accordion,
   AccordionButton,
@@ -14,11 +15,16 @@ import {
   Input,
   Stack,
   Text,
+  Textarea,
+  useToast,
 } from '@chakra-ui/react';
+import Link from 'next/link';
+import { Facility } from '../../types/facility';
 
 const Create = () => {
   const initialState = {
     name: '',
+    explanation: '',
     menu: '',
     price: '',
     menu2: '',
@@ -33,11 +39,12 @@ const Create = () => {
     phone_number: '',
   };
 
-  const router = useRouter();
   const [facility, setFacility] = useState(initialState);
-
+  const router = useRouter();
+  const toast = useToast();
   const {
     name,
+    explanation,
     menu,
     price,
     menu2,
@@ -52,17 +59,20 @@ const Create = () => {
     phone_number,
   } = facility;
 
-  const handleChange = (e: { target: HTMLInputElement }) => {
+  const handleChange = (e: {
+    target: HTMLInputElement | HTMLTextAreaElement;
+  }) => {
     setFacility({ ...facility, [e.target.name]: e.target.value });
   };
-
+  //Facility情報のcreate処理
   const createFacility = async () => {
     try {
       const { data, error } = await supabase
-        .from('Facilities')
+        .from<Facility>('Facilities')
         .insert([
           {
             name,
+            explanation,
             menu,
             price,
             menu2,
@@ -79,16 +89,31 @@ const Create = () => {
         ])
         .single();
       if (error) throw error;
-      alert('Facility created successfully');
       setFacility(initialState);
-      router.push('/facilities');
+      // 作成完了のポップアップ
+      toast({
+        title: '施設情報の作成が完了しました。',
+        status: 'success',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error: any) {
       alert(error.message);
+    } finally {
+      router.push('/facilities');
     }
   };
 
   return (
     <>
+      <Link href="/facilities">
+        <Button ml="32" mt="10">
+          {/*戻るボタンのアイコン */}
+          <BsArrowLeftCircle />
+          <Text ml="5px">施設一覧へ戻る</Text>
+        </Button>
+      </Link>
       <Center>
         <Flex
           w="1000px"
@@ -111,6 +136,14 @@ const Create = () => {
               onChange={handleChange}
               placeholder="○○病院"
             />
+            <Text>施設紹介: </Text>
+            <Textarea
+              name="explanation"
+              value={explanation}
+              onChange={handleChange}
+              placeholder="施設の紹介を入力"
+            />
+
             <Text>リハビリ内容: </Text>
             <Input
               type="text"
@@ -156,7 +189,6 @@ const Create = () => {
                   />
                 </AccordionPanel>
               </AccordionItem>
-
               <AccordionItem>
                 <h2>
                   <AccordionButton>

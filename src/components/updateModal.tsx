@@ -14,21 +14,24 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Stack,
   Text,
+  Textarea,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { FacilityProps } from '../../types/facility';
 
-const BasicUsage = ({ facilityProps }: any) => {
+const UpdateModal = ({ facilityProps }: FacilityProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialState = {
     name: '',
+    explanation: '',
     menu: '',
     price: '',
     menu2: '',
@@ -40,15 +43,17 @@ const BasicUsage = ({ facilityProps }: any) => {
     menu5: '',
     price5: '',
     address: '',
-    phoneNumber: '',
+    phone_number: '',
   };
 
+  const [facility, setFacility] = useState(initialState);
   const router = useRouter();
   const query = router.query;
-  const [facility, setFacility] = useState(initialState);
+  const toast = useToast();
 
   const {
     name,
+    explanation,
     menu,
     price,
     menu2,
@@ -60,13 +65,16 @@ const BasicUsage = ({ facilityProps }: any) => {
     menu5,
     price5,
     address,
-    phoneNumber,
+    phone_number,
   } = facility;
 
-  const handleChange = (e: { target: HTMLInputElement }) => {
+  const handleChange = (e: {
+    target: HTMLInputElement | HTMLTextAreaElement;
+  }) => {
     setFacility({ ...facility, [e.target.name]: e.target.value });
   };
 
+  // Facility情報のupdate処理
   const updateFacility = async () => {
     try {
       const { data, error } = await supabase
@@ -74,6 +82,7 @@ const BasicUsage = ({ facilityProps }: any) => {
         .update([
           {
             name,
+            explanation,
             menu,
             price,
             menu2,
@@ -85,24 +94,33 @@ const BasicUsage = ({ facilityProps }: any) => {
             menu5,
             price5,
             address,
-            phoneNumber,
+            phone_number,
           },
         ])
         .eq('id', query.facilityId)
         .single();
       if (error) throw error;
-      alert('Facility updated successfully');
+      //update完了のポップアップ
+      toast({
+        title: '施設情報を更新しました。',
+        status: 'success',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      });
       setFacility(initialState);
-      router.push('/');
     } catch (error: any) {
       alert(error.message);
+    } finally {
+      router.push('/facilities');
     }
   };
 
   return (
     <>
-      <Button onClick={onOpen}>施設情報を更新</Button>
-
+      <Button colorScheme="blue" onClick={onOpen}>
+        施設情報を更新
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalOverlay />
         <ModalContent>
@@ -122,11 +140,18 @@ const BasicUsage = ({ facilityProps }: any) => {
                     onChange={handleChange}
                     placeholder="○○病院"
                   />
+                  <Text>施設紹介: </Text>
+                  <Textarea
+                    name="explanation"
+                    value={facility.explanation}
+                    onChange={handleChange}
+                    placeholder="施設の紹介を入力"
+                  />
                   <Text>リハビリ内容: </Text>
                   <Input
                     type="text"
                     name="menu"
-                    value={facilityProps.menu}
+                    value={menu}
                     onChange={handleChange}
                     placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                   />
@@ -134,7 +159,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                   <Input
                     type="text"
                     name="price"
-                    value={facilityProps.price}
+                    value={facilityProps.facility?.price}
                     onChange={handleChange}
                     placeholder="○○○○円"
                   />
@@ -153,7 +178,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="menu2"
-                          value={facilityProps.menu2}
+                          value={facilityProps.facility?.menu2}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -161,7 +186,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="price2"
-                          value={facilityProps.price2}
+                          value={facilityProps.facility?.price2}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -182,7 +207,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="menu3"
-                          value={facilityProps.menu3}
+                          value={facilityProps.facility?.menu3}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -190,7 +215,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="price3"
-                          value={facilityProps.price3}
+                          value={facilityProps.facility?.price3}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -210,7 +235,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="menu4"
-                          value={facilityProps.menu4}
+                          value={facilityProps.facility?.menu4}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -218,7 +243,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="price4"
-                          value={facilityProps.price4}
+                          value={facilityProps.facility?.price4}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -238,7 +263,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="menu5"
-                          value={facilityProps.menu5}
+                          value={facilityProps.facility?.menu5}
                           onChange={handleChange}
                           placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
                         />
@@ -246,7 +271,7 @@ const BasicUsage = ({ facilityProps }: any) => {
                         <Input
                           type="text"
                           name="price5"
-                          value={facilityProps.price5}
+                          value={facilityProps.facility?.price5}
                           onChange={handleChange}
                           placeholder="○○○○円"
                         />
@@ -257,15 +282,15 @@ const BasicUsage = ({ facilityProps }: any) => {
                   <Input
                     type="text"
                     name="address"
-                    value={facilityProps.address}
+                    value={facilityProps.facility?.address}
                     onChange={handleChange}
                     placeholder="東京都新宿区○○○○"
                   />
                   <Text>電話番号: </Text>
                   <Input
                     type="text"
-                    name="phoneNumber"
-                    value={facilityProps.phoneNumber}
+                    name="phone_number"
+                    value={facilityProps.facility?.phone_number}
                     onChange={handleChange}
                     placeholder="01-1234-5678"
                   />
@@ -288,4 +313,4 @@ const BasicUsage = ({ facilityProps }: any) => {
   );
 };
 
-export default BasicUsage;
+export default UpdateModal;

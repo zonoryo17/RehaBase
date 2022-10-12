@@ -1,18 +1,9 @@
 import { useEffect, useState } from 'react';
 import { NextPage } from 'next';
-import { Box, Button, Flex, Link, Text } from '@chakra-ui/react';
+import { Box, Button, Link, Text } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
-
-type Facility = {
-  id: string;
-  name: string;
-  menu: string;
-  price: number;
-  address?: string;
-  phone_number?: string;
-  created_at: Date;
-};
+import { Facility } from '../../types/facility';
 
 const FacilitiesListPage: NextPage = () => {
   const [facilities, setFacilities] = useState<Facility[]>([]);
@@ -26,11 +17,11 @@ const FacilitiesListPage: NextPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data: Facilities, error } = await supabase
-        .from('Facilities')
+      const { data: facilities, error } = await supabase
+        .from<Facility>('Facilities')
         .select('*');
-      setFacilities(Facilities);
-      console.log(Facilities);
+      setFacilities(facilities);
+      console.log(facilities);
       if (error) console.log('error', error);
     } catch (error: any) {
       alert(error.message);
@@ -51,7 +42,7 @@ const FacilitiesListPage: NextPage = () => {
       <Button onClick={clickCreateFacility}>施設情報を登録</Button>
       <Box>
         <ul>
-          {facilities.map((data: any) => (
+          {facilities.map((data: Facility) => (
             <Link href={`/facilities/${data.id}`} key={data.id}>
               <li>
                 <p>{data.name}</p>
