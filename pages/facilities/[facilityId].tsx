@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '@src/utils/supabaseClient';
 import { Facility } from '../../types/facility';
-import DeleteFacilityButton from '@src/components/deleteDialog';
+import DeleteFacilityButton from '@src/components/deleteFacility';
 import UpdateModal from '@src/components/updateModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 
