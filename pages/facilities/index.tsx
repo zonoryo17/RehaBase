@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { Facility } from '../../types/facility';
 
 const FacilitiesListPage: NextPage = () => {
-  const [facilities, setFacilities] = useState<Facility[]>([]);
+  const [facilities, setFacilities] = useState<Facility[] | null>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -42,14 +42,15 @@ const FacilitiesListPage: NextPage = () => {
       <Button onClick={clickCreateFacility}>施設情報を登録</Button>
       <Box>
         <ul>
-          {facilities.map((data: Facility) => (
-            <Link href={`/facilities/${data.id}`} key={data.id}>
-              <li>
-                <p>{data.name}</p>
-                <p>{data.address}</p>
-              </li>
-            </Link>
-          ))}
+          {facilities &&
+            facilities.map((data: Facility) => (
+              <Link href={`/facilities/${data.id}`} key={data.id}>
+                <li>
+                  <p>{data.name}</p>
+                  <p>{data.address}</p>
+                </li>
+              </Link>
+            ))}
         </ul>
       </Box>
     </>

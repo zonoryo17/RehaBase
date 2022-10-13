@@ -6,7 +6,7 @@ import 'swiper/css/bundle';
 
 import 'swiper/css/bundle';
 
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+export default function App({ Component, pageProps }: any): JSX.Element {
   return (
     <ChakraProvider>
       <Layout>
