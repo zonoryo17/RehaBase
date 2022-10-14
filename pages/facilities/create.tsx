@@ -77,7 +77,6 @@ const Create: NextPage = () => {
         ])
         .single();
       if (error) throw error;
-      setFacility(initialState);
       // 作成完了のポップアップ
       toast({
         title: '施設情報の作成が完了しました。',
