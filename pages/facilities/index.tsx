@@ -7,7 +7,6 @@ import { Facility } from '../../types/facility';
 
 const FacilitiesListPage: NextPage = () => {
   const [facilities, setFacilities] = useState<Facility[] | null>([]);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +15,6 @@ const FacilitiesListPage: NextPage = () => {
 
   const fetchData = async () => {
     try {
-      setLoading(true);
       const { data: facilities, error } = await supabase
         .from<Facility>('Facilities')
         .select('*');
@@ -25,12 +23,10 @@ const FacilitiesListPage: NextPage = () => {
       if (error) console.log('error', error);
     } catch (error: any) {
       alert(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const clickCreateFacility = () => {
+  const handleClickCreateFacility = () => {
     router.push('/facilities/create');
   };
 
@@ -39,15 +35,15 @@ const FacilitiesListPage: NextPage = () => {
       <Text fontSize="2xl" fontWeight="bold" textAlign="center">
         施設情報一覧
       </Text>
-      <Button onClick={clickCreateFacility}>施設情報を登録</Button>
+      <Button onClick={handleClickCreateFacility}>施設情報を登録</Button>
       <Box>
         <ul>
           {facilities &&
-            facilities.map((data: Facility) => (
-              <Link href={`/facilities/${data.id}`} key={data.id}>
+            facilities.map(({ id, name, address }: Facility) => (
+              <Link href={`/facilities/${id}`} key={id}>
                 <li>
-                  <p>{data.name}</p>
-                  <p>{data.address}</p>
+                  <p>{name}</p>
+                  <p>{address}</p>
                 </li>
               </Link>
             ))}

@@ -22,8 +22,25 @@ import UpdateFacilityModal from '@src/components/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 
 const FacilityDetailPage: NextPage = () => {
-  const [facility, setFacility] = useState<Facility | null>(null);
-  const [loading, setLoading] = useState(true);
+  const initialState: Facility = {
+    name: '',
+    explanation: '',
+    menu: '',
+    price: '',
+    menu2: '',
+    price2: '',
+    menu3: '',
+    price3: '',
+    menu4: '',
+    price4: '',
+    menu5: '',
+    price5: '',
+    address: '',
+    phone_number: '',
+  };
+  const [facility, setFacility] = useState<Facility>(initialState);
+
+  const { name, explanation, menu, price, address, phone_number } = facility;
 
   const router = useRouter();
   const query = router.query;
@@ -36,8 +53,7 @@ const FacilityDetailPage: NextPage = () => {
   //Facility情報の詳細（シングルページ）取得処理
   const fetchFacility = async () => {
     try {
-      setLoading(true);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from<Facility>('Facilities')
         .select('*')
         .eq('id', query.facilityId)
@@ -70,7 +86,7 @@ const FacilityDetailPage: NextPage = () => {
           boxShadow="md"
         >
           <Heading display="flex" mt="10px" mb="5px" px="20px">
-            <Text fontSize="2xl">{facility?.name}</Text>
+            <Text fontSize="2xl">{name}</Text>
             <Spacer />
             {facility && <UpdateFacilityModal facility={facility} />}
             <DeleteFacilityButton />
@@ -85,21 +101,21 @@ const FacilityDetailPage: NextPage = () => {
             </TabList>
             <TabPanels textAlign="start">
               <TabPanel>
-                <p>病院名：{facility?.name}</p>
-                <p>病院紹介：{facility?.explanation}</p>
+                <p>病院名：{name}</p>
+                <p>病院紹介：{explanation}</p>
               </TabPanel>
               <TabPanel>
-                <p>リハビリ内容：{facility?.menu}</p>
+                <p>リハビリ内容：{menu}</p>
               </TabPanel>
               <TabPanel>
-                <p>費用：{facility?.price}</p>
+                <p>費用：{price}</p>
               </TabPanel>
               <TabPanel>
                 <p>写真</p>
               </TabPanel>
               <TabPanel>
-                <p>住所：{facility?.address}</p>
-                <p>電話番号：{facility?.phone_number}</p>
+                <p>住所：{address}</p>
+                <p>電話番号：{phone_number}</p>
               </TabPanel>
             </TabPanels>
           </Tabs>

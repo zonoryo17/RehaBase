@@ -1,5 +1,5 @@
 export type Facility = {
-  id: string;
+  id?: string;
   name: string;
   menu: string;
   price: string;
@@ -15,5 +15,5 @@ export type Facility = {
   address?: string;
   phone_number?: string;
   created_at?: Date;
-  facilityId?: string | string[];
+  facility_id?: string | string[];
 };

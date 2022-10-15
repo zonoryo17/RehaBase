@@ -68,7 +68,7 @@ const Create: NextPage = () => {
   //Facility情報のcreate処理
   const createFacility = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from<Facility>('Facilities')
         .insert([
           {
