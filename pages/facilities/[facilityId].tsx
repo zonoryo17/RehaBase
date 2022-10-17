@@ -22,25 +22,7 @@ import UpdateFacilityModal from '@src/components/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 
 const FacilityDetailPage: NextPage = () => {
-  const initialState: Facility = {
-    name: '',
-    explanation: '',
-    menu: '',
-    price: '',
-    menu2: '',
-    price2: '',
-    menu3: '',
-    price3: '',
-    menu4: '',
-    price4: '',
-    menu5: '',
-    price5: '',
-    address: '',
-    phone_number: '',
-  };
-  const [facility, setFacility] = useState<Facility>(initialState);
-
-  const { name, explanation, menu, price, address, phone_number } = facility;
+  const [facility, setFacility] = useState<Facility | null>(null);
 
   const router = useRouter();
   const query = router.query;
@@ -66,6 +48,9 @@ const FacilityDetailPage: NextPage = () => {
       alert(error.message);
     }
   };
+
+  if (!facility) return <div></div>;
+  const { name, explanation, menu, price, address, phone_number } = facility;
 
   return (
     <>
