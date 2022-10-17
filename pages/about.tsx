@@ -5,7 +5,7 @@ const About: NextPage = () => {
   return (
     <>
       <Text fontWeight="bold" fontSize="3xl">
-        About Page
+        About Page.
       </Text>
     </>
   );
