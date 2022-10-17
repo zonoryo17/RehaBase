@@ -1,5 +1,5 @@
-import { Text } from '@chakra-ui/react'
-import { NextPage } from 'next'
+import { Text } from '@chakra-ui/react';
+import { NextPage } from 'next';
 
 const About: NextPage = () => {
   return (
@@ -8,5 +8,7 @@ const About: NextPage = () => {
         About Page
       </Text>
     </>
-  )
-}
+  );
+};
+
+export default About;
