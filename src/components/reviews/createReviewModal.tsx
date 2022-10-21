@@ -111,7 +111,7 @@ const CreateReviewModal = ({ facilityName }: Props) => {
               <Text borderBottom="1px solid black"></Text>
               <Text mt={3}>総合評価</Text>
               {/* 評価点数用の星コンポーネント */}
-              <RatingStar value={total_rating} />
+              <RatingStar />
               <Accordion allowToggle>
                 <AccordionItem>
                   <h2>
@@ -127,27 +127,27 @@ const CreateReviewModal = ({ facilityName }: Props) => {
                       <Box>
                         <Text>接遇</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar value={reception_rating} />
+                        <RatingStar />
                       </Box>
                       <Box>
                         <Text>サービス内容</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar value={service_rating} />
+                        <RatingStar />
                       </Box>
                       <Box>
                         <Text>費用</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar value={expense_rating} />
+                        <RatingStar />
                       </Box>
                       <Box>
                         <Text>機器類の充実</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar value={equipment_rating} />
+                        <RatingStar />
                       </Box>
                       <Box>
                         <Text>環境</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar value={environment_rating} />
+                        <RatingStar />
                       </Box>
                     </Flex>
                   </AccordionPanel>
