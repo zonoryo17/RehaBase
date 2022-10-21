@@ -22,7 +22,6 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
 import { useState } from 'react';
-import { Review } from '../../../types/reviews';
 import RatingStar from './ratingStar';
 
 type Props = {
