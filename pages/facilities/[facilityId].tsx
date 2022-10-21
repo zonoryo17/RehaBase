@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
   Spacer,
   Tab,
@@ -20,6 +21,8 @@ import { supabase } from '@src/utils/supabaseClient';
 import DeleteFacilityButton from '@src/components/deleteFacility';
 import UpdateFacilityModal from '@src/components/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
+import ReviewComponents from '@src/components/reviews/reviewComponents';
+import CreateReviewModal from '@src/components/reviews/createReviewModal';
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -54,17 +57,23 @@ const FacilityDetailPage: NextPage = () => {
 
   return (
     <>
-      <Link href="/facilities">
-        <Button ml="32" mt="10">
-          {/*戻るボタンのアイコン */}
-          <BsArrowLeftCircle />
-          <Text ml="5px">施設一覧へ戻る</Text>
-        </Button>
-      </Link>
+      <Flex>
+        <Link href="/facilities">
+          <Button ml="32" mt="10">
+            {/*戻るボタンのアイコン */}
+            <BsArrowLeftCircle />
+            <Text ml="5px">施設一覧へ戻る</Text>
+          </Button>
+        </Link>
+        <Spacer />
+        <Box mr="20%" mt="10">
+          <CreateReviewModal facilityName={name} />
+        </Box>
+      </Flex>
       <Center>
         <Box
           w="1000px"
-          h="600px"
+          h="100%"
           my="30px"
           border="solid 1px"
           borderRadius="20px"
@@ -88,6 +97,9 @@ const FacilityDetailPage: NextPage = () => {
               <TabPanel>
                 <p>病院名：{name}</p>
                 <p>病院紹介：{explanation}</p>
+                <Box>
+                  <ReviewComponents />
+                </Box>
               </TabPanel>
               <TabPanel>
                 <p>リハビリ内容：{menu}</p>
