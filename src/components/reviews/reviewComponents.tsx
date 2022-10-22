@@ -5,10 +5,10 @@ import { supabase } from '@src/utils/supabaseClient';
 import { User } from '../../../types/user';
 import { useRouter } from 'next/router';
 import { Review } from '../../../types/reviews';
+import ReactStars from 'react-stars';
 // import ReviewDetailModal from './reviewDetailModal';
 
 const ReviewComponents = () => {
-  const [users, setUsers] = useState<User[] | null>([]);
   const [reviews, setReviews] = useState<Review[] | null>([]);
   const router = useRouter();
 
@@ -19,7 +19,7 @@ const ReviewComponents = () => {
   const fetchUserData = async () => {
     try {
       const { data: reviews, error } = await supabase
-        .from('Reviews')
+        .from<Review>('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture)');
       setReviews(reviews);
       console.log(reviews);
@@ -32,30 +32,35 @@ const ReviewComponents = () => {
   return (
     <>
       {reviews &&
-        reviews.map(({ id, title, content, total_rating, Users }) => (
+        reviews.map(({ id, title, content, total_rating, Users: user }) => (
           <Flex key={id} mt="5" h={36}>
             <Box>
               <Image src="/noNameUser.jpg" width="100" height="100" />
-              <Text align="center">{Users.user_name}</Text>
+              <Text align="center">{user?.user_name}</Text>
             </Box>
             <Box
               border="1px solid"
               borderRadius="7"
               maxW="30rem"
-              mt="2"
               mx="4"
               px="5"
               pt="2"
               position="relative"
             >
-              <Flex gap={5}>
-                <Text>{Users.prefecture}</Text>
-                <Text>{Users.gender}</Text>
-                <Text>{Users.age}歳</Text>
-                <Text>
-                  総合評価：{total_rating}点
-                  <span style={{ color: '#FFD700' }}> ★★★★★</span>
-                </Text>
+              <Flex gap={5} align="center">
+                <Text>{user?.prefecture}</Text>
+                <Text>{user?.gender}</Text>
+                <Text>{user?.age}歳</Text>
+                <Flex align="center">
+                  <Text>総合評価：{total_rating}点</Text>
+                  <ReactStars
+                    count={5}
+                    size={20}
+                    color2={'#ffd700'}
+                    value={total_rating}
+                    edit={false}
+                  />
+                </Flex>
               </Flex>
               <Text
                 w="30rem"

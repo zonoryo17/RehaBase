@@ -6,10 +6,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsArrowLeftCircle } from 'react-icons/bs';
+import ReactStars from 'react-stars';
 import { Review } from '../../types/reviews';
 
 const ReviewDetailPage: NextPage = () => {
-  const [reviews, setReviews] = useState<Review>();
+  const [reviews, setReviews] = useState<Review | null>(null);
 
   const router = useRouter();
   const query = router.query;
@@ -24,7 +25,7 @@ const ReviewDetailPage: NextPage = () => {
       const { data: reviews, error } = await supabase
         .from('Reviews')
         .select('*, Users(user_name)')
-        .eq('id', String(query.reviewId))
+        .eq('id', query.reviewId)
         .single();
       setReviews(reviews);
       console.log(reviews);
@@ -35,7 +36,6 @@ const ReviewDetailPage: NextPage = () => {
   };
   if (!reviews) return <div>Null</div>;
   const {
-    id,
     created_at,
     title,
     content,
@@ -45,9 +45,10 @@ const ReviewDetailPage: NextPage = () => {
     expense_rating,
     equipment_rating,
     environment_rating,
+    facility_id,
+    user_id,
   } = reviews;
-
-  const facility_id = reviews.facility_id;
+  const user_name = reviews.Users?.user_name;
 
   return (
     <>
@@ -68,51 +69,77 @@ const ReviewDetailPage: NextPage = () => {
       >
         <Box mx="5">
           <Flex justify="space-between">
-            <Text fontSize="xl">{reviews.Users.user_name}さんの口コミ</Text>
-            <DeleteReviewButton />
+            <Text fontSize="xl">{user_name}さんの口コミ</Text>
+            <DeleteReviewButton facility_id={facility_id ?? ''} />
           </Flex>
           <Box>
             <Text textColor="gray.400" mb="5">
               {created_at}投稿
             </Text>
             <Box>
-              <Flex>
-                <Text fontSize="xl" fontWeight="bold" mb="3">
-                  総合評価：{total_rating}点　
-                  <span style={{ color: '#FFD700' }}>★★★★★</span>
+              <Flex align="center" mb={3}>
+                <Text fontSize="xl" fontWeight="bold" mr={2}>
+                  総合評価：{total_rating}
                 </Text>
+                <ReactStars
+                  count={5}
+                  size={30}
+                  color2={'#ffd700'}
+                  value={total_rating}
+                  edit={false}
+                />
               </Flex>
-              <Flex flexWrap="wrap" justify="space-between">
-                <Box>
-                  <Text>
-                    接遇： {reception_rating}点
-                    <span style={{ color: '#FFD700' }}> ★★★★★</span>
-                  </Text>
-                </Box>
-                <Box>
-                  <Text>
-                    サービス内容：{service_rating}点
-                    <span style={{ color: '#FFD700' }}> ★★★★★</span>
-                  </Text>
-                </Box>
-                <Box>
-                  <Text>
-                    費用：{expense_rating}点
-                    <span style={{ color: '#FFD700' }}> ★★★★★</span>
-                  </Text>
-                </Box>
-                <Box>
-                  <Text>
-                    機器類の充実：{equipment_rating}点
-                    <span style={{ color: '#FFD700' }}> ★★★★★</span>
-                  </Text>
-                </Box>
-                <Box>
-                  <Text>
-                    環境：{environment_rating}点
-                    <span style={{ color: '#FFD700' }}> ★★★★★</span>
-                  </Text>
-                </Box>
+              <Flex flexWrap="wrap" gap={8}>
+                <Flex align="center">
+                  <Text mr={2}>接遇： {reception_rating}</Text>
+                  <ReactStars
+                    count={5}
+                    size={20}
+                    color2={'#ffd700'}
+                    value={reception_rating}
+                    edit={false}
+                  />
+                </Flex>
+                <Flex align="center">
+                  <Text mr={2}>サービス内容：{service_rating}</Text>
+                  <ReactStars
+                    count={5}
+                    size={20}
+                    color2={'#ffd700'}
+                    value={service_rating}
+                    edit={false}
+                  />
+                </Flex>
+                <Flex align="center">
+                  <Text mr={2}>費用：{expense_rating}</Text>
+                  <ReactStars
+                    count={5}
+                    size={20}
+                    color2={'#ffd700'}
+                    value={expense_rating}
+                    edit={false}
+                  />
+                </Flex>
+                <Flex align="center">
+                  <Text mr={2}>機器類の充実：{equipment_rating}</Text>
+                  <ReactStars
+                    count={5}
+                    size={20}
+                    color2={'#ffd700'}
+                    value={equipment_rating}
+                    edit={false}
+                  />
+                </Flex>
+                <Flex align="center">
+                  <Text mr={2}>環境：{environment_rating}</Text>
+                  <ReactStars
+                    count={5}
+                    size={20}
+                    color2={'#ffd700'}
+                    value={environment_rating}
+                    edit={false}
+                  />
+                </Flex>
               </Flex>
               <Text borderBottom="1px solid black" my="5"></Text>
               <Text fontSize="xl" fontWeight="bold" mb="3">

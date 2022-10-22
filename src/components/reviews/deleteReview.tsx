@@ -13,7 +13,11 @@ import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const DeleteReviewButton = () => {
+type Props = {
+  facility_id: string;
+};
+
+const DeleteReviewButton = ({ facility_id }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
@@ -43,7 +47,7 @@ const DeleteReviewButton = () => {
     } catch (error: any) {
       alert(error.message);
     } finally {
-      router.push('/facilities/${facitity_id}');
+      router.push(`/facilities/${facility_id}`);
     }
   };
 

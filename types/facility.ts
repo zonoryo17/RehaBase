@@ -16,4 +16,15 @@ export type Facility = {
   phone_number?: string;
   created_at?: Date;
   facility_id?: string | string[];
+  Users?: {
+    id: string;
+    user_id: string;
+    auth_id: string;
+    user_name: string;
+    profile: string;
+    prefecture: string;
+    gender: string;
+    age: number;
+    image_url: string;
+  };
 };

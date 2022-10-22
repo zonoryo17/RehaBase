@@ -17,12 +17,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Facility } from '../../types/facility';
+import { User } from '../../types/user';
 import { supabase } from '@src/utils/supabaseClient';
 import DeleteFacilityButton from '@src/components/deleteFacility';
 import UpdateFacilityModal from '@src/components/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReviewComponents from '@src/components/reviews/reviewComponents';
 import CreateReviewModal from '@src/components/reviews/createReviewModal';
+import GetLoginUserData from '@src/components/getLoginUserData';
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -37,15 +39,17 @@ const FacilityDetailPage: NextPage = () => {
 
   //Facility情報の詳細（シングルページ）取得処理
   const fetchFacility = async () => {
+    const user = supabase.auth.user();
+    console.log(user);
+
     try {
-      const { data } = await supabase
+      const { data: facility } = await supabase
         .from<Facility>('Facilities')
         .select('*')
         .eq('id', query.facilityId)
         .single();
-      console.log(data);
-      if (data) {
-        setFacility(data);
+      if (facility) {
+        setFacility(facility);
       }
     } catch (error: any) {
       alert(error.message);
@@ -53,7 +57,8 @@ const FacilityDetailPage: NextPage = () => {
   };
 
   if (!facility) return <div></div>;
-  const { name, explanation, menu, price, address, phone_number } = facility;
+  const { id, name, explanation, menu, price, address, phone_number } =
+    facility;
 
   return (
     <>
@@ -67,8 +72,13 @@ const FacilityDetailPage: NextPage = () => {
         </Link>
         <Spacer />
         <Box mr="20%" mt="10">
-          <CreateReviewModal facilityName={name} />
+          <CreateReviewModal
+            facilityName={name}
+            facilityId={id ?? ''}
+            // userId={usersData?.id}
+          />
         </Box>
+        <GetLoginUserData />
       </Flex>
       <Center>
         <Box

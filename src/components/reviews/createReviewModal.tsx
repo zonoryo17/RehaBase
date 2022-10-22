@@ -21,25 +21,35 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
-import { useState } from 'react';
-import RatingStar from './ratingStar';
+import { useState, useContext } from 'react';
+import ReactStars from 'react-stars';
+import { UserData } from '../../../pages/_app';
 
 type Props = {
   facilityName: string;
+  facilityId: string;
+  userId: string | undefined;
 };
 
-const CreateReviewModal = ({ facilityName }: Props) => {
+const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const userData = useContext(UserData);
+  const user = supabase.auth.user();
+  console.log(user);
+
   const initialState = {
     title: '',
     content: '',
-    total_rating: '',
-    reception_rating: '',
-    service_rating: '',
-    expense_rating: '',
-    equipment_rating: '',
-    environment_rating: '',
+    total_rating: 0,
+    reception_rating: 0,
+    service_rating: 0,
+    expense_rating: 0,
+    equipment_rating: 0,
+    environment_rating: 0,
     image_url: null,
+    facility_id: facilityId,
+    auth_id: user?.id,
+    user_id: userData?.id,
   };
   const [review, setReview] = useState(initialState);
   const {
@@ -111,7 +121,15 @@ const CreateReviewModal = ({ facilityName }: Props) => {
               <Text borderBottom="1px solid black"></Text>
               <Text mt={3}>総合評価</Text>
               {/* 評価点数用の星コンポーネント */}
-              <RatingStar />
+              <ReactStars
+                count={5}
+                size={30}
+                color2={'#ffd700'}
+                value={total_rating}
+                onChange={(newRating) =>
+                  setReview({ ...review, total_rating: newRating })
+                }
+              />
               <Accordion allowToggle>
                 <AccordionItem>
                   <h2>
@@ -127,27 +145,76 @@ const CreateReviewModal = ({ facilityName }: Props) => {
                       <Box>
                         <Text>接遇</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar />
+                        <ReactStars
+                          count={5}
+                          size={30}
+                          color2={'#ffd700'}
+                          value={reception_rating}
+                          onChange={(newRating) =>
+                            setReview({
+                              ...review,
+                              reception_rating: newRating,
+                            })
+                          }
+                        />
                       </Box>
                       <Box>
                         <Text>サービス内容</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar />
+                        <ReactStars
+                          count={5}
+                          size={30}
+                          color2={'#ffd700'}
+                          value={service_rating}
+                          onChange={(newRating) =>
+                            setReview({ ...review, service_rating: newRating })
+                          }
+                        />
                       </Box>
                       <Box>
                         <Text>費用</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar />
+                        <ReactStars
+                          count={5}
+                          size={30}
+                          color2={'#ffd700'}
+                          value={expense_rating}
+                          onChange={(newRating) =>
+                            setReview({ ...review, expense_rating: newRating })
+                          }
+                        />
                       </Box>
                       <Box>
                         <Text>機器類の充実</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar />
+                        <ReactStars
+                          count={5}
+                          size={30}
+                          color2={'#ffd700'}
+                          value={equipment_rating}
+                          onChange={(newRating) =>
+                            setReview({
+                              ...review,
+                              equipment_rating: newRating,
+                            })
+                          }
+                        />
                       </Box>
                       <Box>
                         <Text>環境</Text>
                         {/* 評価点数用の星コンポーネント */}
-                        <RatingStar />
+                        <ReactStars
+                          count={5}
+                          size={30}
+                          color2={'#ffd700'}
+                          value={environment_rating}
+                          onChange={(newRating) =>
+                            setReview({
+                              ...review,
+                              environment_rating: newRating,
+                            })
+                          }
+                        />
                       </Box>
                     </Flex>
                   </AccordionPanel>
