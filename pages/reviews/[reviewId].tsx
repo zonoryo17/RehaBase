@@ -16,6 +16,8 @@ const ReviewDetailPage: NextPage = () => {
   const query = router.query;
   console.log(query);
 
+  const user = supabase.auth.user();
+
   useEffect(() => {
     fetchReviewData();
   }, [query]);
@@ -46,9 +48,10 @@ const ReviewDetailPage: NextPage = () => {
     equipment_rating,
     environment_rating,
     facility_id,
-    user_id,
   } = reviews;
   const user_name = reviews.Users?.user_name;
+
+  console.log(reviews);
 
   return (
     <>
@@ -70,7 +73,10 @@ const ReviewDetailPage: NextPage = () => {
         <Box mx="5">
           <Flex justify="space-between">
             <Text fontSize="xl">{user_name}さんの口コミ</Text>
-            <DeleteReviewButton facility_id={facility_id ?? ''} />
+            {/* 口コミ削除コンポーネント　投稿者のみ表示 */}
+            {reviews.auth_id === user?.id && (
+              <DeleteReviewButton facility_id={facility_id ?? ''} />
+            )}
           </Flex>
           <Box>
             <Text textColor="gray.400" mb="5">

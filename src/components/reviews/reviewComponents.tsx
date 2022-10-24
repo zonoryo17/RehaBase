@@ -1,19 +1,27 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import reviewStyle from '../../../styles/review.module.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { supabase } from '@src/utils/supabaseClient';
-import { User } from '../../../types/user';
 import { useRouter } from 'next/router';
 import { Review } from '../../../types/reviews';
 import ReactStars from 'react-stars';
-// import ReviewDetailModal from './reviewDetailModal';
 
-const ReviewComponents = () => {
+const ReviewComponents: React.FC = () => {
   const [reviews, setReviews] = useState<Review[] | null>([]);
+  const [avatarUrl, setAvatarUrl] = useState('');
   const router = useRouter();
+
+  // const getBucket = async () => {
+  //   const { data, error } = await supabase.storage // ★画像をsupabaseからダウンロード
+  //     .from('avatars')
+  //     .download(path);
+  //   setAvatarUrl(data);
+  //   console.log(data);
+  // };
 
   useEffect(() => {
     fetchUserData();
+    // getBucket();
   }, []);
 
   const fetchUserData = async () => {
@@ -29,13 +37,22 @@ const ReviewComponents = () => {
     }
   };
 
+  const { publicURL } = supabase.storage
+    .from('avatars')
+    .getPublicUrl('usersIcon/manAvatar.jpg');
+
   return (
     <>
       {reviews &&
         reviews.map(({ id, title, content, total_rating, Users: user }) => (
           <Flex key={id} mt="5" h={36}>
             <Box>
-              <Image src="/noNameUser.jpg" width="100" height="100" />
+              <Image
+                src={publicURL ?? ''}
+                width="100"
+                height="100"
+                borderRadius={50}
+              />
               <Text align="center">{user?.user_name}</Text>
             </Box>
             <Box

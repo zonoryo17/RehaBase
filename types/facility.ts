@@ -16,6 +16,7 @@ export type Facility = {
   phone_number?: string;
   created_at?: Date;
   facility_id?: string | string[];
+  auth_id?: string;
   Users?: {
     id: string;
     user_id: string;
@@ -25,6 +26,6 @@ export type Facility = {
     prefecture: string;
     gender: string;
     age: number;
-    image_url: string;
+    avatar_url: string;
   };
 };

@@ -17,7 +17,8 @@ const FacilitiesListPage: NextPage = () => {
     try {
       const { data: facilities, error } = await supabase
         .from<Facility>('Facilities')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
       setFacilities(facilities);
       console.log(facilities);
       if (error) console.log('error', error);

@@ -7,5 +7,5 @@ export type User = {
   prefecture?: string;
   gender?: string;
   age?: number;
-  image_url?: string;
+  avatar_url?: string;
 };

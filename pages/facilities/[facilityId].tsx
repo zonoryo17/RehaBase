@@ -17,14 +17,12 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Facility } from '../../types/facility';
-import { User } from '../../types/user';
 import { supabase } from '@src/utils/supabaseClient';
 import DeleteFacilityButton from '@src/components/deleteFacility';
 import UpdateFacilityModal from '@src/components/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReviewComponents from '@src/components/reviews/reviewComponents';
 import CreateReviewModal from '@src/components/reviews/createReviewModal';
-import GetLoginUserData from '@src/components/getLoginUserData';
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -33,15 +31,15 @@ const FacilityDetailPage: NextPage = () => {
   const query = router.query;
   console.log(query);
 
+  const user = supabase.auth.user();
+  console.log(user);
+
   useEffect(() => {
     fetchFacility();
   }, [query]);
 
   //Facility情報の詳細（シングルページ）取得処理
   const fetchFacility = async () => {
-    const user = supabase.auth.user();
-    console.log(user);
-
     try {
       const { data: facility } = await supabase
         .from<Facility>('Facilities')
@@ -72,13 +70,8 @@ const FacilityDetailPage: NextPage = () => {
         </Link>
         <Spacer />
         <Box mr="20%" mt="10">
-          <CreateReviewModal
-            facilityName={name}
-            facilityId={id ?? ''}
-            // userId={usersData?.id}
-          />
+          <CreateReviewModal facilityName={name} facilityId={id ?? ''} />
         </Box>
-        <GetLoginUserData />
       </Flex>
       <Center>
         <Box
@@ -92,8 +85,13 @@ const FacilityDetailPage: NextPage = () => {
           <Heading display="flex" mt="10px" mb="5px" px="20px">
             <Text fontSize="2xl">{name}</Text>
             <Spacer />
-            {facility && <UpdateFacilityModal facility={facility} />}
-            <DeleteFacilityButton />
+            {/* ログインしているユーザーのみに施設情報の更新・削除ボタンを表示 */}
+            {facility.auth_id === user?.id && (
+              <>
+                <UpdateFacilityModal facility={facility} />
+                <DeleteFacilityButton />
+              </>
+            )}
           </Heading>
           <Tabs align="end" variant="enclosed" colorScheme="green">
             <TabList>

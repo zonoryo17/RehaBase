@@ -22,5 +22,6 @@ export type Review = {
     gender: string;
     prefecture: string;
     age: number;
+    avatar_url: string;
   };
 };

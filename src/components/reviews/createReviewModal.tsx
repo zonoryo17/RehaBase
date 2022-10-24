@@ -28,7 +28,6 @@ import { UserData } from '../../../pages/_app';
 type Props = {
   facilityName: string;
   facilityId: string;
-  userId: string | undefined;
 };
 
 const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
@@ -36,6 +35,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const userData = useContext(UserData);
   const user = supabase.auth.user();
   console.log(user);
+  console.log(userData);
 
   const initialState = {
     title: '',
