@@ -30,7 +30,7 @@ const ReviewComponents: React.FC = () => {
         .getPublicUrl(`usersIcon/${avatar.name}`);
       console.log(avatar.name);
       console.log(data);
-      setAvatarUrls(data);
+      setAvatarUrls([...(avatarUrls ?? []), data]);
       console.log(avatarUrls);
     });
   };
