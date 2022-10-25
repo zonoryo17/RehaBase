@@ -5,23 +5,40 @@ import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { Review } from '../../../types/reviews';
 import ReactStars from 'react-stars';
+import { Avatars } from '../../../types/avatars';
 
 const ReviewComponents: React.FC = () => {
   const [reviews, setReviews] = useState<Review[] | null>([]);
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatars, setAvatars] = useState<Avatars[] | null>([]);
+  const [avatarUrls, setAvatarUrls] = useState<Avatars[] | null>([]);
   const router = useRouter();
 
-  // const getBucket = async () => {
-  //   const { data, error } = await supabase.storage // ★画像をsupabaseからダウンロード
-  //     .from('avatars')
-  //     .download(path);
-  //   setAvatarUrl(data);
-  //   console.log(data);
-  // };
+  const fetchAvatars = async () => {
+    // supabase DB photos のデータをすべて取得
+    const { data } = await supabase.storage.from('avatars').list('usersIcon', {
+      limit: 100,
+      offset: 1,
+    });
+    setAvatars(data);
+    console.log(avatars);
+  };
+
+  const fetchAvatarsUrl = async () => {
+    avatars?.forEach((avatar) => {
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(`usersIcon/${avatar.name}`);
+      console.log(avatar.name);
+      console.log(data);
+      setAvatarUrls(data);
+      console.log(avatarUrls);
+    });
+  };
 
   useEffect(() => {
     fetchUserData();
-    // getBucket();
+    fetchAvatars();
+    fetchAvatarsUrl();
   }, []);
 
   const fetchUserData = async () => {
@@ -37,10 +54,6 @@ const ReviewComponents: React.FC = () => {
     }
   };
 
-  const { publicURL } = supabase.storage
-    .from('avatars')
-    .getPublicUrl('usersIcon/manAvatar.jpg');
-
   return (
     <>
       {reviews &&
@@ -48,7 +61,7 @@ const ReviewComponents: React.FC = () => {
           <Flex key={id} mt="5" h={36}>
             <Box>
               <Image
-                src={publicURL ?? ''}
+                src={`${avatarUrls?.publicURL}`}
                 width="100"
                 height="100"
                 borderRadius={50}
