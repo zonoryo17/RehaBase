@@ -6,7 +6,7 @@ import { useEffect, useState, createContext } from 'react';
 import { User } from '../types/user';
 import { supabase } from '@src/utils/supabaseClient';
 
-export const UserData = createContext({});
+export const UserData = createContext<User>({});
 
 export default function App({ Component, pageProps }: AppProps) {
   const [usersData, setUsersData] = useState<User | null>(null);

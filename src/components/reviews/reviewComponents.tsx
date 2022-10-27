@@ -1,51 +1,24 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import reviewStyle from '../../../styles/review.module.css';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { Review } from '../../../types/reviews';
 import ReactStars from 'react-stars';
-import { Avatars } from '../../../types/avatars';
 
 const ReviewComponents: React.FC = () => {
   const [reviews, setReviews] = useState<Review[] | null>([]);
-  const [avatars, setAvatars] = useState<Avatars[] | null>([]);
-  const [avatarUrls, setAvatarUrls] = useState<Avatars[] | null>([]);
   const router = useRouter();
-
-  const fetchAvatars = async () => {
-    // supabase DB photos のデータをすべて取得
-    const { data } = await supabase.storage.from('avatars').list('usersIcon', {
-      limit: 100,
-      offset: 1,
-    });
-    setAvatars(data);
-    console.log(avatars);
-  };
-
-  const fetchAvatarsUrl = async () => {
-    avatars?.forEach((avatar) => {
-      const { data } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(`usersIcon/${avatar.name}`);
-      console.log(avatar.name);
-      console.log(data);
-      setAvatarUrls([...(avatarUrls ?? []), data]);
-      console.log(avatarUrls);
-    });
-  };
 
   useEffect(() => {
     fetchUserData();
-    fetchAvatars();
-    fetchAvatarsUrl();
   }, []);
 
   const fetchUserData = async () => {
     try {
       const { data: reviews, error } = await supabase
         .from<Review>('Reviews')
-        .select('*, Users(id, user_name, gender, age, prefecture)');
+        .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)');
       setReviews(reviews);
       console.log(reviews);
       if (error) console.log('error', error);
@@ -61,7 +34,7 @@ const ReviewComponents: React.FC = () => {
           <Flex key={id} mt="5" h={36}>
             <Box>
               <Image
-                src={`${avatarUrls?.publicURL}`}
+                src={`${user?.avatar_url}`}
                 width="100"
                 height="100"
                 borderRadius={50}

@@ -17,6 +17,7 @@ export type Facility = {
   created_at?: Date;
   facility_id?: string | string[];
   auth_id?: string;
+  image_url?: string;
   Users?: {
     id: string;
     user_id: string;

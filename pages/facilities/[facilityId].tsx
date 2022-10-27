@@ -4,6 +4,7 @@ import {
   Center,
   Flex,
   Heading,
+  Image,
   Spacer,
   Tab,
   TabList,
@@ -29,10 +30,8 @@ const FacilityDetailPage: NextPage = () => {
 
   const router = useRouter();
   const query = router.query;
-  console.log(query);
 
   const user = supabase.auth.user();
-  console.log(user);
 
   useEffect(() => {
     fetchFacility();
@@ -55,8 +54,16 @@ const FacilityDetailPage: NextPage = () => {
   };
 
   if (!facility) return <div></div>;
-  const { id, name, explanation, menu, price, address, phone_number } =
-    facility;
+  const {
+    id,
+    name,
+    explanation,
+    menu,
+    price,
+    address,
+    phone_number,
+    image_url,
+  } = facility;
 
   return (
     <>
@@ -77,6 +84,7 @@ const FacilityDetailPage: NextPage = () => {
         <Box
           w="1000px"
           h="100%"
+          minH="30rem"
           my="30px"
           border="solid 1px"
           borderRadius="20px"
@@ -103,8 +111,18 @@ const FacilityDetailPage: NextPage = () => {
             </TabList>
             <TabPanels textAlign="start">
               <TabPanel>
-                <p>病院名：{name}</p>
-                <p>病院紹介：{explanation}</p>
+                <Flex>
+                  {image_url ? (
+                    <Image src={facility?.image_url} w={300} />
+                  ) : (
+                    <Image src="/no_image.jpg" w={300} />
+                  )}
+                  <Box>
+                    <Text>病院名：{name}</Text>
+                    <Text>病院紹介：{explanation}</Text>
+                  </Box>
+                </Flex>
+
                 <Box>
                   <ReviewComponents />
                 </Box>
