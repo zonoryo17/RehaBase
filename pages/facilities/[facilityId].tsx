@@ -24,6 +24,7 @@ import UpdateFacilityModal from '@src/components/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReviewComponents from '@src/components/reviews/reviewComponents';
 import CreateReviewModal from '@src/components/reviews/createReviewModal';
+import UploadImageFile from '@src/components/reviews/uploadImageFile';
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -64,6 +65,8 @@ const FacilityDetailPage: NextPage = () => {
     phone_number,
     image_url,
   } = facility;
+
+  //画像ファイルのアップロード機能
 
   return (
     <>
@@ -122,7 +125,6 @@ const FacilityDetailPage: NextPage = () => {
                     <Text>病院紹介：{explanation}</Text>
                   </Box>
                 </Flex>
-
                 <Box>
                   <ReviewComponents />
                 </Box>
@@ -134,7 +136,11 @@ const FacilityDetailPage: NextPage = () => {
                 <p>費用：{price}</p>
               </TabPanel>
               <TabPanel>
-                <p>写真</p>
+                <Box>
+                  <Text>写真</Text>
+                  <UploadImageFile />{' '}
+                  {/* 画像ファイルアップデート用コンポーネント */}
+                </Box>
               </TabPanel>
               <TabPanel>
                 <p>住所：{address}</p>

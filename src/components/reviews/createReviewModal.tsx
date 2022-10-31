@@ -19,15 +19,13 @@ import {
   Textarea,
   useDisclosure,
   useToast,
-  VisuallyHidden,
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
-import { useState, useContext, useCallback } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import ReactStars from 'react-stars';
 import { UserData } from '../../../pages/_app';
-
 import { CgClose } from 'react-icons/cg';
-import Avatar from './imageInputForm';
+import UploadImageFile from './uploadImageFile';
 
 type Props = {
   facilityName: string;
@@ -41,7 +39,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   console.log(user);
   console.log(userData);
 
-  const initialState = {
+  const initialReviewState = {
     title: '',
     content: '',
     total_rating: 0,
@@ -55,7 +53,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     auth_id: user?.id,
     user_id: userData?.id,
   };
-  const [review, setReview] = useState(initialState);
+  const [review, setReview] = useState(initialReviewState);
   const {
     title,
     content,
@@ -75,6 +73,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   };
 
   const toast = useToast();
+
   //Reviewのcreate処理
   const handleClickCreateReview = async () => {
     try {
@@ -101,81 +100,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
       onClose();
     }
   };
-
-  //FileInputの状態管理
-
-  // const resetHandler = useCallback(() => {
-  //   setFiles(null);
-  // }, []);
-
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState<any>(null);
-  const [website, setWebsite] = useState<any>(null);
-  const [avatar_url, setAvatarUrl] = useState<any>(null);
-
-  async function getProfile() {
-    try {
-      setLoading(true);
-      const user = supabase.auth.user(); // ★ ログインしているユーザーを取得
-
-      const { data, error, status } = await supabase // ★ 当該ユーザーの profiles を取得
-        .from('profiles')
-        .select(`username, website, avatar_url`)
-        .eq('id', user?.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        // ★ ユーザー名、Webサイト、アバタURLを設定
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
-      }
-    } catch (error) {
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function updateProfile({
-    // ★ 当該ユーザーの profiles を更新
-    username,
-    website,
-    avatar_url,
-  }: {
-    username: any;
-    website: any;
-    avatar_url: any;
-  }) {
-    try {
-      setLoading(true);
-      const user = supabase.auth.user();
-
-      const updates = {
-        id: user?.id,
-        username,
-        website,
-        avatar_url,
-        updated_at: new Date(),
-      };
-
-      let { error } = await supabase.from('reviews').upsert(updates, {
-        returning: 'minimal', // Don't return the value after inserting
-      });
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <>
@@ -335,27 +259,8 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                   >
                     <CgClose size="1.5rem" color="#000" />
                   </Button>
-                  <Avatar
-                    url={avatar_url}
-                    size={150}
-                    onUpload={(url: any) => {
-                      setAvatarUrl(url);
-                      updateProfile({ username, website, avatar_url: url });
-                    }}
-                  />
                 </Box>
               </Box>
-              {/* <Box>
-                <Input
-                  type="file"
-                  name="image_url"
-                  accept=".jpg, .png, .jpeg"
-                  // onChange={handleFiles}
-                  multiple
-                  placeholder="写真を選択"
-                />
-                <Box ref={imageContainerRef} />
-              </Box> */}
             </Box>
           </ModalBody>
           <ModalFooter>
