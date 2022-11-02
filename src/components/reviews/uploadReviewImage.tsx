@@ -119,7 +119,7 @@ const UploadReviewImage = () => {
       </SimpleGrid>
 
       {uploading && (
-        <Flex direction="column" align="center">
+        <Flex direction="column" align="center" width="300px">
           <Spinner
             thickness="4px"
             speed="0.65s"
