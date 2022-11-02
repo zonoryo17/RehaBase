@@ -116,11 +116,6 @@ const FacilityDetailPage: NextPage = () => {
             <TabPanels textAlign="start">
               <TabPanel>
                 <Flex>
-                  {/* {image_url ? (
-                    <Image src={facility?.image_url} w={300} />
-                  ) : (
-                    <Image src="/no_image.jpg" w={300} />
-                  )} */}
                   <UploadFacilityImage />
                   <Box>
                     <Text>病院名：{name}</Text>

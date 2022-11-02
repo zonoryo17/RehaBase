@@ -1,9 +1,7 @@
 import {
-  Box,
   Button,
   Flex,
   Image,
-  Input,
   Spinner,
   Text,
   Toast,
