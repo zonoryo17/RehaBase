@@ -19,12 +19,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Facility } from '../../types/facility';
 import { supabase } from '@src/utils/supabaseClient';
-import DeleteFacilityButton from '@src/components/deleteFacility';
-import UpdateFacilityModal from '@src/components/updateFacilityModal';
+import DeleteFacilityButton from '@src/components/facilities/deleteFacility';
+import UpdateFacilityModal from '@src/components/facilities/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReviewComponents from '@src/components/reviews/reviewComponents';
 import CreateReviewModal from '@src/components/reviews/createReviewModal';
-import UploadImageFile from '@src/components/reviews/uploadImageFile';
+import UploadReviewImage from '@src/components/reviews/uploadReviewImage';
+import UploadFacilityImage from '@src/components/facilities/uploadFacilityImage';
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -115,11 +116,12 @@ const FacilityDetailPage: NextPage = () => {
             <TabPanels textAlign="start">
               <TabPanel>
                 <Flex>
-                  {image_url ? (
+                  {/* {image_url ? (
                     <Image src={facility?.image_url} w={300} />
                   ) : (
                     <Image src="/no_image.jpg" w={300} />
-                  )}
+                  )} */}
+                  <UploadFacilityImage />
                   <Box>
                     <Text>病院名：{name}</Text>
                     <Text>病院紹介：{explanation}</Text>
@@ -138,8 +140,8 @@ const FacilityDetailPage: NextPage = () => {
               <TabPanel>
                 <Box>
                   <Text>写真</Text>
-                  <UploadImageFile />{' '}
                   {/* 画像ファイルアップデート用コンポーネント */}
+                  <UploadReviewImage />{' '}
                 </Box>
               </TabPanel>
               <TabPanel>

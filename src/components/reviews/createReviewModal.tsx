@@ -21,11 +21,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import ReactStars from 'react-stars';
 import { UserData } from '../../../pages/_app';
-import { CgClose } from 'react-icons/cg';
-import UploadImageFile from './uploadImageFile';
 
 type Props = {
   facilityName: string;
@@ -36,8 +34,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userData = useContext(UserData);
   const user = supabase.auth.user();
-  console.log(user);
-  console.log(userData);
 
   const initialReviewState = {
     title: '',
@@ -239,28 +235,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                 placeholder="口コミ本文を入力"
                 my={3}
               />
-              <Text borderBottom="1px solid black"></Text>
-              <Text mt={3} mb={1}>
-                写真を投稿
-              </Text>
-              <Box>
-                <Box>
-                  <Button
-                    type="button"
-                    aria-label="Close"
-                    // onClick={resetHandler}
-                    position="absolute"
-                    bottom="14rem"
-                    left="16rem"
-                    bgColor="gray.300"
-                    opacity="0.8"
-                    zIndex={5}
-                    p={0}
-                  >
-                    <CgClose size="1.5rem" color="#000" />
-                  </Button>
-                </Box>
-              </Box>
             </Box>
           </ModalBody>
           <ModalFooter>

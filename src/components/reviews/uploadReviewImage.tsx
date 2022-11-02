@@ -1,26 +1,46 @@
 import {
   Box,
+  Button,
   Flex,
+  HStack,
   Image,
   Input,
   Spinner,
   Text,
   Toast,
+  VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { UserData } from '../../../pages/_app';
-import { ImageFile } from '../../../types/imageFile';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 
-const UploadImageFile = () => {
+const UploadReviewImage = () => {
   const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
   const [imageFileName, setImageFileName] = useState<string | null>(null);
+  const [facilityReviewImages, setFacilityReviewImages] = useState<string[]>(
+    []
+  );
   const [uploading, setUploading] = useState(false);
 
+  //FacilityImagesテーブルから画像情報の一覧を取得
+  const getFacilityReviewImages = async () => {
+    const { data, error } = await supabase
+      .from('FacilityImages')
+      .select('image_url');
+    if (data) {
+      setFacilityReviewImages(data);
+    }
+    if (error) {
+      throw error;
+    }
+  };
+
   useEffect(() => {
+    getFacilityReviewImages();
     if (imageFileUrl) downloadImage(imageFileUrl); // 画像URLが変わったら実行
-  }, [imageFileUrl]);
+  }, [facilityReviewImages]);
 
   const downloadImage = async (path: string) => {
     try {
@@ -41,7 +61,7 @@ const UploadImageFile = () => {
   };
 
   const uploadAvatar = async (e: any) => {
-    // ★ ファイル選択後の処理
+    // 画像ファイル選択後の処理
     try {
       setUploading(true);
 
@@ -49,10 +69,10 @@ const UploadImageFile = () => {
         throw new Error('アップロードする画像を選択してください。');
       }
 
-      const file = e.target.files[0];
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const file = e.target.files[0]; // 選択した画像ファイルの状態
+      const fileExt = file.name.split('.').pop(); //選択したファイル名を取得
+      const fileName = `${Math.random()}.${fileExt}`; //投稿されたファイル名が被らないようにファイル名をランダムな数字に変換
+      const filePath = `${fileName}`; //変換されたファイル名を取得
 
       let { error: uploadError } = await supabase.storage
         .from('reviews')
@@ -61,8 +81,11 @@ const UploadImageFile = () => {
         throw uploadError;
       }
       setImageFileName(fileName);
-      setImageFileUrl(filePath);
-      handleCreateFacilityImage();
+      const data = supabase.storage //storageからuploadした画像のURLを取得
+        .from('reviews')
+        .getPublicUrl(`facilityReviews/${filePath}`);
+      setImageFileUrl(data?.publicURL);
+      handleCreateFacilityReviewImage();
     } catch (error) {
       throw error;
     } finally {
@@ -82,7 +105,7 @@ const UploadImageFile = () => {
     user_id: userData.id,
   };
 
-  const handleCreateFacilityImage = async () => {
+  const handleCreateFacilityReviewImage = async () => {
     try {
       const { error } = await supabase
         .from('FacilityImages')
@@ -103,14 +126,24 @@ const UploadImageFile = () => {
   };
 
   return (
-    <Box aria-live="polite">
-      <Image
-        src={imageFileUrl ? imageFileUrl : '/no_image.jpg'}
-        alt={imageFileUrl ? 'プロフィール画像' : '画像なし'}
-        w={300}
-        maxH={200}
-        objectFit="contain"
-      />
+    <Flex aria-live="polite" align="center" flexWrap="wrap">
+      {facilityReviewImages.map((facilityReviewImage: any) => (
+        <HStack spacing="24px" direction={['column', 'row']}>
+          <Box>
+            <Image
+              src={
+                facilityReviewImage
+                  ? facilityReviewImage.image_url
+                  : '/no_image.jpg'
+              }
+              alt={facilityReviewImage ? 'プロフィール画像' : '画像なし'}
+              w={200}
+              maxH={200}
+              objectFit="contain"
+            />
+          </Box>
+        </HStack>
+      ))}
       {uploading ? (
         <>
           <Flex direction="column" align="center">
@@ -127,15 +160,20 @@ const UploadImageFile = () => {
           </Flex>
         </>
       ) : (
-        <Input // ★ ファイル選択ダイアログ
-          type="file"
-          accept=".jpeg, .jpg, .png"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
+        <>
+          <Input // ★ ファイル選択ダイアログ
+            type="file"
+            accept=".jpeg, .jpg, .png"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
+          <Button bg="none" _hover={{ bg: 'none' }}>
+            <IoIosAddCircleOutline size="3rem" />
+          </Button>
+        </>
       )}
-    </Box>
+    </Flex>
   );
 };
 
-export default UploadImageFile;
+export default UploadReviewImage;

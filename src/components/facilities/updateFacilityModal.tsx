@@ -24,7 +24,7 @@ import {
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Facility } from '../../types/facility';
+import { Facility } from '../../../types/facility';
 
 type Props = {
   facility: Facility;
