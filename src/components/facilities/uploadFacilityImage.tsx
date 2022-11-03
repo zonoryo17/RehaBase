@@ -1,29 +1,36 @@
 import {
-  Box,
   Button,
   Flex,
   Image,
   Input,
   Spinner,
   Text,
-  Toast,
+  useToast,
   VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+//施設トップ画像の登録，更新用コンポーネント
 const UploadFacilityImage = () => {
-  const [imageFileUrl, setImageFileUrl] = useState<any>(null);
+  const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  //Facilitiesテーブルから施設画像のを取得
+  const query = useRouter().query;
+  const facilityId = query.facilityId;
+  const toast = useToast();
+
+  // Facilitiesテーブルから施設画像のを取得
   const getFacilityImages = async () => {
     const { data, error } = await supabase
       .from('Facilities')
-      .select('image_url');
+      .select('image_url')
+      .eq('id', facilityId)
+      .single();
     if (data) {
-      setImageFileUrl(data);
+      setImageFileUrl(data.image_url);
+      console.log('getFacilityImages', data);
     }
     if (error) {
       throw error;
@@ -31,29 +38,11 @@ const UploadFacilityImage = () => {
   };
 
   useEffect(() => {
-    if (imageFileUrl) downloadImage(imageFileUrl); // 画像URLが変わったら実行
-  }, [imageFileUrl]);
+    getFacilityImages(); //初回レンダリング時に施設画像を取得
+  }, []);
 
-  const downloadImage = async (path: string) => {
-    try {
-      const { data, error } = await supabase.storage // 画像をsupabaseからダウンロード
-        .from('facilities/facilityImage')
-        .download(path);
-      if (error) {
-        throw error;
-      }
-      if (typeof data === 'object') {
-        // 引数で指定されたオブジェクトを表すURLを含むDOMStringを生成
-        const url = URL.createObjectURL(data as Blob);
-        setImageFileUrl(url);
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-
+  // ファイル選択後の処理
   const uploadFacilityImage = async (e: any) => {
-    // ★ ファイル選択後の処理
     try {
       setUploading(true);
 
@@ -64,19 +53,19 @@ const UploadFacilityImage = () => {
       const file = e.target.files[0]; // 選択した画像ファイルの状態
       const fileExt = file.name.split('.').pop(); //選択したファイル名を取得
       const fileName = `${Math.random()}.${fileExt}`; //投稿されたファイル名が被らないようにファイル名をランダムな数字に変換
-      const filePath = `${fileName}`; //変換されたファイル名を取得
 
+      //storageに保存する処理
       const { error: uploadError } = await supabase.storage
         .from('facilities')
-        .upload(`facilityImage/${filePath}`, file);
+        .upload(`facilityImage/${fileName}`, file);
       if (uploadError) {
         throw uploadError;
       }
       const data = supabase.storage //storageからuploadした画像のURLを取得
         .from('facilities')
-        .getPublicUrl(`facilityImage/${filePath}`);
-      setImageFileUrl(data?.publicURL);
-      handleCreateFacilityImage();
+        .getPublicUrl(`facilityImage/${fileName}`);
+      if (data) setImageFileUrl(data.publicURL);
+      handleCreateFacilityImage(data.publicURL ?? '');
     } catch (error) {
       throw error;
     } finally {
@@ -85,24 +74,25 @@ const UploadFacilityImage = () => {
   };
 
   //facilitiesテーブルに画像URLを保存
-  const router = useRouter();
-  const query = router.query;
+  const handleCreateFacilityImage = async (fileUrl: string) => {
+    console.log('fileUrl:', fileUrl);
 
-  const handleCreateFacilityImage = async () => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('Facilities')
-        .update([{ image_url: imageFileUrl }])
-        .eq('id', query.facilityId);
+        .update({ image_url: fileUrl })
+        .eq('id', facilityId);
+      console.log('uploadTable:', data);
       if (error) throw error;
       // 作成完了のポップアップ
-      Toast({
+      toast({
         title: '画像ファイルの投稿が完了しました。',
         status: 'success',
         position: 'top',
         duration: 5000,
         isClosable: true,
       });
+      getFacilityImages();
     } catch (error: any) {
       alert(error.message);
     }
@@ -117,7 +107,7 @@ const UploadFacilityImage = () => {
         maxH={200}
         objectFit="contain"
       />
-      {uploading ? (
+      {uploading && (
         <>
           <Flex direction="column" align="center">
             <Spinner
@@ -132,9 +122,10 @@ const UploadFacilityImage = () => {
             </Text>
           </Flex>
         </>
-      ) : (
+      )}
+      {!uploading && (
         <>
-          <VisuallyHiddenInput // ★ ファイル選択ダイアログ
+          <Input // ★ ファイル選択ダイアログ
             type="file"
             accept=".jpeg, .jpg, .png"
             onChange={uploadFacilityImage}

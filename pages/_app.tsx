@@ -9,7 +9,7 @@ import { supabase } from '@src/utils/supabaseClient';
 export const UserData = createContext<User>({});
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [usersData, setUsersData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
   useEffect(() => {
     fetchLoginUsersData();
@@ -24,14 +24,14 @@ export default function App({ Component, pageProps }: AppProps) {
         .select('*')
         .eq('auth_id', user?.id)
         .single();
-      setUsersData(users);
+      setUserData(users);
     } catch (error: any) {
       throw new Error(error);
     }
   };
   return (
     <ChakraProvider>
-      <UserData.Provider value={usersData ?? ''}>
+      <UserData.Provider value={userData ?? {}}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

@@ -4,7 +4,6 @@ import {
   Center,
   Flex,
   Heading,
-  Image,
   Spacer,
   Tab,
   TabList,
@@ -30,9 +29,7 @@ import UploadFacilityImage from '@src/components/facilities/uploadFacilityImage'
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
 
-  const router = useRouter();
-  const query = router.query;
-
+  const query = useRouter().query;
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -56,18 +53,8 @@ const FacilityDetailPage: NextPage = () => {
   };
 
   if (!facility) return <div></div>;
-  const {
-    id,
-    name,
-    explanation,
-    menu,
-    price,
-    address,
-    phone_number,
-    image_url,
-  } = facility;
-
-  //画像ファイルのアップロード機能
+  const { id, name, explanation, menu, price, address, phone_number } =
+    facility;
 
   return (
     <>
@@ -116,11 +103,6 @@ const FacilityDetailPage: NextPage = () => {
             <TabPanels textAlign="start">
               <TabPanel>
                 <Flex>
-                  {/* {image_url ? (
-                    <Image src={facility?.image_url} w={300} />
-                  ) : (
-                    <Image src="/no_image.jpg" w={300} />
-                  )} */}
                   <UploadFacilityImage />
                   <Box>
                     <Text>病院名：{name}</Text>
