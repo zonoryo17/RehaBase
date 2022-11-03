@@ -11,8 +11,9 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@src/utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
+import { UserData } from '../../../pages/_app';
 
 //画像ファイルのアップロードコンポーネント
 const UploadReviewImage = () => {
@@ -71,7 +72,8 @@ const UploadReviewImage = () => {
   };
 
   //facilityImagesテーブルに画像情報を保存
-  const query = useRouter().query;
+  const query = useRouter().query; //facilityのqueryIDを取得
+  const userData = useContext(UserData); //Usersテーブルからログインしているユーザーの情報を取得
   const handleCreateFacilityReviewImage = async (
     fileName: string,
     imageUrl: string
@@ -82,8 +84,7 @@ const UploadReviewImage = () => {
           name: fileName,
           image_url: imageUrl,
           facility_id: query.facilityId,
-          // user_id: user?.id,
-          user_id: '6daebf9b-ab0b-4cd1-be51-c9fb27a3d62d',
+          user_id: userData?.id,
         },
       ]);
       if (error) throw error;

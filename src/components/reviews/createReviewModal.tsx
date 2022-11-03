@@ -59,7 +59,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     expense_rating,
     equipment_rating,
     environment_rating,
-    image_url,
   } = review;
 
   const handleChange = (e: {

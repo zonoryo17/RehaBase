@@ -63,7 +63,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
   // Facility情報のupdate処理
   const updateFacility = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('Facilities')
         .update([
           {
