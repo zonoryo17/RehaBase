@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import reviewStyle from '../../../styles/review.module.css';
 import { useEffect, useState } from 'react';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { Review } from '../../../types/reviews';
 import ReactStars from 'react-stars';
@@ -20,7 +20,7 @@ const ReviewComponents: React.FC = () => {
         .from<Review>('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)');
       setReviews(reviews);
-      console.log(reviews);
+      console.log('reviews', reviews);
       if (error) console.log('error', error);
     } catch (error: any) {
       alert(error.message);

@@ -17,14 +17,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Facility } from '../../types/facility';
-import { supabase } from '@src/utils/supabaseClient';
-import DeleteFacilityButton from '@src/components/facilities/deleteFacility';
-import UpdateFacilityModal from '@src/components/facilities/updateFacilityModal';
+import { supabase } from '@utils/supabaseClient';
+import DeleteFacilityButton from '@components/facilities/deleteFacility';
+import UpdateFacilityModal from '@components/facilities/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
-import ReviewComponents from '@src/components/reviews/reviewComponents';
-import CreateReviewModal from '@src/components/reviews/createReviewModal';
-import UploadReviewImage from '@src/components/reviews/uploadReviewImage';
-import UploadFacilityImage from '@src/components/facilities/uploadFacilityImage';
+import ReviewComponents from '@components/reviews/reviewComponents';
+import CreateReviewModal from '@components/reviews/createReviewModal';
+import UploadReviewImage from '@components/reviews/uploadReviewImage';
+import UploadFacilityImage from '@components/facilities/uploadFacilityImage';
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);

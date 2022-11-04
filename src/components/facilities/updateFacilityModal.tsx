@@ -21,7 +21,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Facility } from '../../../types/facility';

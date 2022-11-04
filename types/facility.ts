@@ -14,19 +14,8 @@ export type Facility = {
   explanation?: string;
   address?: string;
   phone_number?: string;
-  created_at?: Date;
+  created_at?: string;
   facility_id?: string | string[];
   auth_id?: string;
   image_url?: string;
-  Users?: {
-    id: string;
-    user_id: string;
-    auth_id: string;
-    user_name: string;
-    profile: string;
-    prefecture: string;
-    gender: string;
-    age: number;
-    avatar_url: string;
-  };
 };

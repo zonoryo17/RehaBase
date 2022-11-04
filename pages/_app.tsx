@@ -1,12 +1,12 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { AppProps } from 'next/app';
-import Layout from '../src/components/layout';
+import Layout from '@components/layout';
 import 'swiper/css/bundle';
 import { useEffect, useState, createContext } from 'react';
 import { User } from '../types/user';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 
-export const UserData = createContext<User>({});
+export const UserDataContext = createContext<User>({});
 
 export default function App({ Component, pageProps }: AppProps) {
   const [userData, setUserData] = useState<User | null>(null);
@@ -19,23 +19,23 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const fetchLoginUsersData = async () => {
     try {
-      const { data: users } = await supabase
+      const { data } = await supabase
         .from<User>('Users')
         .select('*')
         .eq('auth_id', user?.id)
         .single();
-      setUserData(users);
+      setUserData(data);
     } catch (error: any) {
       throw new Error(error);
     }
   };
   return (
     <ChakraProvider>
-      <UserData.Provider value={userData ?? {}}>
+      <UserDataContext.Provider value={userData ?? {}}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </UserData.Provider>
+      </UserDataContext.Provider>
     </ChakraProvider>
   );
 }

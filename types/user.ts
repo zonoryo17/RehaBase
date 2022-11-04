@@ -5,7 +5,7 @@ export type User = {
   user_name?: string;
   profile?: string;
   prefecture?: string;
-  gender?: string;
+  gender?: '男性' | '女性' | null;
   age?: number;
   avatar_url?: string;
 };

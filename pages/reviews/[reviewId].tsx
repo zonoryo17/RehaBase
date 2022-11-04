@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import DeleteReviewButton from '@src/components/reviews/deleteReview';
-import { supabase } from '@src/utils/supabaseClient';
+import DeleteReviewButton from '@components/reviews/deleteReview';
+import { supabase } from '@utils/supabaseClient';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -10,7 +10,7 @@ import ReactStars from 'react-stars';
 import { Review } from '../../types/reviews';
 
 const ReviewDetailPage: NextPage = () => {
-  const [reviews, setReviews] = useState<Review | null>(null);
+  const [review, setReview] = useState<Review | null>(null);
 
   const router = useRouter();
   const query = router.query;
@@ -24,19 +24,19 @@ const ReviewDetailPage: NextPage = () => {
 
   const fetchReviewData = async () => {
     try {
-      const { data: reviews, error } = await supabase
+      const { data: review, error } = await supabase
         .from('Reviews')
         .select('*, Users(user_name)')
         .eq('id', query.reviewId)
         .single();
-      setReviews(reviews);
-      console.log(reviews);
+      setReview(review);
+      console.log('review', review);
       if (error) console.log('error', error);
     } catch (error: any) {
       alert(error.message);
     }
   };
-  if (!reviews) return <div>Null</div>;
+  if (!review) return <div>Null</div>;
   const {
     created_at,
     title,
@@ -48,10 +48,11 @@ const ReviewDetailPage: NextPage = () => {
     equipment_rating,
     environment_rating,
     facility_id,
-  } = reviews;
-  const user_name = reviews.Users?.user_name;
+  } = review;
+  const reviewUser = review.Users;
+  const user_name = reviewUser?.user_name;
 
-  console.log(reviews);
+  console.log(review);
 
   return (
     <>
@@ -74,7 +75,7 @@ const ReviewDetailPage: NextPage = () => {
           <Flex justify="space-between">
             <Text fontSize="xl">{user_name}さんの口コミ</Text>
             {/* 口コミ削除コンポーネント　投稿者のみ表示 */}
-            {reviews.auth_id === user?.id && (
+            {review.auth_id === user?.id && (
               <DeleteReviewButton facility_id={facility_id ?? ''} />
             )}
           </Flex>

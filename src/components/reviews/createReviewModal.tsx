@@ -20,10 +20,10 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import { useState, useContext } from 'react';
 import ReactStars from 'react-stars';
-import { UserData } from '../../../pages/_app';
+import { UserDataContext } from '../../../pages/_app';
 
 type Props = {
   facilityName: string;
@@ -32,7 +32,7 @@ type Props = {
 
 const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const userData = useContext(UserData);
+  const userData = useContext(UserDataContext);
   const user = supabase.auth.user();
 
   const initialReviewState = {

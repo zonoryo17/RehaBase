@@ -9,11 +9,11 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { UserData } from '../../../pages/_app';
+import { UserDataContext } from '../../../pages/_app';
 
 //画像ファイルのアップロードコンポーネント
 const UploadReviewImage = () => {
@@ -73,7 +73,7 @@ const UploadReviewImage = () => {
 
   //facilityImagesテーブルに画像情報を保存
   const query = useRouter().query; //facilityのqueryIDを取得
-  const userData = useContext(UserData); //Usersテーブルからログインしているユーザーの情報を取得
+  const userData = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
   const handleCreateFacilityReviewImage = async (
     fileName: string,
     imageUrl: string

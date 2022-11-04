@@ -21,10 +21,10 @@ import {
 import Link from 'next/link';
 import { Facility } from '../../types/facility';
 import { NextPage } from 'next';
-import { UserData } from '../_app';
+import { UserDataContext } from '../_app';
 
 const Create: NextPage = () => {
-  const userData = useContext(UserData);
+  const userData = useContext(UserDataContext);
   const user = supabase.auth.user();
   const initialState = {
     name: '',

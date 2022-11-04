@@ -1,9 +1,9 @@
 import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import TopPageRanking from '../src/components/topPageRanking';
-import Slider from '../src/components/topSlideShow';
-import { supabase } from '../src/utils/supabaseClient';
+import TopPageRanking from '@components/topPageRanking';
+import Slider from '@components/topSlideShow';
+import { supabase } from '@utils/supabaseClient';
 import type { Session } from '@supabase/types';
 
 const Home: NextPage = () => {
