@@ -9,11 +9,15 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const DeleteFacilityButton = () => {
+type Props = {
+  facility_id: string;
+};
+
+const DeleteReviewButton = ({ facility_id }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
@@ -24,9 +28,9 @@ const DeleteFacilityButton = () => {
   const handleDelete = async () => {
     try {
       const { data, error } = await supabase
-        .from('Facilities')
+        .from('Reviews')
         .delete()
-        .eq('id', query.facilityId);
+        .eq('id', query.reviewId);
       if (error) {
         console.log(error);
       }
@@ -34,7 +38,7 @@ const DeleteFacilityButton = () => {
         console.log(data);
       }
       toast({
-        title: '施設情報を削除しました。',
+        title: '口コミ情報を削除しました。',
         status: 'success',
         position: 'top',
         duration: 5000,
@@ -43,14 +47,14 @@ const DeleteFacilityButton = () => {
     } catch (error: any) {
       alert(error.message);
     } finally {
-      router.push('/facilities');
+      router.push(`/facilities/${facility_id}`);
     }
   };
 
   return (
     <>
       <Button colorScheme="red" onClick={onOpen} mx="10px">
-        施設情報を削除
+        口コミ情報を削除
       </Button>
 
       <AlertDialog
@@ -65,7 +69,7 @@ const DeleteFacilityButton = () => {
               確認アラート
             </AlertDialogHeader>
             <AlertDialogBody>
-              施設情報を削除します。本当に削除してよろしいですか？
+              口コミ情報を削除します。本当に削除してよろしいですか？
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button onClick={onClose}>キャンセル</Button>
@@ -80,4 +84,4 @@ const DeleteFacilityButton = () => {
   );
 };
 
-export default DeleteFacilityButton;
+export default DeleteReviewButton;

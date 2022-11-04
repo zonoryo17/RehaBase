@@ -11,11 +11,10 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { supabase } from '../src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Layout from '../src/components/layout';
 
 const LoginPage: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -98,7 +97,13 @@ const LoginPage: NextPage = () => {
   return (
     <Flex alignItems="center">
       <Container maxW="100%">
-        <Image boxSize="600px" objectFit="contain" src="/login.jpg" alt="ログイントップ画像" mx="auto" />
+        <Image
+          boxSize="600px"
+          objectFit="contain"
+          src="/login.jpg"
+          alt="ログイントップ画像"
+          mx="auto"
+        />
         <Flex direction="column">
           <Text
             fontSize="3xl"
@@ -163,7 +168,13 @@ const LoginPage: NextPage = () => {
           <Flex justify="center" mt="5">
             <Button>テストユーザーログイン</Button>
           </Flex>
-          <Text border="1px" borderColor="gray.800" mx="auto" my="5" w="90%"></Text>
+          <Text
+            border="1px"
+            borderColor="gray.800"
+            mx="auto"
+            my="5"
+            w="90%"
+          ></Text>
           <Flex justify="space-between" mx="10">
             <Button onClick={signInWithGoogle}>Google</Button>
             <Button onClick={signInWithGithub}>GitHub</Button>

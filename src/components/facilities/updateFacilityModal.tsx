@@ -21,10 +21,10 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Facility } from '../../types/facility';
+import { Facility } from '../../../types/facility';
 
 type Props = {
   facility: Facility;
@@ -63,7 +63,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
   // Facility情報のupdate処理
   const updateFacility = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('Facilities')
         .update([
           {

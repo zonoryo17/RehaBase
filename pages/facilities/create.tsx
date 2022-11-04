@@ -1,5 +1,5 @@
 import { supabase } from '../../src/utils/supabaseClient';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import {
@@ -21,8 +21,11 @@ import {
 import Link from 'next/link';
 import { Facility } from '../../types/facility';
 import { NextPage } from 'next';
+import { UserDataContext } from '../_app';
 
 const Create: NextPage = () => {
+  const userData = useContext(UserDataContext);
+  const user = supabase.auth.user();
   const initialState = {
     name: '',
     explanation: '',
@@ -38,6 +41,8 @@ const Create: NextPage = () => {
     price5: '',
     address: '',
     phone_number: '',
+    auth_id: user?.id,
+    user_id: userData?.id,
   };
   const [facility, setFacility] = useState(initialState);
   const {

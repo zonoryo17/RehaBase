@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Box, Button, Link, Text } from '@chakra-ui/react';
-import { supabase } from '@src/utils/supabaseClient';
+import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { Facility } from '../../types/facility';
 
@@ -17,7 +17,8 @@ const FacilitiesListPage: NextPage = () => {
     try {
       const { data: facilities, error } = await supabase
         .from<Facility>('Facilities')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
       setFacilities(facilities);
       console.log(facilities);
       if (error) console.log('error', error);

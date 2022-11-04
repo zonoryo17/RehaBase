@@ -1,11 +1,19 @@
 import { NextPage } from 'next';
-import { Button, Container, Flex, FormControl, FormLabel, Image, Input, Text } from '@chakra-ui/react';
-import { supabase } from '../src/utils/supabaseClient';
+import {
+  Button,
+  Container,
+  Flex,
+  FormControl,
+  FormLabel,
+  Image,
+  Input,
+  Text,
+} from '@chakra-ui/react';
+import { supabase } from '@utils/supabaseClient';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 const SignUpPage: NextPage = () => {
-  const [isLoding, setIsLoding] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -13,7 +21,6 @@ const SignUpPage: NextPage = () => {
   const handleClickSignUp = async (e: any) => {
     e.preventDefault();
     try {
-      setIsLoding(true);
       await supabase.auth.signUp({
         email,
         password,
@@ -23,15 +30,18 @@ const SignUpPage: NextPage = () => {
     } catch (error: any) {
       alert(error.error_description || error.message);
       console.log('ユーザー登録でエラーが発生しました');
-    } finally {
-      setIsLoding(false);
     }
   };
 
   return (
     <Flex alignItems="center">
       <Container>
-        <Image boxSize="600px" objectFit="contain" src="/signup.jpg" alt="Dan Abramov" />
+        <Image
+          boxSize="600px"
+          objectFit="contain"
+          src="/signup.jpg"
+          alt="Dan Abramov"
+        />
         <Text>サービスタイトル</Text>
         <Text>サービスコピー</Text>
       </Container>

@@ -13,7 +13,10 @@
     "@chakra-ui/react": "^2.3.2",
     "@emotion/react": "11",
     "@emotion/styled": "11",
+    "@supabase/auth-helpers-nextjs": "^0.4.1",
+    "@supabase/auth-helpers-react": "^0.3.0",
     "@supabase/supabase-js": "^1.35.6",
+    "@types/react-stars": "^2.2.1",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "framer-motion": "6",
@@ -21,6 +24,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
+    "react-stars": "^2.2.5",
     "swiper": "^8.4.2"
   },
   "devDependencies": {

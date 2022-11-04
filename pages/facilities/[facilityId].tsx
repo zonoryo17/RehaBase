@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
   Spacer,
   Tab,
@@ -16,17 +17,20 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Facility } from '../../types/facility';
-import { supabase } from '@src/utils/supabaseClient';
-import DeleteFacilityButton from '@src/components/deleteFacility';
-import UpdateFacilityModal from '@src/components/updateFacilityModal';
+import { supabase } from '@utils/supabaseClient';
+import DeleteFacilityButton from '@components/facilities/deleteFacility';
+import UpdateFacilityModal from '@components/facilities/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
+import ReviewComponents from '@components/reviews/reviewComponents';
+import CreateReviewModal from '@components/reviews/createReviewModal';
+import UploadReviewImage from '@components/reviews/uploadReviewImage';
+import UploadFacilityImage from '@components/facilities/uploadFacilityImage';
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
 
-  const router = useRouter();
-  const query = router.query;
-  console.log(query);
+  const query = useRouter().query;
+  const user = supabase.auth.user();
 
   useEffect(() => {
     fetchFacility();
@@ -35,14 +39,13 @@ const FacilityDetailPage: NextPage = () => {
   //Facility情報の詳細（シングルページ）取得処理
   const fetchFacility = async () => {
     try {
-      const { data } = await supabase
+      const { data: facility } = await supabase
         .from<Facility>('Facilities')
         .select('*')
         .eq('id', query.facilityId)
         .single();
-      console.log(data);
-      if (data) {
-        setFacility(data);
+      if (facility) {
+        setFacility(facility);
       }
     } catch (error: any) {
       alert(error.message);
@@ -50,21 +53,29 @@ const FacilityDetailPage: NextPage = () => {
   };
 
   if (!facility) return <div></div>;
-  const { name, explanation, menu, price, address, phone_number } = facility;
+  const { id, name, explanation, menu, price, address, phone_number } =
+    facility;
 
   return (
     <>
-      <Link href="/facilities">
-        <Button ml="32" mt="10">
-          {/*戻るボタンのアイコン */}
-          <BsArrowLeftCircle />
-          <Text ml="5px">施設一覧へ戻る</Text>
-        </Button>
-      </Link>
+      <Flex>
+        <Link href="/facilities">
+          <Button ml="32" mt="10">
+            {/*戻るボタンのアイコン */}
+            <BsArrowLeftCircle />
+            <Text ml="5px">施設一覧へ戻る</Text>
+          </Button>
+        </Link>
+        <Spacer />
+        <Box mr="20%" mt="10">
+          <CreateReviewModal facilityName={name} facilityId={id ?? ''} />
+        </Box>
+      </Flex>
       <Center>
         <Box
           w="1000px"
-          h="600px"
+          h="100%"
+          minH="30rem"
           my="30px"
           border="solid 1px"
           borderRadius="20px"
@@ -73,8 +84,13 @@ const FacilityDetailPage: NextPage = () => {
           <Heading display="flex" mt="10px" mb="5px" px="20px">
             <Text fontSize="2xl">{name}</Text>
             <Spacer />
-            {facility && <UpdateFacilityModal facility={facility} />}
-            <DeleteFacilityButton />
+            {/* ログインしているユーザーのみに施設情報の更新・削除ボタンを表示 */}
+            {facility.auth_id === user?.id && (
+              <>
+                <UpdateFacilityModal facility={facility} />
+                <DeleteFacilityButton />
+              </>
+            )}
           </Heading>
           <Tabs align="end" variant="enclosed" colorScheme="green">
             <TabList>
@@ -86,8 +102,16 @@ const FacilityDetailPage: NextPage = () => {
             </TabList>
             <TabPanels textAlign="start">
               <TabPanel>
-                <p>病院名：{name}</p>
-                <p>病院紹介：{explanation}</p>
+                <Flex>
+                  <UploadFacilityImage />
+                  <Box>
+                    <Text>病院名：{name}</Text>
+                    <Text>病院紹介：{explanation}</Text>
+                  </Box>
+                </Flex>
+                <Box>
+                  <ReviewComponents />
+                </Box>
               </TabPanel>
               <TabPanel>
                 <p>リハビリ内容：{menu}</p>
@@ -96,7 +120,11 @@ const FacilityDetailPage: NextPage = () => {
                 <p>費用：{price}</p>
               </TabPanel>
               <TabPanel>
-                <p>写真</p>
+                <Box>
+                  <Text>写真</Text>
+                  {/* 画像ファイルアップデート用コンポーネント */}
+                  <UploadReviewImage />{' '}
+                </Box>
               </TabPanel>
               <TabPanel>
                 <p>住所：{address}</p>
