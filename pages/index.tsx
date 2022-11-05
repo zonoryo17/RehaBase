@@ -5,7 +5,6 @@ import TopPageRanking from '@components/topPageRanking';
 import Slider from '@components/topSlideShow';
 import { supabase } from '@utils/supabaseClient';
 import type { Session } from '@supabase/types';
-import { Facility } from '../types/facility';
 import { useRouter } from 'next/router';
 import LoginPage from './login';
 
