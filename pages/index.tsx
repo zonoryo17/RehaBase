@@ -5,10 +5,14 @@ import TopPageRanking from '@components/topPageRanking';
 import Slider from '@components/topSlideShow';
 import { supabase } from '@utils/supabaseClient';
 import type { Session } from '@supabase/types';
+import { Facility } from '../types/facility';
+import { useRouter } from 'next/router';
+import LoginPage from './login';
 
 const Home: NextPage = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [search, setSearch] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
     setSession(supabase.auth.session());
@@ -17,8 +21,17 @@ const Home: NextPage = () => {
     });
   }, []);
 
-  const handleClickSearch = () => {
-    alert('検索ボタンが押されました');
+  const handleChange = (e: { target: HTMLInputElement }) => {
+    setSearch(e.target.value);
+    console.log('searchLog', e.target.value);
+  };
+
+  //検索機能の実装
+  const handleClickSearch = async () => {
+    router.push({
+      pathname: '/facilities',
+      query: { keyword: search },
+    });
   };
 
   return (
@@ -55,7 +68,7 @@ const Home: NextPage = () => {
                   type="text"
                   placeholder="リハビリ施設を入力"
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={handleChange}
                 />
                 <Button
                   onClick={handleClickSearch}
@@ -102,7 +115,7 @@ const Home: NextPage = () => {
           <Slider />
         </>
       )}
-      {!session && <div>ログイン失敗</div>}
+      {!session && <LoginPage />}
     </Box>
   );
 };
