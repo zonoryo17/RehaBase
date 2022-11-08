@@ -6,7 +6,6 @@ import {
   Spinner,
   Text,
   useToast,
-  VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useContext, useEffect, useState } from 'react';

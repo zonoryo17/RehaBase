@@ -16,7 +16,6 @@ const MyPage = () => {
     age,
     prefecture,
   };
-  const [userProfile, setUserProfile] = useState<User | null>(initialState);
 
   //プロフィール更新ボタンを押した時の処理
   const router = useRouter();
