@@ -30,7 +30,6 @@ const FacilitiesListPage: NextPage = () => {
         .select('*')
         .order('created_at', { ascending: false });
       setFacilities(facilities);
-      console.log(facilities);
       if (error) console.log('error', error);
     } catch (error: any) {
       alert(error.message);
@@ -42,7 +41,7 @@ const FacilitiesListPage: NextPage = () => {
   };
 
   //施設情報の検索機能
-  const query = router.query; //検索フォームから入力されたキーワードを取得
+  const query = router.query; //検索フォームから入力されたキーワードをクエリで取得
   const { keyword } = query;
   const searchQueryFacilities = async () => {
     try {
@@ -51,6 +50,7 @@ const FacilitiesListPage: NextPage = () => {
         .select()
         .like('name', `%${keyword}%`);
       setFacilities(searchedValue);
+      if (!searchedValue) alert('検索された施設は見つかりませんでした');
       if (error) {
         throw error;
       }

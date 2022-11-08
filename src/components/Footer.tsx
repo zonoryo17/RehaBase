@@ -1,4 +1,4 @@
-import { Flex, Image, Link, Text } from '@chakra-ui/react'
+import { Flex, Image, Link, Text } from '@chakra-ui/react';
 
 const Footer = () => {
   return (
@@ -7,10 +7,10 @@ const Footer = () => {
         <Image src="/zonoworks.png" alt="サービスロゴ" width="56" height="50" />
       </Link>
       <Text m="auto" pr="32">
-        &copy;○○○○ All right reserved
+        &copy;RehaBase All right reserved
       </Text>
     </Flex>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

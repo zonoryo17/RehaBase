@@ -6,7 +6,6 @@ import Slider from '@components/topSlideShow';
 import { supabase } from '@utils/supabaseClient';
 import type { Session } from '@supabase/types';
 import { useRouter } from 'next/router';
-import LoginPage from './login';
 
 const Home: NextPage = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -22,7 +21,6 @@ const Home: NextPage = () => {
 
   const handleChange = (e: { target: HTMLInputElement }) => {
     setSearch(e.target.value);
-    console.log('searchLog', e.target.value);
   };
 
   //検索機能の実装
@@ -57,7 +55,7 @@ const Home: NextPage = () => {
                 <br />
                 リハビリ情報共有サイト
                 <br />
-                サービスタイトル○○○○
+                RehaBase
               </Text>
               <Flex>
                 <Input
@@ -114,7 +112,7 @@ const Home: NextPage = () => {
           <Slider />
         </>
       )}
-      {!session && <LoginPage />}
+      {!session && <Text>ログイン失敗</Text>}
     </Box>
   );
 };
