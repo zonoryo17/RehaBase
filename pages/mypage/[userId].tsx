@@ -1,21 +1,14 @@
 import { Box, Button, Flex, Spacer, Text } from '@chakra-ui/react';
 import Avatar from '@components/profile/avatar';
-import { useContext, useState } from 'react';
-import { User } from '../../types/user';
-import { UserDataContext } from '../_app';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { UserDataContext } from '../_app';
 
 const MyPage = () => {
   const userData = useContext(UserDataContext);
-  const { user_name, profile, gender, age, prefecture } = userData;
 
-  const initialState = {
-    user_name,
-    profile,
-    gender,
-    age,
-    prefecture,
-  };
+  const { user_name, profile, gender, age, prefecture } = userData;
 
   //プロフィール更新ボタンを押した時の処理
   const router = useRouter();
@@ -25,6 +18,9 @@ const MyPage = () => {
 
   return (
     <>
+      <Head>
+        <title>{user_name}さんのマイページ/RehaBase</title>
+      </Head>
       <Flex justify="center" mx={10} mt={16} mb={20}>
         <Flex
           direction="column"

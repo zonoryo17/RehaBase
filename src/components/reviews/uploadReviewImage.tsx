@@ -1,13 +1,11 @@
 import {
   Box,
-  Button,
   Flex,
   Image,
-  Input,
-  SimpleGrid,
   Spinner,
   Text,
   useToast,
+  VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
@@ -15,8 +13,12 @@ import { useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { UserDataContext } from '../../../pages/_app';
 
+type Props = {
+  facilityId: string | string[] | undefined;
+};
+
 //画像ファイルのアップロードコンポーネント
-const UploadReviewImage = () => {
+const UploadReviewImage = (facilityId: Props) => {
   const [facilityReviewImageUrls, setFacilityReviewImageUrls] = useState<
     string[]
   >([]);
@@ -27,8 +29,9 @@ const UploadReviewImage = () => {
   const getFacilityReviewImages = async () => {
     try {
       const { data, error } = await supabase
-        .from<string>('FacilityImages')
-        .select('image_url');
+        .from('FacilityImages')
+        .select('image_url')
+        .eq('facility_id', facilityId.facilityId);
       if (data) {
         setFacilityReviewImageUrls(data);
       }
@@ -74,6 +77,8 @@ const UploadReviewImage = () => {
   //facilityImagesテーブルに画像情報を保存
   const query = useRouter().query; //facilityのqueryIDを取得
   const userData = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
+  console.log('userData', userData);
+
   const handleCreateFacilityReviewImage = async (
     fileName: string,
     imageUrl: string
@@ -103,10 +108,10 @@ const UploadReviewImage = () => {
   };
 
   return (
-    <Flex aria-live="polite" align="center" flexWrap="wrap">
-      <SimpleGrid spacing="24px" columns={{ base: 2, md: 4 }}>
+    <Flex aria-live="polite" align="center">
+      <Flex gap="24px" flexWrap="wrap" align="center">
         {facilityReviewImageUrls.map((facilityReviewImage: any, i) => (
-          <Box w="200px" h="200px" key={i}>
+          <Flex w="200px" h="200px" key={i}>
             <Image
               src={
                 facilityReviewImage
@@ -116,37 +121,37 @@ const UploadReviewImage = () => {
               alt={facilityReviewImage ? 'プロフィール画像' : '画像なし'}
               objectFit="contain"
             />
-          </Box>
+          </Flex>
         ))}
-      </SimpleGrid>
-
-      {uploading && (
-        <Flex direction="column" align="center" width="300px">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-          />
-          <Text fontWeight="bold" fontSize="lg">
-            アップロード中...
-          </Text>
-        </Flex>
-      )}
-      {!uploading && (
-        <>
-          <Input // ファイル選択ダイアログ
-            type="file"
-            accept=".jpeg, .jpg, .png"
-            onChange={handleSelectImageFile}
-            disabled={uploading}
-          />
-          <Button bg="none" _hover={{ bg: 'none' }}>
-            <IoIosAddCircleOutline size="3rem" />
-          </Button>
-        </>
-      )}
+        {uploading && (
+          <Flex direction="column" align="center" width="300px">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+            <Text fontWeight="bold" fontSize="lg">
+              アップロード中...
+            </Text>
+          </Flex>
+        )}
+        <Box>
+          <label htmlFor="reviewImage">
+            <Box _hover={{ cursor: 'pointer' }}>
+              <IoIosAddCircleOutline size="3rem" />
+            </Box>
+          </label>
+        </Box>
+      </Flex>
+      <VisuallyHiddenInput // ファイル選択ダイアログ
+        id="reviewImage"
+        type="file"
+        accept=".jpeg, .jpg, .png"
+        onChange={handleSelectImageFile}
+        disabled={uploading}
+      />
     </Flex>
   );
 };

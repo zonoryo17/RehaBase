@@ -20,6 +20,7 @@ import Avatar from '@components/profile/avatar';
 import PrefectureSelector from '@components/profile/prefectureSelector';
 import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { User } from '../../types/user';
 import { UserDataContext } from '../_app';
 import { supabase } from '@utils/supabaseClient';
@@ -34,7 +35,6 @@ const MyPage = () => {
   };
   const [userProfile, setUserProfile] = useState<User>(initialState);
   const { user_name, profile, age, gender, prefecture } = userProfile;
-  console.log('userProfile', userProfile);
 
   //Inputフォームの状態管理
   const handleChange = (e: {
@@ -78,6 +78,9 @@ const MyPage = () => {
 
   return (
     <>
+      <Head>
+        <title>プロフィール更新/RehaBase</title>
+      </Head>
       <Flex justify="center" mx={10} mt={16} mb={20}>
         <Flex
           direction="column"
@@ -91,7 +94,7 @@ const MyPage = () => {
           shadow="md"
         >
           <Text fontSize="xl" fontWeight="bold" my={10}>
-            {userData.user_name}さんのマイページ
+            {userData.user_name}さんのプロフィール
           </Text>
           <Flex gap={5} w="100%" px={10}>
             <Box w="30%">
@@ -135,14 +138,12 @@ const MyPage = () => {
                 </Stack>
               </RadioGroup>
               <Text mt={5}>年齢</Text>
-              <NumberInput
-                value={age}
-                name="age"
-                // onChange={handleChange}
-                w="20%"
-                minW="80px"
-              >
-                <NumberInputField />
+              <NumberInput w="20%" minW="80px">
+                <NumberInputField
+                  value={age}
+                  name="age"
+                  onChange={handleChange}
+                />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
@@ -150,8 +151,8 @@ const MyPage = () => {
               </NumberInput>
               <Text mt={5}>居住地</Text>
               <PrefectureSelector
-              // prefecture={prefecture}
-              // handleChange={handleChange}
+                prefecture={prefecture}
+                handleChange={handleChange}
               />
               <Text mt={5}>プロフィール</Text>
               <Textarea

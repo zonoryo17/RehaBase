@@ -1,15 +1,15 @@
 import { Select } from '@chakra-ui/react';
 import { ChangeEventHandler } from 'react';
 
-const PrefectureSelector = () =>
+const PrefectureSelector = (handleChange: any, prefecture: string) =>
   // prefecture: string,
   // handleChange: ChangeEventHandler<HTMLSelectElement>
   {
     return (
       <Select
         placeholder="都道府県を選択"
-        // value={prefecture}
-        // onChange={handleChange}
+        value={prefecture}
+        onChange={handleChange}
       >
         <option value="北海道">北海道</option>
         <option value="青森県">青森県</option>

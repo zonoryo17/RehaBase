@@ -29,22 +29,34 @@ type Props = {
   facilityName: string;
   facilityId: string;
 };
+type InitialState = {
+  title: string;
+  content: string;
+  total_rating?: number;
+  reception_rating?: number;
+  service_rating?: number;
+  expense_rating?: number;
+  equipment_rating?: number;
+  environment_rating?: number;
+  facility_id?: string;
+  auth_id?: string;
+  user_id?: string;
+};
 
 const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userData = useContext(UserDataContext);
   const user = supabase.auth.user();
 
-  const initialReviewState = {
+  const initialReviewState: InitialState = {
     title: '',
     content: '',
-    total_rating: 0,
-    reception_rating: 0,
-    service_rating: 0,
-    expense_rating: 0,
-    equipment_rating: 0,
-    environment_rating: 0,
-    image_url: null,
+    total_rating: undefined,
+    reception_rating: undefined,
+    service_rating: undefined,
+    expense_rating: undefined,
+    equipment_rating: undefined,
+    environment_rating: undefined,
     facility_id: facilityId,
     auth_id: user?.id,
     user_id: userData?.id,

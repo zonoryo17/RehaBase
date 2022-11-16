@@ -8,29 +8,36 @@ import {
   MenuItem,
   MenuList,
   Text,
+  useToast,
 } from '@chakra-ui/react';
-import { supabase } from '@utils/supabaseClient';
-import { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import {
   HiUser,
   HiChevronDown,
   HiOutlineLogout,
   HiOutlineLogin,
 } from 'react-icons/hi';
+import { supabase } from '@utils/supabaseClient';
+import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { UserDataContext } from '../../../pages/_app';
 import HeaderUserIcon from './headerUserIcon';
 
 const UserMenu = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isGuest, setIsGuest] = useState<boolean>(false);
   const router = useRouter();
+  const toast = useToast();
 
   const userData = useContext(UserDataContext);
   const user = supabase.auth.user();
 
   useEffect(() => {
-    if (user) setIsLogin(true);
-  }, [isLogin]);
+    if (user) setIsLoggedIn(true);
+    //ゲストログイン用アカウントをisGuestとして設定
+    if (user?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
+      setIsGuest(true);
+    }
+  }, [user, userData]);
 
   const { user_name, avatar_url } = userData;
 
@@ -41,10 +48,18 @@ const UserMenu = () => {
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      setIsLogin(false);
+      setIsLoggedIn(false);
       if (error) {
         throw error;
       }
+      toast({
+        title: 'ログアウトが完了しました',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        position: 'top',
+        variant: 'left-accent',
+      });
     } catch (error) {
       throw new Error('正しくログアウトできませんでした');
     } finally {
@@ -66,16 +81,16 @@ const UserMenu = () => {
           rightIcon={<HiChevronDown />}
         >
           <Text fontSize={{ sm: 'xs', md: 'md' }}>
-            {isLogin ? user_name : 'ゲストユーザー'}
+            {isLoggedIn ? user_name : 'ゲスト'}
           </Text>
         </MenuButton>
-        {isLogin && (
+        {isLoggedIn && (
           <HeaderUserIcon src={avatar_url ? avatar_url : '/noNameUser.jpg'} />
         )}
-        {!isLogin && <HeaderUserIcon src="/noNameUser.jpg" />}
+        {!isLoggedIn && <HeaderUserIcon src="/noNameUser.jpg" />}
       </Flex>
       <MenuList>
-        {isLogin && (
+        {isLoggedIn && !isGuest && (
           <MenuGroup title="Profile">
             <MenuItem onClick={handleClickMyPage}>
               <HiUser size="1.5rem" color="gray" />
@@ -83,15 +98,52 @@ const UserMenu = () => {
             </MenuItem>
           </MenuGroup>
         )}
+        {!isLoggedIn && !isGuest && (
+          <MenuGroup title="Profile">
+            <MenuItem
+              onClick={() =>
+                toast({
+                  title:
+                    'ログインされていない場合、マイページはご利用いただけません',
+                  status: 'error',
+                  duration: 6000,
+                  position: 'top',
+                  isClosable: true,
+                })
+              }
+            >
+              <HiUser size="1.5rem" color="gray" />
+              マイページ
+            </MenuItem>
+          </MenuGroup>
+        )}
+        {isGuest && (
+          <MenuGroup title="Profile">
+            <MenuItem
+              onClick={() =>
+                toast({
+                  title: 'ゲストログインではマイページはご利用いただけません',
+                  status: 'error',
+                  duration: 6000,
+                  position: 'top',
+                  isClosable: true,
+                })
+              }
+            >
+              <HiUser size="1.5rem" color="gray" />
+              マイページ
+            </MenuItem>
+          </MenuGroup>
+        )}
         <MenuDivider />
         <MenuGroup title="other">
-          {isLogin && (
+          {isLoggedIn && (
             <MenuItem onClick={handleLogout}>
               <HiOutlineLogout size="1.5rem" color="gray" />
               ログアウト
             </MenuItem>
           )}
-          {!isLogin && (
+          {!isLoggedIn && (
             <MenuItem onClick={() => router.push('/login')}>
               <HiOutlineLogin size="1.5rem" color="gray" />
               ログイン

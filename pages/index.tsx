@@ -1,11 +1,12 @@
 import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import TopPageRanking from '@components/topPageRanking';
-import Slider from '@components/topSlideShow';
 import { supabase } from '@utils/supabaseClient';
 import type { Session } from '@supabase/types';
-import { useRouter } from 'next/router';
+import TopSlideShow from '@components/topSlideShow';
 
 const Home: NextPage = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -24,7 +25,8 @@ const Home: NextPage = () => {
   };
 
   //検索機能の実装
-  const handleClickSearch = async () => {
+  const handleSubmitSearch = async (e: any) => {
+    e.preventDefault();
     router.push({
       pathname: '/facilities',
       query: { keyword: search },
@@ -32,9 +34,12 @@ const Home: NextPage = () => {
   };
 
   return (
-    <Box>
+    <>
+      <Head>
+        <title>RehaBase</title>
+      </Head>
       {/* {session && ( */}
-      <>
+      <Box>
         <Box position="relative">
           <Image src="/topImage.jpg" alt="トップイメージ" width="100%" />
           <Box
@@ -57,31 +62,33 @@ const Home: NextPage = () => {
               <br />
               RehaBase
             </Text>
-            <Flex>
-              <Input
-                size="lg"
-                width="80vh"
-                textColor="white"
-                type="text"
-                placeholder="リハビリ施設を入力"
-                value={search}
-                onChange={handleChange}
-              />
-              <Button
-                onClick={handleClickSearch}
-                size="lg"
-                width="100px"
-                ml="2"
-                boxShadow="md"
-                _hover={{
-                  boxShadow: 'none',
-                  transition: '0.4s',
-                  bg: 'gray.300',
-                }}
-              >
-                検索
-              </Button>
-            </Flex>
+            <form onSubmit={handleSubmitSearch}>
+              <Flex>
+                <Input
+                  size="lg"
+                  width="80vh"
+                  textColor="white"
+                  type="text"
+                  placeholder="リハビリ施設を入力"
+                  value={search}
+                  onChange={handleChange}
+                />
+                <Button
+                  type="submit"
+                  size="lg"
+                  width="100px"
+                  ml="2"
+                  boxShadow="md"
+                  _hover={{
+                    boxShadow: 'none',
+                    transition: '0.4s',
+                    bg: 'gray.300',
+                  }}
+                >
+                  検索
+                </Button>
+              </Flex>
+            </form>
           </Box>
         </Box>
         <Box mt="10" px="10">
@@ -89,31 +96,14 @@ const Home: NextPage = () => {
             総合ランキング
           </Text>
           <Flex gap="5">
-            <TopPageRanking
-              name="大阪病院"
-              icon={'/crown1.jpg'}
-              image={'/JCHO_Osaka_Hospital.jpg'}
-              address={'大阪'}
-            />
-            <TopPageRanking
-              name="東京病院"
-              icon={'/crown2.jpg'}
-              image={'/Tokyo_Hospital.jpg'}
-              address={'東京'}
-            />
-            <TopPageRanking
-              name="福岡病院"
-              icon={'/crown3.jpg'}
-              image={'/Fukuoka_Hospital.jpg'}
-              address={'福岡'}
-            />
+            <TopPageRanking />
           </Flex>
         </Box>
-        <Slider />
-      </>
+        <TopSlideShow />
+      </Box>
       {/* )} */}
-      {/* {!session && router.push('/login)' } */}
-    </Box>
+      {/* {!session && router.push('/about')} */}
+    </>
   );
 };
 

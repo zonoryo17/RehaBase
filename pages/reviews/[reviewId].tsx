@@ -1,8 +1,9 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import DeleteReviewButton from '@components/reviews/deleteReview';
 import { supabase } from '@utils/supabaseClient';
 import { NextPage } from 'next';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsArrowLeftCircle } from 'react-icons/bs';
@@ -12,30 +13,28 @@ import { Review } from '../../types/reviews';
 const ReviewDetailPage: NextPage = () => {
   const [review, setReview] = useState<Review | null>(null);
 
-  const router = useRouter();
-  const query = router.query;
-  console.log(query);
-
+  const query = useRouter().query;
   const user = supabase.auth.user();
 
   useEffect(() => {
     fetchReviewData();
   }, [query]);
 
+  //レビューの詳細情報を取得
   const fetchReviewData = async () => {
     try {
       const { data: review, error } = await supabase
-        .from('Reviews')
-        .select('*, Users(user_name)')
+        .from<Review>('Reviews')
+        .select('*, Users(user_name, age, gender, prefecture, avatar_url)')
         .eq('id', query.reviewId)
         .single();
       setReview(review);
-      console.log('review', review);
       if (error) console.log('error', error);
     } catch (error: any) {
       alert(error.message);
     }
   };
+
   if (!review) return <div>Null</div>;
   const {
     created_at,
@@ -49,13 +48,15 @@ const ReviewDetailPage: NextPage = () => {
     environment_rating,
     facility_id,
   } = review;
-  const reviewUser = review.Users;
-  const user_name = reviewUser?.user_name;
 
-  console.log(review);
+  const reviewUser: any = review.Users; //レビューを投稿したユーザー情報
+  const { user_name, age, gender, prefecture, avatar_url } = reviewUser;
 
   return (
     <>
+      <Head>
+        <title>{user_name}さんの口コミ/RehaBase</title>
+      </Head>
       <Link href={`/facilities/${facility_id}`}>
         <Button ml="32" my="10">
           {/*戻るボタンのアイコン */}
@@ -68,19 +69,31 @@ const ReviewDetailPage: NextPage = () => {
         borderRadius={10}
         px={5}
         py={5}
-        maxW="70rem"
+        mt={10}
+        mb={32}
+        maxW="75rem"
         mx="auto"
       >
         <Box mx="5">
           <Flex justify="space-between">
-            <Text fontSize="xl">{user_name}さんの口コミ</Text>
+            <Flex align="center">
+              <Image src={avatar_url} w={100} h={100} rounded="full" />
+              <Flex direction="column" align="center" ml={3}>
+                <Text fontSize="xl">{user_name}さんの口コミ</Text>
+                <Flex fontSize="xl" gap={4}>
+                  <Box>{age}歳</Box>
+                  <Box>{gender}</Box>
+                  <Box>{prefecture}</Box>
+                </Flex>
+              </Flex>
+            </Flex>
             {/* 口コミ削除コンポーネント　投稿者のみ表示 */}
             {review.auth_id === user?.id && (
               <DeleteReviewButton facility_id={facility_id ?? ''} />
             )}
           </Flex>
           <Box>
-            <Text textColor="gray.400" mb="5">
+            <Text textColor="gray.400" mb={5} ml={5}>
               {created_at}投稿
             </Text>
             <Box>

@@ -1,7 +1,3 @@
-import { supabase } from '../../src/utils/supabaseClient';
-import { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
-import { BsArrowLeftCircle } from 'react-icons/bs';
 import {
   Accordion,
   AccordionButton,
@@ -18,9 +14,14 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import Link from 'next/link';
-import { Facility } from '../../types/facility';
+import { supabase } from '../../src/utils/supabaseClient';
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
+import Link from 'next/link';
+import Head from 'next/head';
+import { BsArrowLeftCircle } from 'react-icons/bs';
+import { Facility } from '../../types/facility';
 import { UserDataContext } from '../_app';
 
 const Create: NextPage = () => {
@@ -99,6 +100,9 @@ const Create: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>施設情報登録/RehaBase</title>
+      </Head>
       <Link href="/facilities">
         <Button ml="32" mt="10">
           {/*戻るボタンのアイコン */}
@@ -150,7 +154,7 @@ const Create: NextPage = () => {
               name="price"
               value={price}
               onChange={handleChange}
-              placeholder="○○○○円"
+              placeholder="20分○○○○円"
             />
             <Accordion allowToggle>
               <AccordionItem>
@@ -177,7 +181,7 @@ const Create: NextPage = () => {
                     name="price2"
                     value={price2}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -205,7 +209,7 @@ const Create: NextPage = () => {
                     name="price3"
                     value={price3}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -233,7 +237,7 @@ const Create: NextPage = () => {
                     name="price4"
                     value={price4}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -261,7 +265,7 @@ const Create: NextPage = () => {
                     name="price5"
                     value={price5}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -282,19 +286,21 @@ const Create: NextPage = () => {
               onChange={handleChange}
               placeholder="01-1234-5678"
             />
-            <Button
-              border="1px solid"
-              borderRadius="5px"
-              boxShadow="md"
-              py="3px"
-              px="8px"
-              w="100px"
-              bg="gray.100"
-              _hover={{ bg: 'gray.300' }}
-              onClick={createFacility}
-            >
-              登録
-            </Button>
+            <Flex justify="end">
+              <Button
+                border="1px solid"
+                borderRadius="5px"
+                boxShadow="md"
+                py="3px"
+                px="8px"
+                w="100px"
+                bg="gray.100"
+                _hover={{ bg: 'gray.300' }}
+                onClick={createFacility}
+              >
+                登録
+              </Button>
+            </Flex>
           </Stack>
         </Flex>
       </Center>

@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const AboutPage: NextPage = () => {
   //ダークモードの背景，テキストの設定
@@ -25,6 +26,9 @@ const AboutPage: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>RehaBaseとは</title>
+      </Head>
       <Flex direction="column" align="center">
         <Flex position="relative" justify="center" width="100%">
           <Image src="/login.jpg" alt="トップイメージ" />

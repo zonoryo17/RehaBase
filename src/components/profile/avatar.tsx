@@ -1,42 +1,53 @@
 import {
-  Button,
   Flex,
   Image,
-  Input,
   Spinner,
   Text,
   useToast,
+  VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useContext, useEffect, useState } from 'react';
 import { UserDataContext } from '../../../pages/_app';
 
+type Avatar = {
+  avatar_url: string;
+};
+
 //ユーザーアイコンの登録，更新用コンポーネント
 const Avatar = () => {
   const [uploading, setUploading] = useState(false);
-  const toast = useToast();
+  const [avatar, setAvatar] = useState<Avatar | null>(null);
 
   const userData = useContext(UserDataContext);
-  const { id, avatar_url } = userData;
+  const { id } = userData;
+  const toast = useToast();
 
   // Usersテーブルからプロフィール画像のを取得
   const getAvatarUrl = async () => {
-    const { error } = await supabase
-      .from('Users')
-      .select('avatar_url')
-      .eq('id', id)
-      .single();
-    if (error) {
+    try {
+      const { data, error } = await supabase
+        .from('Users')
+        .select('avatar_url')
+        .eq('id', id)
+        .single();
+      if (data) {
+        setAvatar(data);
+      }
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
       throw error;
     }
   };
 
   useEffect(() => {
-    getAvatarUrl(); //初回レンダリング時に施設画像を取得
-  }, []);
+    getAvatarUrl(); //初回レンダリング時にプロフィール画像を取得
+  }, [userData]);
 
   // ファイル選択後の処理
-  const uploadAvatar = async (e: any) => {
+  const handleSubmitUploadAvatar = async (e: any) => {
     try {
       setUploading(true);
 
@@ -82,18 +93,17 @@ const Avatar = () => {
         duration: 5000,
         isClosable: true,
       });
+      getAvatarUrl();
     } catch (error: any) {
       alert(error.message);
-    } finally {
-      getAvatarUrl();
     }
   };
 
   return (
     <Flex aria-live="polite" direction="column" align="center">
       <Image
-        src={avatar_url ? avatar_url : '/noNameUser.jpg'}
-        alt={avatar_url ? 'プロフィール画像' : '画像なし'}
+        src={avatar ? avatar.avatar_url : '/noNameUser.jpg'}
+        alt={avatar ? 'プロフィール画像' : '画像なし'}
         w={100}
         h={100}
         rounded="full"
@@ -116,15 +126,37 @@ const Avatar = () => {
       )}
       {!uploading && (
         <>
-          <Input // ★ ファイル選択ダイアログ
-            type="file"
-            accept=".jpeg, .jpg, .png"
-            onChange={uploadAvatar}
-            disabled={uploading}
-          />
-          <Button colorScheme="teal" fontSize="sm">
-            画像アップロード
-          </Button>
+          <form onSubmit={handleSubmitUploadAvatar}>
+            <label htmlFor="avatar">
+              <Flex
+                justify="center"
+                alignItems="center"
+                fontSize="sm"
+                textAlign="center"
+                bg="teal.400"
+                mt={3}
+                w={130}
+                h={12}
+                rounded={10}
+                _hover={{
+                  bg: 'teal.300',
+                  transition: '0.2s',
+                  cursor: 'pointer',
+                }}
+              >
+                プロフィール画像
+                <br />
+                アップロード
+              </Flex>
+            </label>
+            <VisuallyHiddenInput // ★ ファイル選択ダイアログ
+              id="avatar"
+              type="file"
+              accept=".jpeg, .jpg, .png"
+              onChange={handleSubmitUploadAvatar}
+              disabled={uploading}
+            />
+          </form>
         </>
       )}
     </Flex>

@@ -18,4 +18,5 @@ export type Facility = {
   facility_id?: string | string[];
   auth_id?: string;
   image_url?: string;
+  total_rating_ave?: number;
 };

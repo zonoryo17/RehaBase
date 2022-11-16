@@ -1,11 +1,10 @@
 import {
-  Button,
   Flex,
   Image,
-  Input,
   Spinner,
   Text,
   useToast,
+  VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
@@ -104,6 +103,7 @@ const UploadFacilityImage = () => {
         alt={imageFileUrl ? 'プロフィール画像' : '画像なし'}
         w={300}
         maxH={200}
+        rounded={5}
         objectFit="contain"
       />
       {uploading && (
@@ -124,17 +124,36 @@ const UploadFacilityImage = () => {
       )}
       {!uploading && (
         <>
-          <Input // ★ ファイル選択ダイアログ
+          <VisuallyHiddenInput // ★ ファイル選択ダイアログ
+            id="facilityImage"
             type="file"
             accept=".jpeg, .jpg, .png"
             onChange={uploadFacilityImage}
             disabled={uploading}
           />
-          <Button colorScheme="teal" fontSize="sm">
-            施設画像を
-            <br />
-            アップロード
-          </Button>
+
+          <label htmlFor="facilityImage">
+            <Flex
+              justify="center"
+              alignItems="center"
+              textAlign="center"
+              fontSize="sm"
+              bg="teal.400"
+              mt={3}
+              w={130}
+              h={12}
+              rounded={10}
+              _hover={{
+                bg: 'teal.300',
+                transition: '0.2s',
+                cursor: 'pointer',
+              }}
+            >
+              施設画像
+              <br />
+              アップロード
+            </Flex>
+          </label>
         </>
       )}
     </Flex>

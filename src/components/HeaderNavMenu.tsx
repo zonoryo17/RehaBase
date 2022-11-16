@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -7,11 +8,11 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Link,
   useDisclosure,
 } from '@chakra-ui/react';
 import { HiOutlineMenu } from 'react-icons/hi';
 import React from 'react';
+import Link from 'next/link';
 
 const NavMenuDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,23 +30,25 @@ const NavMenuDrawer = () => {
 
           <DrawerBody px={0}>
             <Flex display="column" gap={5}>
-              <Link href="/about" _hover={{ decoration: 'none' }}>
-                <Flex
-                  w="100%"
-                  h={50}
-                  align="center"
-                  justify="center"
-                  fontSize="xl"
-                  px={5}
-                  _hover={{
-                    backgroundColor: 'blackAlpha.100',
-                    transition: '0.5s',
-                  }}
-                >
-                  RehaBaseとは
-                </Flex>
+              <Link href="/about">
+                <a onClick={onClose}>
+                  <Flex
+                    w="100%"
+                    h={50}
+                    align="center"
+                    justify="center"
+                    fontSize="xl"
+                    px={5}
+                    _hover={{
+                      backgroundColor: 'blackAlpha.100',
+                      transition: '0.5s',
+                    }}
+                  >
+                    RehaBaseとは
+                  </Flex>
+                </a>
               </Link>
-              <Link href="/article" _hover={{ decoration: 'none' }}>
+              <Box>
                 <Flex
                   w="100%"
                   h={50}
@@ -53,45 +56,45 @@ const NavMenuDrawer = () => {
                   justify="center"
                   fontSize="xl"
                   px={5}
-                  _hover={{
-                    backgroundColor: 'blackAlpha.100',
-                    transition: '0.5s',
-                  }}
                 >
                   記事
                 </Flex>
+              </Box>
+              <Link href="/facilities">
+                <a onClick={onClose}>
+                  <Flex
+                    w="100%"
+                    h={50}
+                    align="center"
+                    justify="center"
+                    fontSize="xl"
+                    px={5}
+                    _hover={{
+                      backgroundColor: 'blackAlpha.100',
+                      transition: '0.5s',
+                    }}
+                  >
+                    施設情報一覧
+                  </Flex>
+                </a>
               </Link>
-              <Link href="/facilities" _hover={{ decoration: 'none' }}>
-                <Flex
-                  w="100%"
-                  h={50}
-                  align="center"
-                  justify="center"
-                  fontSize="xl"
-                  px={5}
-                  _hover={{
-                    backgroundColor: 'blackAlpha.100',
-                    transition: '0.5s',
-                  }}
-                >
-                  施設情報一覧
-                </Flex>
-              </Link>
-              <Link href="/login" _hover={{ decoration: 'none' }}>
-                <Flex
-                  w="100%"
-                  h={50}
-                  align="center"
-                  justify="center"
-                  fontSize="xl"
-                  px={5}
-                  _hover={{
-                    backgroundColor: 'blackAlpha.100',
-                    transition: '0.5s',
-                  }}
-                >
-                  無料会員登録/ログイン
-                </Flex>
+              <Link href="/login">
+                <a onClick={onClose}>
+                  <Flex
+                    w="100%"
+                    h={50}
+                    align="center"
+                    justify="center"
+                    fontSize="xl"
+                    px={5}
+                    _hover={{
+                      backgroundColor: 'blackAlpha.100',
+                      transition: '0.5s',
+                    }}
+                  >
+                    無料会員登録/ログイン
+                  </Flex>
+                </a>
               </Link>
             </Flex>
           </DrawerBody>
