@@ -29,18 +29,18 @@ import UploadFacilityImage from '@components/facilities/uploadFacilityImage';
 import { Review } from '../../types/reviews';
 import ReactStars from 'react-stars';
 
-type RatingList = {
-  total_rating?: number;
-  reception_rating?: number;
-  service_rating?: number;
-  expence_rating?: number;
-  equipment_rating?: number;
-  environment_rating?: number;
-};
+// type RatingList = {
+//   total_rating?: number;
+//   reception_rating?: number;
+//   service_rating?: number;
+//   expence_rating?: number;
+//   equipment_rating?: number;
+//   environment_rating?: number;
+// };
 
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
-  const [totalRating, setTotalRating] = useState<RatingList>();
+  const [totalRating, setTotalRating] = useState<Number>();
 
   const query = useRouter().query;
   const { facilityId } = query;
@@ -58,7 +58,6 @@ const FacilityDetailPage: NextPage = () => {
         .select('*')
         .eq('id', facilityId)
         .single();
-      console.log('facility', facility);
       if (facility) {
         setFacility(facility);
       }
@@ -68,8 +67,19 @@ const FacilityDetailPage: NextPage = () => {
     }
   };
   if (!facility) return <div></div>;
-  const { id, name, explanation, menu, price, address, phone_number } =
-    facility;
+  const {
+    id,
+    name,
+    explanation,
+    menu,
+    price,
+    price2,
+    price3,
+    price4,
+    price5,
+    address,
+    phone_number,
+  } = facility;
 
   //施設の総合点の取得
   const getTotalRating = async () => {
@@ -80,19 +90,17 @@ const FacilityDetailPage: NextPage = () => {
           'total_rating, reception_rating, service_rating, expense_rating, equipment_rating, environment_rating'
         )
         .eq('facility_id', facilityId);
-      console.log('ReviewsData', data);
-
       //各項目の合計点を取得
-      const sumTotalRating = data?.reduce((sum, element) => {
-        return sum + element?.total_rating;
-      }, 0);
-      console.log('sumTotalRating', sumTotalRating);
-      //各項目の平均値を取得
-      const totalRatingAve = sumTotalRating / data?.length;
-      console.log('totalRatingAve', totalRatingAve.toFixed(1));
-      setTotalRating(totalRatingAve.toFixed(1));
-      console.log('totalRating', totalRating);
-
+      if (data) {
+        // 総合評価平均値の取得
+        const sumTotalRating = data.reduce((sum, element) => {
+          return sum + element?.total_rating;
+        }, 0);
+        if (sumTotalRating > 0) {
+          const totalRatingAve = sumTotalRating / data?.length;
+          setTotalRating(Number(totalRatingAve.toFixed(1)));
+        }
+      }
       if (error) {
         throw error;
       }
@@ -154,7 +162,7 @@ const FacilityDetailPage: NextPage = () => {
           <Tabs align="end" variant="enclosed" colorScheme="green">
             <Flex position="absolute" left="5">
               <Text fontSize="xl" mr={2}>
-                総合評価：{totalRating}
+                総合評価：{Number(totalRating)}
               </Text>
               <ReactStars
                 count={5}
@@ -175,7 +183,7 @@ const FacilityDetailPage: NextPage = () => {
               <TabPanel>
                 <Flex>
                   <UploadFacilityImage />
-                  <Box>
+                  <Box ml={5}>
                     <Text>病院名：{name}</Text>
                     <Text>病院紹介：{explanation}</Text>
                   </Box>
@@ -185,10 +193,14 @@ const FacilityDetailPage: NextPage = () => {
                 </Box>
               </TabPanel>
               <TabPanel>
-                <p>リハビリ内容：{menu}</p>
+                <p>リハビリ内容一覧：{menu}</p>
               </TabPanel>
               <TabPanel>
                 <p>費用：{price}</p>
+                <p>　　　{price2}</p>
+                <p>　　　{price3}</p>
+                <p>　　　{price4}</p>
+                <p>　　　{price5}</p>
               </TabPanel>
               <TabPanel>
                 <Box>

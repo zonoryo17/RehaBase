@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Facility } from '../../../types/facility';
 
 type Props = {
@@ -31,7 +31,18 @@ type Props = {
 };
 
 const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [facility, setFacility] = useState(originalFacility);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
+  const query = router.query;
+  const toast = useToast();
+  const user = supabase.auth.user();
+
+  useEffect(() => {
+    if (user) setIsLoggedIn(true);
+  }, []);
+
   const {
     name,
     explanation,
@@ -48,11 +59,6 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
     address,
     phone_number,
   } = facility;
-
-  const router = useRouter();
-  const query = router.query;
-  const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleChange = (e: {
     target: HTMLInputElement | HTMLTextAreaElement;
@@ -90,9 +96,27 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
-        施設情報を更新
-      </Button>
+      {isLoggedIn && (
+        <Button colorScheme="blue" onClick={onOpen}>
+          施設情報を更新
+        </Button>
+      )}
+      {!isLoggedIn && (
+        <Button
+          colorScheme="blue"
+          onClick={() =>
+            toast({
+              title: 'ログインされていない場合、施設情報の更新はできません',
+              status: 'error',
+              duration: 6000,
+              position: 'top',
+              isClosable: true,
+            })
+          }
+        >
+          施設情報を更新
+        </Button>
+      )}
       <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalOverlay />
         <ModalContent>

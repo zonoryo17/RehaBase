@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image,
+  Input,
+  Text,
+} from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -41,11 +49,17 @@ const Home: NextPage = () => {
       {/* {session && ( */}
       <Box>
         <Box position="relative">
-          <Image src="/topImage.jpg" alt="トップイメージ" width="100%" />
+          <Center>
+            <Image
+              src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/stock-vector-volunteers-helping-disabled-people-group-of-men-and-women-with-special-needs-on-wheelchair-with-1715889676.jpg?t=2022-11-18T08%3A48%3A36.740Z"
+              alt="トップイメージ"
+              width="70%"
+            />
+          </Center>
           <Box
             p="10"
             position="absolute"
-            top="60%"
+            top="50%"
             left="50%"
             transform="translate(-50%, -50%)"
           >

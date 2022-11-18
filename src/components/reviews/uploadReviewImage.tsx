@@ -77,7 +77,6 @@ const UploadReviewImage = (facilityId: Props) => {
   //facilityImagesテーブルに画像情報を保存
   const query = useRouter().query; //facilityのqueryIDを取得
   const userData = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
-  console.log('userData', userData);
 
   const handleCreateFacilityReviewImage = async (
     fileName: string,

@@ -58,10 +58,14 @@ const AboutPage: NextPage = () => {
           <Text fontWeight="bold" fontSize="3xl" my={5}>
             RehaBaseについて
           </Text>
-          <Text fontSize="xl">
-            RehaBaseはリハビリ情報を共有する口コミ型のリハビリ施設検索サービスです。
-            <br />
-          </Text>
+          <Box fontSize="xl">
+            <Text my={7}>
+              RehaBaseはリハビリ情報を共有する口コミ型のリハビリ施設検索サービスです。
+            </Text>
+            <Text my={4}>「リハビリの情報を探すならここ！」</Text>
+            <Text my={4}>そんなリハビリに関連する情報のプラットホームを</Text>
+            <Text my={4}>あなたの「声」を借りて作ります。</Text>
+          </Box>
           <Text fontWeight="bold" fontSize="3xl" mt={20} mb={10}>
             こんなお悩みありませんか？
           </Text>
@@ -78,6 +82,7 @@ const AboutPage: NextPage = () => {
                 py={5}
                 mx={5}
                 textAlign="left"
+                shadow="md"
               >
                 「ここいいよ！」と言われて行ってみたけど、マッサージをされて終わった。
               </Text>
@@ -94,6 +99,7 @@ const AboutPage: NextPage = () => {
                 py={5}
                 mx={5}
                 textAlign="left"
+                shadow="md"
               >
                 もうすぐ退院するけど、帰ってからどこでリハビリをしたらいいかわからない
               </Text>
@@ -111,6 +117,7 @@ const AboutPage: NextPage = () => {
                 mx={5}
                 w="100%"
                 textAlign="left"
+                shadow="md"
               >
                 どこでどんなリハビリが受けられるのかよくわからない
               </Text>
@@ -127,6 +134,7 @@ const AboutPage: NextPage = () => {
                 py={5}
                 mx={5}
                 textAlign="left"
+                shadow="md"
               >
                 実際に行こうと思ってるリハビリ施設でリハビリを受けた人の感想が聞いてみたい
               </Text>

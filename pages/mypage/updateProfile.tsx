@@ -29,6 +29,7 @@ const MyPage = () => {
   const toast = useToast();
   const userData = useContext(UserDataContext);
   const userId = userData.id;
+  console.log('userId', userId);
 
   const initialState = {
     ...userData,

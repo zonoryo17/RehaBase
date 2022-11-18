@@ -53,7 +53,6 @@ const App = ({ Component, pageProps }: AppProps) => {
           },
         ])
         .single();
-      console.log('data', data);
       if (error) throw error;
       toast({
         title: 'ユーザー登録が完了しました。',

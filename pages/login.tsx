@@ -57,14 +57,16 @@ const LoginPage: NextPage = () => {
   const signInWithGoogle = async () => {
     try {
       setIsLoading(true);
-      await supabase.auth.signIn({
+      const { error } = await supabase.auth.signIn({
         provider: 'google',
       });
+      if (error) throw error;
       toast({
         title: 'Googleログインが完了しました',
         status: 'success',
         duration: 6000,
         isClosable: true,
+        position: 'top',
         variant: 'left-accent',
       });
     } catch (error: any) {
@@ -78,14 +80,16 @@ const LoginPage: NextPage = () => {
   const signInWithGithub = async () => {
     try {
       setIsLoading(true);
-      await supabase.auth.signIn({
+      const { error } = await supabase.auth.signIn({
         provider: 'github',
       });
+      if (error) throw error;
       toast({
         title: 'GitHubログインが完了しました',
         status: 'success',
         duration: 6000,
         isClosable: true,
+        position: 'top',
         variant: 'left-accent',
       });
     } catch (error: any) {
@@ -139,7 +143,7 @@ const LoginPage: NextPage = () => {
               borderRadius="10"
               opacity="0.8"
             >
-              あなたの声で作るリハビリ施設検索サイト
+              あなたの声で作るリハビリ情報共有サイト
             </Text>
             <Text
               fontSize="5xl"

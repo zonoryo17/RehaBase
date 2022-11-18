@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -18,11 +19,15 @@ import ReactStars from 'react-stars';
 
 const FacilitiesListPage: NextPage = () => {
   const [facilities, setFacilities] = useState<Facility[] | null>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const toast = useToast();
   const router = useRouter();
+  const user = supabase.auth.user();
 
   useEffect(() => {
     fetchData();
     if (query.keyword) searchQueryFacilities();
+    if (user) setIsLoggedIn(true);
   }, []);
 
   const fetchData = async () => {
@@ -69,9 +74,27 @@ const FacilitiesListPage: NextPage = () => {
       <Text fontSize="2xl" fontWeight="bold" textAlign="center">
         施設情報一覧
       </Text>
-      <Button onClick={handleClickCreateFacility} ml={5}>
-        施設情報を登録
-      </Button>
+      {isLoggedIn && (
+        <Button onClick={handleClickCreateFacility} ml={5}>
+          施設情報を登録
+        </Button>
+      )}
+      {!isLoggedIn && (
+        <Button
+          ml={5}
+          onClick={() =>
+            toast({
+              title: 'ログインされていない場合、施設情報の削除はできません',
+              status: 'error',
+              duration: 6000,
+              position: 'top',
+              isClosable: true,
+            })
+          }
+        >
+          施設情報を登録
+        </Button>
+      )}
       <Box maxW={600} mx="auto">
         <List>
           {facilities &&

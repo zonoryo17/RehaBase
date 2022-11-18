@@ -8,9 +8,9 @@ const Footer = () => {
       <Link href="/">
         <a>
           <Image
-            src="/zonoworks.png"
+            src="/ApplicationFrameHost_gdA2j5B5Pp.png"
             alt="サービスロゴ"
-            width="56"
+            width="50"
             height="50"
           />
         </a>

@@ -21,7 +21,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import ReactStars from 'react-stars';
 import { UserDataContext } from '../../../pages/_app';
 
@@ -45,8 +45,13 @@ type InitialState = {
 
 const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const userData = useContext(UserDataContext);
   const user = supabase.auth.user();
+
+  useEffect(() => {
+    if (user) setIsLoggedIn(true);
+  }, []);
 
   const initialReviewState: InitialState = {
     title: '',
@@ -110,7 +115,23 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
 
   return (
     <>
-      <Button onClick={onOpen}>口コミを投稿</Button>
+      {!isLoggedIn && (
+        <Button
+          onClick={() =>
+            toast({
+              title:
+                'ログインされていない場合、口コミ投稿はご利用いただけません',
+              status: 'error',
+              duration: 6000,
+              position: 'top',
+              isClosable: true,
+            })
+          }
+        >
+          口コミを投稿
+        </Button>
+      )}
+      {isLoggedIn && <Button onClick={onOpen}>口コミを投稿</Button>}
 
       <Modal
         blockScrollOnMount={false}

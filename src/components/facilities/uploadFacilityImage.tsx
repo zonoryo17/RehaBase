@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Image,
   Spinner,
@@ -28,7 +29,6 @@ const UploadFacilityImage = () => {
       .single();
     if (data) {
       setImageFileUrl(data.image_url);
-      console.log('getFacilityImages', data);
     }
     if (error) {
       throw error;
@@ -73,14 +73,11 @@ const UploadFacilityImage = () => {
 
   //facilitiesテーブルに画像URLを保存
   const handleCreateFacilityImage = async (fileUrl: string) => {
-    console.log('fileUrl:', fileUrl);
-
     try {
       const { data, error } = await supabase
         .from('Facilities')
         .update({ image_url: fileUrl })
         .eq('id', facilityId);
-      console.log('uploadTable:', data);
       if (error) throw error;
       // 作成完了のポップアップ
       toast({
@@ -98,14 +95,16 @@ const UploadFacilityImage = () => {
 
   return (
     <Flex aria-live="polite" direction="column" align="center">
-      <Image
-        src={imageFileUrl ? imageFileUrl : '/no_image.jpg'}
-        alt={imageFileUrl ? 'プロフィール画像' : '画像なし'}
-        w={300}
-        maxH={200}
-        rounded={5}
-        objectFit="contain"
-      />
+      <Box>
+        <Image
+          src={imageFileUrl ? imageFileUrl : '/no_image.jpg'}
+          alt={imageFileUrl ? 'プロフィール画像' : '画像なし'}
+          w={300}
+          maxH={200}
+          rounded={5}
+          objectFit="contain"
+        />
+      </Box>
       {uploading && (
         <>
           <Flex direction="column" align="center">

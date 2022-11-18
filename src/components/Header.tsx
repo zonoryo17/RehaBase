@@ -13,10 +13,10 @@ const Header = () => {
       <Link href="/">
         <a>
           <Image
-            src="/zonoworks.png"
+            src="/ApplicationFrameHost_gdA2j5B5Pp.png"
             alt="サービスロゴ"
             objectFit="contain"
-            width="300"
+            width="200"
             height="100"
           />
         </a>

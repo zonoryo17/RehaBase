@@ -24,7 +24,6 @@ const ReviewComponents = (facilityId: Props) => {
         .from<Review>('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)')
         .eq('facility_id', facilityId.facilityId);
-      console.log('reviews', reviews);
       setReviews(reviews);
       if (error) console.log('error', error);
     } catch (error: any) {
@@ -35,8 +34,8 @@ const ReviewComponents = (facilityId: Props) => {
   return (
     <>
       {reviews &&
-        reviews.map(({ id, title, content, total_rating, Users: user }) => (
-          <Flex mt="5" h={36}>
+        reviews.map(({ id, title, content, total_rating, Users: user }, i) => (
+          <Flex key={i} mt="5" h={36}>
             <Box>
               <Image
                 src={`${user?.avatar_url}`}

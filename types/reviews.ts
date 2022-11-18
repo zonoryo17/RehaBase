@@ -3,7 +3,7 @@ export type Review = {
   created_at: string;
   title: string;
   content: string;
-  total_rating?: number;
+  total_rating: number;
   reception_rating?: number;
   service_rating?: number;
   expense_rating?: number;
