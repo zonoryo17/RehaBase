@@ -1,11 +1,18 @@
-import { Box, Flex, IconButton, Spacer, useColorMode } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  IconButton,
+  Image,
+  Spacer,
+  useColorMode,
+} from '@chakra-ui/react';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
-import Image from 'next/image';
 import Link from 'next/link';
 import NavMenuDrawer from './HeaderNavMenu';
 import UserMenu from './profile/userMenu';
 
 const Header = () => {
+  //ダークモード用
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -13,11 +20,10 @@ const Header = () => {
       <Link href="/">
         <a>
           <Image
-            src="/ApplicationFrameHost_gdA2j5B5Pp.png"
+            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RehaBase.png?t=2022-11-19T14%3A36%3A32.712Z"
             alt="サービスロゴ"
             objectFit="contain"
-            width="200"
-            height="100"
+            width={300}
           />
         </a>
       </Link>

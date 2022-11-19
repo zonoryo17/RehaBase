@@ -16,14 +16,15 @@ const ReviewComponents = (facilityId: Props) => {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [reviews]);
 
   const fetchUserData = async () => {
     try {
       const { data: reviews, error } = await supabase
         .from<Review>('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)')
-        .eq('facility_id', facilityId.facilityId);
+        .eq('facility_id', facilityId.facilityId)
+        .order('created_at', { ascending: false });
       setReviews(reviews);
       if (error) console.log('error', error);
     } catch (error: any) {

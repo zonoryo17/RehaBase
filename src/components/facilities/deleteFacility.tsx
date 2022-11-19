@@ -13,6 +13,7 @@ import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+//施設情報削除コンポーネント
 const DeleteFacilityButton = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,15 +30,12 @@ const DeleteFacilityButton = () => {
 
   const handleDelete = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('Facilities')
         .delete()
         .eq('id', query.facilityId);
       if (error) {
-        console.log(error);
-      }
-      if (data) {
-        console.log(data);
+        throw error;
       }
       toast({
         title: '施設情報を削除しました。',

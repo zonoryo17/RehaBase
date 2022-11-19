@@ -10,6 +10,7 @@ import {
   Spinner,
   Text,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useState } from 'react';
@@ -19,11 +20,13 @@ import { useRouter } from 'next/router';
 const SignUpPage: NextPage = () => {
   //ダークモード対応用
   const bgColor = useColorModeValue('blackAlpha.50', 'gray.700');
+  const sendingBgColor = useColorModeValue('blue.100', 'blue.700');
   const inputBgColor = useColorModeValue('white', 'gray.600');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const toast = useToast();
   const router = useRouter();
 
   const handleSubmitSignUp = async (e: any) => {
@@ -36,6 +39,13 @@ const SignUpPage: NextPage = () => {
       });
       if (error) throw error;
       setIsLoading(false);
+      toast({
+        title: 'ユーザー登録確認メールを送信しました。',
+        status: 'success',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       throw new Error('ユーザー登録でエラーが発生しました');
     } finally {
@@ -57,8 +67,9 @@ const SignUpPage: NextPage = () => {
         <Box maxW={600} minW={400} ml={48} mr={{ sm: 40, lg: 20 }}>
           <Image
             objectFit="contain"
-            src="/login.jpg"
+            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RB-signup.jpg?t=2022-11-19T14%3A47%3A59.626Z"
             alt="ログイントップ画像"
+            rounded="20"
           />
         </Box>
         {isLoading && (
@@ -70,7 +81,7 @@ const SignUpPage: NextPage = () => {
             direction="column"
             justify="center"
             align="center"
-            bg="blue.100"
+            bg={sendingBgColor}
             rounded={5}
           >
             <Flex direction="column" align="center" fontSize="lg" mb={5}>

@@ -140,28 +140,28 @@ const Create: NextPage = () => {
               placeholder="施設の紹介を入力"
             />
 
-            <Text>リハビリ内容: </Text>
+            <Text>リハビリ内容一覧: </Text>
             <Input
               type="text"
               name="menu"
               value={menu}
               onChange={handleChange}
-              placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+              placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション，外来リハビリなど"
             />
-            <Text>費用: </Text>
+            <Text>費用目安: </Text>
             <Input
               type="text"
               name="price"
               value={price}
               onChange={handleChange}
-              placeholder="20分○○○○円"
+              placeholder="20分○○○○円～○○○○円"
             />
             <Accordion allowToggle>
               <AccordionItem>
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容2
+                      リハビリ内容詳細1
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -173,7 +173,7 @@ const Create: NextPage = () => {
                     name="menu2"
                     value={menu2}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="運動療法"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -181,7 +181,7 @@ const Create: NextPage = () => {
                     name="price2"
                     value={price2}
                     onChange={handleChange}
-                    placeholder="20分○○○○円"
+                    placeholder="脳血管20分○○○○円，運動器20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -189,7 +189,7 @@ const Create: NextPage = () => {
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容3
+                      リハビリ内容詳細2
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -201,7 +201,7 @@ const Create: NextPage = () => {
                     name="menu3"
                     value={menu3}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="心臓リハビリテーション"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -217,7 +217,7 @@ const Create: NextPage = () => {
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容4
+                      リハビリ内容詳細3
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -229,7 +229,7 @@ const Create: NextPage = () => {
                     name="menu4"
                     value={menu4}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="がんリハビリテーション"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -245,7 +245,7 @@ const Create: NextPage = () => {
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容5
+                      リハビリ内容詳細4
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -257,7 +257,7 @@ const Create: NextPage = () => {
                     name="menu5"
                     value={menu5}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="外来リハビリテーション"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -265,7 +265,7 @@ const Create: NextPage = () => {
                     name="price5"
                     value={price5}
                     onChange={handleChange}
-                    placeholder="20分○○○○円"
+                    placeholder="脳血管20分○○○○円，運動器20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -294,8 +294,6 @@ const Create: NextPage = () => {
                 py="3px"
                 px="8px"
                 w="100px"
-                bg="gray.100"
-                _hover={{ bg: 'gray.300' }}
                 onClick={createFacility}
               >
                 登録

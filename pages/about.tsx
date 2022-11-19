@@ -31,7 +31,12 @@ const AboutPage: NextPage = () => {
       </Head>
       <Flex direction="column" align="center">
         <Flex position="relative" justify="center" width="100%">
-          <Image src="/login.jpg" alt="トップイメージ" />
+          <Image
+            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/aboutImage?t=2022-11-19T12%3A19%3A16.448Z"
+            alt="トップイメージ"
+            w="50%"
+            rounded="20"
+          />
           <Box
             p="10"
             position="absolute"
@@ -42,13 +47,11 @@ const AboutPage: NextPage = () => {
             <Text
               fontSize={{ sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl' }}
               textAlign="center"
-              textColor="white"
-              textShadow="3px 3px 4px #171717"
+              textColor="orange.200"
+              textShadow="4px 4px 5px #171717"
               mb="32"
             >
-              あなたの声でつくる
-              <br />
-              リハビリ情報共有サイト
+              What's
               <br />
               RehaBase
             </Text>
@@ -158,17 +161,21 @@ const AboutPage: NextPage = () => {
           pt={10}
           pb={20}
         >
-          <Text fontWeight="bold" fontSize="3xl" my={5}>
+          <Text fontWeight="bold" fontSize="3xl" mt={5} mb={14}>
             RehaBaseの特徴
           </Text>
-          <Flex align="center" gap={5}>
+          <Flex align="center" gap={5} justify="center">
             <UnorderedList fontSize="xl" spacing={2}>
               <ListItem>気になるリハビリ施設を検索できる！</ListItem>
               <ListItem>リハビリ施設のリアルな評価がわかる！</ListItem>
               <ListItem>受けたリハビリの口コミを投稿できる！</ListItem>
               <ListItem>みんなでいいリハビリ施設の情報を共有できる！</ListItem>
             </UnorderedList>
-            <Image src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/user-social-networking-chatting-using-600w-1049386997.webp" />
+            <Image
+              src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/about-feature.jpg"
+              w="45%"
+              rounded="5"
+            />
           </Flex>
         </Flex>
         <Text fontWeight="bold" fontSize="3xl" my={5}>
@@ -176,8 +183,9 @@ const AboutPage: NextPage = () => {
         </Text>
         <Flex justify="center" align="center" w="100%" pt={10} pb={20} gap={5}>
           <Image
-            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/isometric-rehabilitation-physiotherapy-flowchart-composition-600w-1474502750.webp"
-            h={400}
+            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/about-target.jpg?t=2022-11-19T12%3A26%3A39.626Z"
+            w="35%"
+            rounded="5"
           />
           <UnorderedList fontSize="xl" spacing={2}>
             <ListItem>これからリハビリを受けようと考えている方</ListItem>

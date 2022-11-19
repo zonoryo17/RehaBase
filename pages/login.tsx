@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import {
+  Box,
   Button,
   Container,
   Flex,
@@ -22,6 +23,10 @@ const LoginPage: NextPage = () => {
   //ダークモード対応用
   const bgColor = useColorModeValue('blackAlpha.50', 'gray.700');
   const inputBgColor = useColorModeValue('white', 'gray.600');
+  const loginImage = useColorModeValue(
+    'https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RB-login.jpg',
+    'https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RB-login-removebg-preview.png?t=2022-11-19T13%3A10%3A48.635Z'
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -125,43 +130,43 @@ const LoginPage: NextPage = () => {
       <Head>
         <title>ログイン/RehaBase</title>
       </Head>
-      <Flex alignItems="center">
+      <Flex>
         <Container maxW="100%">
           <Image
-            boxSize="600px"
-            objectFit="contain"
-            src="/login.jpg"
+            src={loginImage}
             alt="ログイントップ画像"
             mx="auto"
+            w="70%"
+            mt={20}
+            rounded="10"
           />
           <Flex direction="column">
             <Text
               fontSize="3xl"
+              textColor="gray.700"
               textAlign="center"
               position="relative"
-              top="-500"
-              borderRadius="10"
-              opacity="0.8"
+              top="-400"
             >
               あなたの声で作るリハビリ情報共有サイト
             </Text>
             <Text
               fontSize="5xl"
+              textColor="gray.700"
               textAlign="center"
               position="relative"
-              top="-450"
-              borderRadius="10"
-              opacity="0.8"
+              top="-410"
+              textShadow="3px 3px 4px #FFF"
             >
-              サービスタイトル
+              RehaBase
             </Text>
           </Flex>
         </Container>
-        <Container bg={bgColor} borderRadius="10" mr={10}>
+        <Container bg={bgColor} borderRadius="10" h={520} mr={16} mt={10}>
           <Text fontSize="lg" fontWeight="bold" mt={5}>
             ユーザーログイン
           </Text>
-          <Flex direction="column" py={10}>
+          <Flex direction="column" py={5}>
             <FormControl isRequired>
               <FormLabel>Email</FormLabel>
               <Input

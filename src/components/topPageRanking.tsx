@@ -44,23 +44,50 @@ const TopPageRanking = () => {
   return (
     <>
       {topRankFacilities?.map(
-        ({ id, name, address, image_url, total_rating_ave }) => (
-          <Link href={`/facilities/${id}`} key={id}>
+        (
+          { id, name, address, image_url, phone_number, total_rating_ave },
+          i
+        ) => (
+          <Link href={`/facilities/${id}`} key={i}>
             <a>
               <Box
                 border="solid 1px"
                 alignItems="center"
                 rounded="20px"
                 boxShadow="md"
-                py="3"
-                px="5"
+                maxW={{ sm: 420, md: 530 }}
+                minW={{ sm: 400, md: 500, xl: 380 }}
+                h={270}
+                mx={2}
+                mb={3}
+                py={3}
+                px={3}
               >
                 <Flex alignItems="center" justifyContent="center" mb="5">
-                  <Image
-                    alt="ランキングのアイコン"
-                    w="50px"
-                    src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/crown1.png?t=2022-11-13T01%3A35%3A27.458Z"
-                  />
+                  {i === 0 && (
+                    <Image
+                      alt="ランキングのアイコン"
+                      w="50px"
+                      rounded="10"
+                      src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/crown1-opc.png?t=2022-11-19T11%3A39%3A02.631Z"
+                    />
+                  )}
+                  {i === 1 && (
+                    <Image
+                      alt="ランキングのアイコン"
+                      w="50px"
+                      rounded="10"
+                      src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/crown2-opc.png"
+                    />
+                  )}
+                  {i === 2 && (
+                    <Image
+                      alt="ランキングのアイコン"
+                      w="50px"
+                      rounded="10"
+                      src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/crown3-opc.png?t=2022-11-19T11%3A39%3A17.802Z"
+                    />
+                  )}
                   <Text fontSize="2xl" ml="5">
                     {name}
                   </Text>
@@ -69,21 +96,15 @@ const TopPageRanking = () => {
                   <Image
                     src={image_url ? image_url : '/no_image.jpg'}
                     alt="施設の画像"
-                    w="200px"
+                    w={{ sm: '100px', md: '150px', lg: '200px' }}
                     // h="200px"
                   />
                   <TableContainer>
                     <Table variant="simple" size="sm">
                       <Thead>
                         <Tr>
-                          <Th>所在地：</Th>
-                          <Th>{address}</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        <Tr>
-                          <Td>総合評価：</Td>
-                          <Td textColor="yellow.400">
+                          <Th>総合評価：</Th>
+                          <Th textColor="yellow.400" px={0}>
                             <Flex gap={1}>
                               {total_rating_ave}
                               <ReactStars
@@ -94,23 +115,17 @@ const TopPageRanking = () => {
                                 edit={false}
                               />
                             </Flex>
-                          </Td>
+                          </Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        <Tr>
+                          <Td>所在地：</Td>
+                          <Td px={0}>{address}</Td>
                         </Tr>
                         <Tr>
-                          <Td>費用：</Td>
-                          <Td textColor="yellow.400">★★★★★</Td>
-                        </Tr>
-                        <Tr>
-                          <Td>接遇：</Td>
-                          <Td textColor="yellow.400">★★★★★</Td>
-                        </Tr>
-                        <Tr>
-                          <Td>設備：</Td>
-                          <Td textColor="yellow.400">★★★★★</Td>
-                        </Tr>
-                        <Tr>
-                          <Td>技術：</Td>
-                          <Td textColor="yellow.400">★★★★★</Td>
+                          <Td>電話番号：</Td>
+                          <Td px={0}>{phone_number}</Td>
                         </Tr>
                       </Tbody>
                     </Table>

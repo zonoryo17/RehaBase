@@ -8,10 +8,9 @@ const Footer = () => {
       <Link href="/">
         <a>
           <Image
-            src="/ApplicationFrameHost_gdA2j5B5Pp.png"
+            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RehaBase.png?t=2022-11-19T14%3A36%3A32.712Z"
             alt="サービスロゴ"
-            width="50"
-            height="50"
+            width={200}
           />
         </a>
       </Link>
@@ -22,7 +21,7 @@ const Footer = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Flex align="center" gap={1}>
+          <Flex align="center" gap={1} mt={9}>
             <GrAnnounce size="1rem" />
             フィードバックを送信
           </Flex>

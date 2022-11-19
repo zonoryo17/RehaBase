@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import {
   Box,
   Button,
+  Center,
   Flex,
   Image,
   Input,
@@ -45,14 +46,19 @@ const SendEmailToResetPassword: NextPage = () => {
       <Head>
         <title>パスワード再設定/RehaBase</title>
       </Head>
-      <Flex mx={20}>
+      <Center mx={20} my={10}>
         <Image
-          src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/stock-vector-the-marketer-in-front-of-the-screen-sending-email-to-customers-vector-illustration-1658793802.jpg"
-          w={600}
-          mx={20}
+          src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RB-forgetPW.jpg?t=2022-11-19T15%3A14%3A35.563Z"
+          w={400}
+          mr={36}
+          ml={10}
+          rounded={20}
         />
         {!isLoading && !isSend && (
-          <Box mt={100}>
+          <Box mt={30}>
+            <Text fontSize="3xl" mb={10}>
+              パスワードをお忘れですか？
+            </Text>
             <Text mb={2}>登録されているメールアドレスを入力してください</Text>
             <form onSubmit={handleSubmitEmail}>
               <Input
@@ -86,7 +92,7 @@ const SendEmailToResetPassword: NextPage = () => {
           <Flex
             direction="column"
             align="center"
-            bg="teal.400"
+            bg="blue.500"
             mt={32}
             w={500}
             h={200}
@@ -107,7 +113,7 @@ const SendEmailToResetPassword: NextPage = () => {
             </Text>
           </Flex>
         )}
-      </Flex>
+      </Center>
     </>
   );
 };

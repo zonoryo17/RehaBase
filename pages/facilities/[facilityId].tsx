@@ -47,7 +47,6 @@ const FacilityDetailPage: NextPage = () => {
 
   useEffect(() => {
     if (facilityId) fetchFacility();
-    // getTotalRating();
   }, [facilityId]);
 
   //Facility情報の詳細（シングルページ）取得処理
@@ -72,6 +71,10 @@ const FacilityDetailPage: NextPage = () => {
     name,
     explanation,
     menu,
+    menu2,
+    menu3,
+    menu4,
+    menu5,
     price,
     price2,
     price3,
@@ -177,7 +180,7 @@ const FacilityDetailPage: NextPage = () => {
               <Tab>内容</Tab>
               <Tab>費用</Tab>
               <Tab>写真</Tab>
-              <Tab>地図</Tab>
+              <Tab>住所</Tab>
             </TabList>
             <TabPanels textAlign="start">
               <TabPanel>
@@ -193,14 +196,24 @@ const FacilityDetailPage: NextPage = () => {
                 </Box>
               </TabPanel>
               <TabPanel>
-                <p>リハビリ内容一覧：{menu}</p>
+                <Text>リハビリ内容一覧：{menu}</Text>
               </TabPanel>
               <TabPanel>
-                <p>費用：{price}</p>
-                <p>　　　{price2}</p>
-                <p>　　　{price3}</p>
-                <p>　　　{price4}</p>
-                <p>　　　{price5}</p>
+                <Text>【費用目安】</Text>
+                <Text>　{price}</Text>
+                <Text>【個別費用】</Text>
+                <Text>
+                  　＜{menu2}＞{price2}
+                </Text>
+                <Text>
+                  　＜{menu3}＞{price3}
+                </Text>
+                <Text>
+                  　＜{menu4}＞{price4}
+                </Text>
+                <Text>
+                  　＜{menu5}＞{price5}
+                </Text>
               </TabPanel>
               <TabPanel>
                 <Box>

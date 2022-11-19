@@ -46,6 +46,7 @@ type InitialState = {
 const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const toast = useToast();
   const userData = useContext(UserDataContext);
   const user = supabase.auth.user();
 
@@ -84,8 +85,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     setReview({ ...review, [e.target.name]: e.target.value });
   };
 
-  const toast = useToast();
-
   //Reviewのcreate処理
   const handleClickCreateReview = async () => {
     try {
@@ -109,6 +108,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     } catch (error: any) {
       alert(error.message);
     } finally {
+      setReview(initialReviewState);
       onClose();
     }
   };
