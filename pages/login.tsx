@@ -131,32 +131,33 @@ const LoginPage: NextPage = () => {
         <title>ログイン/RehaBase</title>
       </Head>
       <Flex>
-        <Container maxW="100%">
+        <Container minW={300} maxW={700} mx="auto" position="relative">
           <Image
             src={loginImage}
             alt="ログイントップ画像"
-            mx="auto"
-            w="70%"
-            mt={20}
+            mt={10}
+            mr={10}
             rounded="10"
           />
           <Flex direction="column">
             <Text
-              fontSize="3xl"
+              fontSize={{ lg: 'xl', xl: '3xl' }}
               textColor="gray.700"
               textAlign="center"
-              position="relative"
-              top="-400"
+              position="absolute"
+              top="14"
+              left="20"
             >
               あなたの声で作るリハビリ情報共有サイト
             </Text>
             <Text
-              fontSize="5xl"
-              textColor="gray.700"
               textAlign="center"
-              position="relative"
-              top="-410"
+              fontSize={{ lg: '2xl', xl: '5xl' }}
+              textColor="gray.700"
               textShadow="3px 3px 4px #FFF"
+              position="absolute"
+              top="24"
+              left="64"
             >
               RehaBase
             </Text>
@@ -222,12 +223,20 @@ const LoginPage: NextPage = () => {
                 <Image
                   src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/btn_google_signin_light_normal_web@2x.png?t=2022-11-12T07%3A15%3A16.040Z"
                   w={240}
+                  h="14"
                 />
               </Button>
-              <Button onClick={signInWithGithub}>GitHub</Button>
-              {/* Facebookはlocalhostでは認証作れないようなのでドメイン取得後設定します
-            ひとまずGoogleのonClickイベントを設定しています */}
-              <Button onClick={signInWithGoogle}>Facebook</Button>
+              <Button
+                onClick={signInWithGithub}
+                bg="none"
+                _hover={{ bg: 'none' }}
+              >
+                <Image
+                  src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/GitHub.png?t=2022-11-20T12%3A59%3A19.959Z"
+                  w={231}
+                  mt={5}
+                />
+              </Button>
             </Flex>
           </Flex>
         </Container>

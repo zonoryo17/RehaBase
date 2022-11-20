@@ -21,6 +21,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import PrefectureSelector from '@components/profile/prefectureSelector';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -56,6 +57,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
     menu3,
     price4,
     price5,
+    prefecture,
     address,
     phone_number,
   } = facility;
@@ -273,6 +275,13 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                       </AccordionPanel>
                     </AccordionItem>
                   </Accordion>
+                  <Text>所在地: </Text>
+                  <Box w={170}>
+                    <PrefectureSelector
+                      prefecture={prefecture}
+                      handleChange={handleChange}
+                    />
+                  </Box>
                   <Text>住所: </Text>
                   <Input
                     type="text"

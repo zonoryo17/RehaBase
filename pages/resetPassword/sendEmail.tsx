@@ -49,14 +49,15 @@ const SendEmailToResetPassword: NextPage = () => {
       <Center mx={20} my={10}>
         <Image
           src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RB-forgetPW.jpg?t=2022-11-19T15%3A14%3A35.563Z"
-          w={400}
+          maxW={400}
+          minW={200}
           mr={36}
           ml={10}
           rounded={20}
         />
         {!isLoading && !isSend && (
-          <Box mt={30}>
-            <Text fontSize="3xl" mb={10}>
+          <Box mt={30} minW={300}>
+            <Text fontSize={{ lg: '2xl', xl: '3xl' }} mb={10}>
               パスワードをお忘れですか？
             </Text>
             <Text mb={2}>登録されているメールアドレスを入力してください</Text>

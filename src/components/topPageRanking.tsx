@@ -45,7 +45,7 @@ const TopPageRanking = () => {
     <>
       {topRankFacilities?.map(
         (
-          { id, name, address, image_url, phone_number, total_rating_ave },
+          { id, name, prefecture, image_url, phone_number, total_rating_ave },
           i
         ) => (
           <Link href={`/facilities/${id}`} key={i}>
@@ -55,9 +55,9 @@ const TopPageRanking = () => {
                 alignItems="center"
                 rounded="20px"
                 boxShadow="md"
-                maxW={{ sm: 420, md: 530 }}
-                minW={{ sm: 400, md: 500, xl: 380 }}
-                h={270}
+                maxW={{ sm: 400, md: 450, lg: 500 }}
+                minW={{ sm: 230, md: 300, lg: 420 }}
+                h={{ sm: 200, md: 240, lg: 260 }}
                 mx={2}
                 mb={3}
                 py={3}
@@ -121,7 +121,7 @@ const TopPageRanking = () => {
                       <Tbody>
                         <Tr>
                           <Td>所在地：</Td>
-                          <Td px={0}>{address}</Td>
+                          <Td px={0}>{prefecture}</Td>
                         </Tr>
                         <Tr>
                           <Td>電話番号：</Td>

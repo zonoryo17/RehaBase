@@ -23,6 +23,7 @@ import Head from 'next/head';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import { Facility } from '../../types/facility';
 import { UserDataContext } from '../_app';
+import PrefectureSelector from '@components/profile/prefectureSelector';
 
 const Create: NextPage = () => {
   const userData = useContext(UserDataContext);
@@ -30,6 +31,9 @@ const Create: NextPage = () => {
   const initialState = {
     name: '',
     explanation: '',
+    prefecture: '',
+    address: '',
+    phone_number: '',
     menu: '',
     price: '',
     menu2: '',
@@ -40,8 +44,6 @@ const Create: NextPage = () => {
     price4: '',
     menu5: '',
     price5: '',
-    address: '',
-    phone_number: '',
     auth_id: user?.id,
     user_id: userData?.id,
   };
@@ -49,6 +51,9 @@ const Create: NextPage = () => {
   const {
     name,
     explanation,
+    prefecture,
+    address,
+    phone_number,
     menu,
     price,
     menu2,
@@ -59,8 +64,6 @@ const Create: NextPage = () => {
     price4,
     menu5,
     price5,
-    address,
-    phone_number,
   } = facility;
 
   const router = useRouter();
@@ -270,6 +273,13 @@ const Create: NextPage = () => {
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
+            <Text>所在地: </Text>
+            <Box w={170}>
+              <PrefectureSelector
+                prefecture={prefecture}
+                handleChange={handleChange}
+              />
+            </Box>
             <Text>住所: </Text>
             <Input
               type="text"

@@ -98,7 +98,13 @@ const SignUpPage: NextPage = () => {
           </Flex>
         )}
         {!isLoading && (
-          <Container bg={bgColor} borderRadius="10" mr={16} maxW={600}>
+          <Container
+            bg={bgColor}
+            borderRadius="10"
+            mr={16}
+            maxW={600}
+            minW={400}
+          >
             <Text fontSize="lg" fontWeight="bold" mt={5}>
               新規ユーザー登録
             </Text>
