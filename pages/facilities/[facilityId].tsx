@@ -202,18 +202,26 @@ const FacilityDetailPage: NextPage = () => {
                 <Text>【費用目安】</Text>
                 <Text>　{price}</Text>
                 <Text>【個別費用】</Text>
-                <Text>
-                  　＜{menu2}＞{price2}
-                </Text>
-                <Text>
-                  　＜{menu3}＞{price3}
-                </Text>
-                <Text>
-                  　＜{menu4}＞{price4}
-                </Text>
-                <Text>
-                  　＜{menu5}＞{price5}
-                </Text>
+                {menu2 && (
+                  <Text>
+                    　＜{menu2}＞{price2}
+                  </Text>
+                )}
+                {menu3 && (
+                  <Text>
+                    　＜{menu3}＞{price3}
+                  </Text>
+                )}
+                {menu4 && (
+                  <Text>
+                    　＜{menu4}＞{price4}
+                  </Text>
+                )}
+                {menu5 && (
+                  <Text>
+                    　＜{menu5}＞{price5}
+                  </Text>
+                )}
               </TabPanel>
               <TabPanel>
                 <Box>
