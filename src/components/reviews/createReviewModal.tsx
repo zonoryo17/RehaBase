@@ -7,6 +7,9 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Input,
   Modal,
   ModalBody,
@@ -113,6 +116,10 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     }
   };
 
+  const isTotalRatingError = total_rating === undefined;
+  const isTitleError = title === '';
+  const isContentError = content === '';
+
   return (
     <>
       {!isLoggedIn && (
@@ -149,17 +156,24 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                 {facilityName}
               </Text>
               <Text borderBottom="1px solid black"></Text>
-              <Text mt={3}>総合評価</Text>
-              {/* 評価点数用の星コンポーネント */}
-              <ReactStars
-                count={5}
-                size={30}
-                color2={'#ffd700'}
-                value={total_rating}
-                onChange={(newRating) =>
-                  setReview({ ...review, total_rating: newRating })
-                }
-              />
+              <FormControl isInvalid={isTotalRatingError}>
+                <FormLabel mt={3}>総合評価</FormLabel>
+                {/* 評価点数用の星コンポーネント */}
+                <ReactStars
+                  count={5}
+                  size={30}
+                  color2={'#ffd700'}
+                  value={total_rating}
+                  onChange={(newRating) =>
+                    setReview({ ...review, total_rating: newRating })
+                  }
+                />
+                {total_rating === undefined && (
+                  <FormErrorMessage mt={0} mb={3}>
+                    ※総合評価を入力してください
+                  </FormErrorMessage>
+                )}
+              </FormControl>
               <Accordion allowToggle>
                 <AccordionItem>
                   <h2>
@@ -251,22 +265,36 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                 </AccordionItem>
               </Accordion>
               <Text borderBottom="1px solid black"></Text>
-              <Text mt={3}>タイトル</Text>
-              <Input
-                name="title"
-                value={title}
-                onChange={handleChange}
-                placeholder="タイトルを入力"
-                my={3}
-              />
-              <Text mt={3}>口コミ内容</Text>
-              <Textarea
-                name="content"
-                value={content}
-                onChange={handleChange}
-                placeholder="口コミ本文を入力"
-                my={3}
-              />
+              <FormControl isInvalid={isTitleError}>
+                <FormLabel mt={3}>タイトル</FormLabel>
+                <Input
+                  name="title"
+                  value={title}
+                  onChange={handleChange}
+                  placeholder="タイトルを入力"
+                  my={3}
+                />
+                {isTitleError && (
+                  <FormErrorMessage mt={0} mb={3}>
+                    ※タイトルを入力してください
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+              <FormControl isInvalid={isContentError}>
+                <FormLabel mt={3}>口コミ内容</FormLabel>
+                <Textarea
+                  name="content"
+                  value={content}
+                  onChange={handleChange}
+                  placeholder="口コミ本文を入力"
+                  my={3}
+                />
+                {isContentError && (
+                  <FormErrorMessage mt={0} mb={3}>
+                    ※口コミ内容を入力してください
+                  </FormErrorMessage>
+                )}
+              </FormControl>
             </Box>
           </ModalBody>
           <ModalFooter>

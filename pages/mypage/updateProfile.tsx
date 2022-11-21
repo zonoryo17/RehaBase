@@ -30,10 +30,12 @@ const MyPage = () => {
   const userData = useContext(UserDataContext);
   const userId = userData.id;
   console.log('userId', userId);
+  console.log('userData', userData);
 
   const initialState = {
     ...userData,
   };
+
   const [userProfile, setUserProfile] = useState<User>(initialState);
   const { user_name, profile, age, gender, prefecture } = userProfile;
 
@@ -139,7 +141,7 @@ const MyPage = () => {
                 </Stack>
               </RadioGroup>
               <Text mt={5}>年齢</Text>
-              <NumberInput w="20%" minW="80px">
+              <NumberInput w="20%" minW="80px" defaultValue={age}>
                 <NumberInputField
                   value={age}
                   name="age"
