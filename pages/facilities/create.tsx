@@ -1,7 +1,3 @@
-import { supabase } from '../../src/utils/supabaseClient';
-import { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
-import { BsArrowLeftCircle } from 'react-icons/bs';
 import {
   Accordion,
   AccordionButton,
@@ -18,10 +14,16 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import Link from 'next/link';
-import { Facility } from '../../types/facility';
+import { supabase } from '../../src/utils/supabaseClient';
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
+import Link from 'next/link';
+import Head from 'next/head';
+import { BsArrowLeftCircle } from 'react-icons/bs';
+import { Facility } from '../../types/facility';
 import { UserDataContext } from '../_app';
+import PrefectureSelector from '@components/profile/prefectureSelector';
 
 const Create: NextPage = () => {
   const userData = useContext(UserDataContext);
@@ -29,6 +31,9 @@ const Create: NextPage = () => {
   const initialState = {
     name: '',
     explanation: '',
+    prefecture: '',
+    address: '',
+    phone_number: '',
     menu: '',
     price: '',
     menu2: '',
@@ -39,8 +44,6 @@ const Create: NextPage = () => {
     price4: '',
     menu5: '',
     price5: '',
-    address: '',
-    phone_number: '',
     auth_id: user?.id,
     user_id: userData?.id,
   };
@@ -48,6 +51,9 @@ const Create: NextPage = () => {
   const {
     name,
     explanation,
+    prefecture,
+    address,
+    phone_number,
     menu,
     price,
     menu2,
@@ -58,8 +64,6 @@ const Create: NextPage = () => {
     price4,
     menu5,
     price5,
-    address,
-    phone_number,
   } = facility;
 
   const router = useRouter();
@@ -99,6 +103,9 @@ const Create: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>施設情報登録/RehaBase</title>
+      </Head>
       <Link href="/facilities">
         <Button ml="32" mt="10">
           {/*戻るボタンのアイコン */}
@@ -136,28 +143,28 @@ const Create: NextPage = () => {
               placeholder="施設の紹介を入力"
             />
 
-            <Text>リハビリ内容: </Text>
+            <Text>リハビリ内容一覧: </Text>
             <Input
               type="text"
               name="menu"
               value={menu}
               onChange={handleChange}
-              placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+              placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション，外来リハビリなど"
             />
-            <Text>費用: </Text>
+            <Text>費用目安: </Text>
             <Input
               type="text"
               name="price"
               value={price}
               onChange={handleChange}
-              placeholder="○○○○円"
+              placeholder="20分○○○○円～○○○○円"
             />
             <Accordion allowToggle>
               <AccordionItem>
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容2
+                      リハビリ内容詳細1
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -169,7 +176,7 @@ const Create: NextPage = () => {
                     name="menu2"
                     value={menu2}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="運動療法"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -177,7 +184,7 @@ const Create: NextPage = () => {
                     name="price2"
                     value={price2}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="脳血管20分○○○○円，運動器20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -185,7 +192,7 @@ const Create: NextPage = () => {
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容3
+                      リハビリ内容詳細2
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -197,7 +204,7 @@ const Create: NextPage = () => {
                     name="menu3"
                     value={menu3}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="心臓リハビリテーション"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -205,7 +212,7 @@ const Create: NextPage = () => {
                     name="price3"
                     value={price3}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -213,7 +220,7 @@ const Create: NextPage = () => {
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容4
+                      リハビリ内容詳細3
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -225,7 +232,7 @@ const Create: NextPage = () => {
                     name="menu4"
                     value={menu4}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="がんリハビリテーション"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -233,7 +240,7 @@ const Create: NextPage = () => {
                     name="price4"
                     value={price4}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
@@ -241,7 +248,7 @@ const Create: NextPage = () => {
                 <h2>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      リハビリ内容5
+                      リハビリ内容詳細4
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -253,7 +260,7 @@ const Create: NextPage = () => {
                     name="menu5"
                     value={menu5}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="外来リハビリテーション"
                   />
                   <Text>費用: </Text>
                   <Input
@@ -261,11 +268,18 @@ const Create: NextPage = () => {
                     name="price5"
                     value={price5}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="脳血管20分○○○○円，運動器20分○○○○円"
                   />
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
+            <Text>所在地: </Text>
+            <Box w={170}>
+              <PrefectureSelector
+                prefecture={prefecture}
+                handleChange={handleChange}
+              />
+            </Box>
             <Text>住所: </Text>
             <Input
               type="text"
@@ -282,19 +296,19 @@ const Create: NextPage = () => {
               onChange={handleChange}
               placeholder="01-1234-5678"
             />
-            <Button
-              border="1px solid"
-              borderRadius="5px"
-              boxShadow="md"
-              py="3px"
-              px="8px"
-              w="100px"
-              bg="gray.100"
-              _hover={{ bg: 'gray.300' }}
-              onClick={createFacility}
-            >
-              登録
-            </Button>
+            <Flex justify="end">
+              <Button
+                border="1px solid"
+                borderRadius="5px"
+                boxShadow="md"
+                py="3px"
+                px="8px"
+                w="100px"
+                onClick={createFacility}
+              >
+                登録
+              </Button>
+            </Flex>
           </Stack>
         </Flex>
       </Center>

@@ -21,7 +21,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import ReactStars from 'react-stars';
 import { UserDataContext } from '../../../pages/_app';
 
@@ -29,22 +29,40 @@ type Props = {
   facilityName: string;
   facilityId: string;
 };
+type InitialState = {
+  title: string;
+  content: string;
+  total_rating?: number;
+  reception_rating?: number;
+  service_rating?: number;
+  expense_rating?: number;
+  equipment_rating?: number;
+  environment_rating?: number;
+  facility_id?: string;
+  auth_id?: string;
+  user_id?: string;
+};
 
 const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const toast = useToast();
   const userData = useContext(UserDataContext);
   const user = supabase.auth.user();
 
-  const initialReviewState = {
+  useEffect(() => {
+    if (user) setIsLoggedIn(true);
+  }, []);
+
+  const initialReviewState: InitialState = {
     title: '',
     content: '',
-    total_rating: 0,
-    reception_rating: 0,
-    service_rating: 0,
-    expense_rating: 0,
-    equipment_rating: 0,
-    environment_rating: 0,
-    image_url: null,
+    total_rating: undefined,
+    reception_rating: undefined,
+    service_rating: undefined,
+    expense_rating: undefined,
+    equipment_rating: undefined,
+    environment_rating: undefined,
     facility_id: facilityId,
     auth_id: user?.id,
     user_id: userData?.id,
@@ -66,8 +84,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
   }) => {
     setReview({ ...review, [e.target.name]: e.target.value });
   };
-
-  const toast = useToast();
 
   //Reviewのcreate処理
   const handleClickCreateReview = async () => {
@@ -92,13 +108,30 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     } catch (error: any) {
       alert(error.message);
     } finally {
+      setReview(initialReviewState);
       onClose();
     }
   };
 
   return (
     <>
-      <Button onClick={onOpen}>口コミを投稿</Button>
+      {!isLoggedIn && (
+        <Button
+          onClick={() =>
+            toast({
+              title:
+                'ログインされていない場合、口コミ投稿はご利用いただけません',
+              status: 'error',
+              duration: 6000,
+              position: 'top',
+              isClosable: true,
+            })
+          }
+        >
+          口コミを投稿
+        </Button>
+      )}
+      {isLoggedIn && <Button onClick={onOpen}>口コミを投稿</Button>}
 
       <Modal
         blockScrollOnMount={false}

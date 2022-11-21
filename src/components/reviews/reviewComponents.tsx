@@ -6,21 +6,26 @@ import { useRouter } from 'next/router';
 import { Review } from '../../../types/reviews';
 import ReactStars from 'react-stars';
 
-const ReviewComponents: React.FC = () => {
+type Props = {
+  facilityId: string | string[] | undefined;
+};
+
+const ReviewComponents = (facilityId: Props) => {
   const [reviews, setReviews] = useState<Review[] | null>([]);
   const router = useRouter();
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [reviews]);
 
   const fetchUserData = async () => {
     try {
       const { data: reviews, error } = await supabase
         .from<Review>('Reviews')
-        .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)');
+        .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)')
+        .eq('facility_id', facilityId.facilityId)
+        .order('created_at', { ascending: false });
       setReviews(reviews);
-      console.log('reviews', reviews);
       if (error) console.log('error', error);
     } catch (error: any) {
       alert(error.message);
@@ -30,13 +35,13 @@ const ReviewComponents: React.FC = () => {
   return (
     <>
       {reviews &&
-        reviews.map(({ id, title, content, total_rating, Users: user }) => (
-          <Flex key={id} mt="5" h={36}>
+        reviews.map(({ id, title, content, total_rating, Users: user }, i) => (
+          <Flex key={i} mt="5" h={36}>
             <Box>
               <Image
                 src={`${user?.avatar_url}`}
-                width="100"
-                height="100"
+                width={100}
+                height={100}
                 borderRadius={50}
               />
               <Text align="center">{user?.user_name}</Text>

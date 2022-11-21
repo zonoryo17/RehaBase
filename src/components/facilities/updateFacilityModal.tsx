@@ -21,9 +21,10 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import PrefectureSelector from '@components/profile/prefectureSelector';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Facility } from '../../../types/facility';
 
 type Props = {
@@ -31,7 +32,18 @@ type Props = {
 };
 
 const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [facility, setFacility] = useState(originalFacility);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
+  const query = router.query;
+  const toast = useToast();
+  const user = supabase.auth.user();
+
+  useEffect(() => {
+    if (user) setIsLoggedIn(true);
+  }, []);
+
   const {
     name,
     explanation,
@@ -45,14 +57,10 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
     menu3,
     price4,
     price5,
+    prefecture,
     address,
     phone_number,
   } = facility;
-
-  const router = useRouter();
-  const query = router.query;
-  const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleChange = (e: {
     target: HTMLInputElement | HTMLTextAreaElement;
@@ -90,9 +98,27 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
-        施設情報を更新
-      </Button>
+      {isLoggedIn && (
+        <Button colorScheme="blue" onClick={onOpen}>
+          施設情報を更新
+        </Button>
+      )}
+      {!isLoggedIn && (
+        <Button
+          colorScheme="blue"
+          onClick={() =>
+            toast({
+              title: 'ログインされていない場合、施設情報の更新はできません',
+              status: 'error',
+              duration: 6000,
+              position: 'top',
+              isClosable: true,
+            })
+          }
+        >
+          施設情報を更新
+        </Button>
+      )}
       <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalOverlay />
         <ModalContent>
@@ -119,28 +145,28 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                     onChange={handleChange}
                     placeholder="施設の紹介を入力"
                   />
-                  <Text>リハビリ内容: </Text>
+                  <Text>リハビリ内容一覧: </Text>
                   <Input
                     type="text"
                     name="menu"
                     value={menu}
                     onChange={handleChange}
-                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                    placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション，訪問リハビリなど"
                   />
-                  <Text>費用: </Text>
+                  <Text>費用目安: </Text>
                   <Input
                     type="text"
                     name="price"
                     value={price}
                     onChange={handleChange}
-                    placeholder="○○○○円"
+                    placeholder="○○○○～○○○○円"
                   />
                   <Accordion allowToggle>
                     <AccordionItem>
                       <h2>
                         <AccordionButton>
                           <Box flex="1" textAlign="left">
-                            リハビリ内容2
+                            リハビリ内容詳細1
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
@@ -152,7 +178,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="menu2"
                           value={menu2}
                           onChange={handleChange}
-                          placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                          placeholder="運動療法"
                         />
                         <Text>費用: </Text>
                         <Input
@@ -160,7 +186,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="price2"
                           value={price2}
                           onChange={handleChange}
-                          placeholder="○○○○円"
+                          placeholder="20分○○○○円"
                         />
                       </AccordionPanel>
                     </AccordionItem>
@@ -168,7 +194,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                       <h2>
                         <AccordionButton>
                           <Box flex="1" textAlign="left">
-                            リハビリ内容3
+                            リハビリ内容詳細2
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
@@ -180,7 +206,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="menu3"
                           value={menu3}
                           onChange={handleChange}
-                          placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                          placeholder="心臓リハビリテーション"
                         />
                         <Text>費用: </Text>
                         <Input
@@ -188,7 +214,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="price3"
                           value={price3}
                           onChange={handleChange}
-                          placeholder="○○○○円"
+                          placeholder="20分○○○○円"
                         />
                       </AccordionPanel>
                     </AccordionItem>
@@ -196,7 +222,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                       <h2>
                         <AccordionButton>
                           <Box flex="1" textAlign="left">
-                            リハビリ内容4
+                            リハビリ内容詳細3
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
@@ -208,7 +234,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="menu4"
                           value={menu4}
                           onChange={handleChange}
-                          placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                          placeholder="がんリハビリテーション"
                         />
                         <Text>費用: </Text>
                         <Input
@@ -216,7 +242,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="price4"
                           value={price4}
                           onChange={handleChange}
-                          placeholder="○○○○円"
+                          placeholder="20分○○○○円"
                         />
                       </AccordionPanel>
                     </AccordionItem>
@@ -224,7 +250,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                       <h2>
                         <AccordionButton>
                           <Box flex="1" textAlign="left">
-                            リハビリ内容5
+                            リハビリ内容詳細4
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
@@ -236,7 +262,7 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="menu5"
                           value={menu5}
                           onChange={handleChange}
-                          placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション"
+                          placeholder="外来リハビリ"
                         />
                         <Text>費用: </Text>
                         <Input
@@ -244,11 +270,18 @@ const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
                           name="price5"
                           value={price5}
                           onChange={handleChange}
-                          placeholder="○○○○円"
+                          placeholder="20分○○○○円"
                         />
                       </AccordionPanel>
                     </AccordionItem>
                   </Accordion>
+                  <Text>所在地: </Text>
+                  <Box w={170}>
+                    <PrefectureSelector
+                      prefecture={prefecture}
+                      handleChange={handleChange}
+                    />
+                  </Box>
                   <Text>住所: </Text>
                   <Input
                     type="text"

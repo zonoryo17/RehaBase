@@ -1,11 +1,11 @@
 import {
-  Button,
+  Box,
   Flex,
   Image,
-  Input,
   Spinner,
   Text,
   useToast,
+  VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
@@ -29,7 +29,6 @@ const UploadFacilityImage = () => {
       .single();
     if (data) {
       setImageFileUrl(data.image_url);
-      console.log('getFacilityImages', data);
     }
     if (error) {
       throw error;
@@ -74,14 +73,11 @@ const UploadFacilityImage = () => {
 
   //facilitiesテーブルに画像URLを保存
   const handleCreateFacilityImage = async (fileUrl: string) => {
-    console.log('fileUrl:', fileUrl);
-
     try {
       const { data, error } = await supabase
         .from('Facilities')
         .update({ image_url: fileUrl })
         .eq('id', facilityId);
-      console.log('uploadTable:', data);
       if (error) throw error;
       // 作成完了のポップアップ
       toast({
@@ -99,13 +95,16 @@ const UploadFacilityImage = () => {
 
   return (
     <Flex aria-live="polite" direction="column" align="center">
-      <Image
-        src={imageFileUrl ? imageFileUrl : '/no_image.jpg'}
-        alt={imageFileUrl ? 'プロフィール画像' : '画像なし'}
-        w={300}
-        maxH={200}
-        objectFit="contain"
-      />
+      <Box>
+        <Image
+          src={imageFileUrl ? imageFileUrl : '/no_image.jpg'}
+          alt={imageFileUrl ? 'プロフィール画像' : '画像なし'}
+          w={300}
+          maxH={200}
+          rounded={5}
+          objectFit="contain"
+        />
+      </Box>
       {uploading && (
         <>
           <Flex direction="column" align="center">
@@ -124,17 +123,36 @@ const UploadFacilityImage = () => {
       )}
       {!uploading && (
         <>
-          <Input // ★ ファイル選択ダイアログ
+          <VisuallyHiddenInput // ★ ファイル選択ダイアログ
+            id="facilityImage"
             type="file"
             accept=".jpeg, .jpg, .png"
             onChange={uploadFacilityImage}
             disabled={uploading}
           />
-          <Button colorScheme="teal" fontSize="sm">
-            施設画像を
-            <br />
-            アップロード
-          </Button>
+
+          <label htmlFor="facilityImage">
+            <Flex
+              justify="center"
+              alignItems="center"
+              textAlign="center"
+              fontSize="sm"
+              bg="teal.400"
+              mt={3}
+              w={130}
+              h={12}
+              rounded={10}
+              _hover={{
+                bg: 'teal.300',
+                transition: '0.2s',
+                cursor: 'pointer',
+              }}
+            >
+              施設画像
+              <br />
+              アップロード
+            </Flex>
+          </label>
         </>
       )}
     </Flex>
