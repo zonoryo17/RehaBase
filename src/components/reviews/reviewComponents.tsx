@@ -39,7 +39,11 @@ const ReviewComponents = (facilityId: Props) => {
           <Flex key={i} mt="5" h={36}>
             <Box>
               <Image
-                src={`${user?.avatar_url}`}
+                src={
+                  user?.avatar_url
+                    ? `${user?.avatar_url}`
+                    : 'https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/avatars/usersIcon/noNameUser.png'
+                }
                 width={100}
                 height={100}
                 borderRadius={50}
