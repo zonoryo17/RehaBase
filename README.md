@@ -1,6 +1,6 @@
 # 【ポートフォリオ】リハビリ情報共有サイト「RehaBase」
 <br>
-<a href="https://rehabase-app.com/" target="_blank">
+<a href="https://rehabase-app.com/" target="_blank" rel="noopener noreferrer">
 <img src="https://user-images.githubusercontent.com/88890984/203794990-86d374d2-aaea-4012-853a-5b603fd80290.png" alt="RehaBase" title="RehaBase">
 </a>
 <br>
