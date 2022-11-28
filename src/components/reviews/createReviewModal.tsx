@@ -122,6 +122,10 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     }
   };
 
+  const isTotalRatingError = total_rating === undefined;
+  const isTitleError = title === '';
+  const isContentError = content === '';
+
   return (
     <>
       {!isLoggedIn && (
@@ -152,6 +156,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
         <ModalContent>
           <ModalHeader>口コミ投稿画面</ModalHeader>
           <ModalCloseButton />
+
           <form onSubmit={handleSubmit(handleClickCreateReview)}>
             <ModalBody>
               <FormControl
@@ -175,6 +180,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                 />
                 <Accordion allowToggle>
                   <AccordionItem>
+
                     <AccordionButton>
                       <Text flex="1" textAlign="left">
                         詳細を評価
