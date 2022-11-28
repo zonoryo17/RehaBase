@@ -102,7 +102,11 @@ const Avatar = () => {
   return (
     <Flex aria-live="polite" direction="column" align="center">
       <Image
-        src={avatar ? avatar.avatar_url : '/noNameUser.jpg'}
+        src={
+          avatar
+            ? avatar.avatar_url
+            : 'https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/avatars/usersIcon/noNameUser.png'
+        }
         alt={avatar ? 'プロフィール画像' : '画像なし'}
         w={100}
         h={100}
