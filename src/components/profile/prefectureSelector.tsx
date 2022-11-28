@@ -13,6 +13,7 @@ const PrefectureSelector = ({
       name="prefecture"
       value={prefecture}
       onChange={handleChange}
+      required
     >
       <option value="北海道">北海道</option>
       <option value="青森県">青森県</option>

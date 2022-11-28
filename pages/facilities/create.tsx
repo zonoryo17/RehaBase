@@ -8,6 +8,8 @@ import {
   Button,
   Center,
   Flex,
+  FormControl,
+  FormLabel,
   Input,
   Stack,
   Text,
@@ -24,6 +26,7 @@ import { BsArrowLeftCircle } from 'react-icons/bs';
 import { Facility } from '../../types/facility';
 import { UserDataContext } from '../_app';
 import PrefectureSelector from '@components/profile/prefectureSelector';
+import { useForm } from 'react-hook-form';
 
 const Create: NextPage = () => {
   const userData = useContext(UserDataContext);
@@ -101,6 +104,12 @@ const Create: NextPage = () => {
     }
   };
 
+  //バリデーション
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm();
+
   return (
     <>
       <Head>
@@ -126,190 +135,209 @@ const Create: NextPage = () => {
           <Text mx="auto" my="30px" fontSize="2xl" fontWeight="bold">
             施設情報の登録
           </Text>
-          <Stack spacing="5" w="100vh" mx="auto" my="20px">
-            <Text>施設名: </Text>
-            <Input
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleChange}
-              placeholder="○○病院"
-            />
-            <Text>施設紹介: </Text>
-            <Textarea
-              name="explanation"
-              value={explanation}
-              onChange={handleChange}
-              placeholder="施設の紹介を入力"
-            />
+          <form onSubmit={handleSubmit(createFacility)}>
+            <FormControl isRequired>
+              <Stack spacing="5" w="100vh" mx="auto" my="20px">
+                <FormLabel>施設名: </FormLabel>
+                <Input
+                  type="text"
+                  name="name"
+                  value={name}
+                  onChange={handleChange}
+                  required
+                  placeholder="○○病院"
+                />
+                <FormLabel>施設紹介: </FormLabel>
+                <Textarea
+                  name="explanation"
+                  value={explanation}
+                  onChange={handleChange}
+                  required
+                  placeholder="施設の紹介を入力"
+                />
 
-            <Text>リハビリ内容一覧: </Text>
-            <Input
-              type="text"
-              name="menu"
-              value={menu}
-              onChange={handleChange}
-              placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション，外来リハビリなど"
-            />
-            <Text>費用目安: </Text>
-            <Input
-              type="text"
-              name="price"
-              value={price}
-              onChange={handleChange}
-              placeholder="20分○○○○円～○○○○円"
-            />
-            <Accordion allowToggle>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      リハビリ内容詳細1
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Text>リハビリ内容: </Text>
-                  <Input
-                    type="text"
-                    name="menu2"
-                    value={menu2}
-                    onChange={handleChange}
-                    placeholder="運動療法"
+                <FormLabel>リハビリ内容一覧: </FormLabel>
+                <Input
+                  type="text"
+                  name="menu"
+                  value={menu}
+                  onChange={handleChange}
+                  required
+                  placeholder="運動療法，心臓リハビリテーション，がんリハビリテーション，外来リハビリなど"
+                />
+                <Text>費用目安: </Text>
+                <Input
+                  type="text"
+                  name="price"
+                  value={price}
+                  onChange={handleChange}
+                  required={false}
+                  placeholder="20分○○○○円～○○○○円"
+                />
+                <Accordion allowToggle>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          リハビリ内容詳細1
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Text>リハビリ内容: </Text>
+                      <Input
+                        type="text"
+                        name="menu2"
+                        value={menu2}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="運動療法"
+                      />
+                      <Text>費用: </Text>
+                      <Input
+                        type="text"
+                        name="price2"
+                        value={price2}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="脳血管20分○○○○円，運動器20分○○○○円"
+                      />
+                    </AccordionPanel>
+                  </AccordionItem>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          リハビリ内容詳細2
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Text>リハビリ内容: </Text>
+                      <Input
+                        type="text"
+                        name="menu3"
+                        value={menu3}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="心臓リハビリテーション"
+                      />
+                      <Text>費用: </Text>
+                      <Input
+                        type="text"
+                        name="price3"
+                        value={price3}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="20分○○○○円"
+                      />
+                    </AccordionPanel>
+                  </AccordionItem>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          リハビリ内容詳細3
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Text>リハビリ内容: </Text>
+                      <Input
+                        type="text"
+                        name="menu4"
+                        value={menu4}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="がんリハビリテーション"
+                      />
+                      <Text>費用: </Text>
+                      <Input
+                        type="text"
+                        name="price4"
+                        value={price4}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="20分○○○○円"
+                      />
+                    </AccordionPanel>
+                  </AccordionItem>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          リハビリ内容詳細4
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Text>リハビリ内容: </Text>
+                      <Input
+                        type="text"
+                        name="menu5"
+                        value={menu5}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="外来リハビリテーション"
+                      />
+                      <Text>費用: </Text>
+                      <Input
+                        type="text"
+                        name="price5"
+                        value={price5}
+                        onChange={handleChange}
+                        required={false}
+                        placeholder="脳血管20分○○○○円，運動器20分○○○○円"
+                      />
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+                <FormLabel>所在地: </FormLabel>
+                <Box w={170}>
+                  <PrefectureSelector
+                    prefecture={prefecture}
+                    handleChange={handleChange}
                   />
-                  <Text>費用: </Text>
-                  <Input
-                    type="text"
-                    name="price2"
-                    value={price2}
-                    onChange={handleChange}
-                    placeholder="脳血管20分○○○○円，運動器20分○○○○円"
-                  />
-                </AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      リハビリ内容詳細2
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Text>リハビリ内容: </Text>
-                  <Input
-                    type="text"
-                    name="menu3"
-                    value={menu3}
-                    onChange={handleChange}
-                    placeholder="心臓リハビリテーション"
-                  />
-                  <Text>費用: </Text>
-                  <Input
-                    type="text"
-                    name="price3"
-                    value={price3}
-                    onChange={handleChange}
-                    placeholder="20分○○○○円"
-                  />
-                </AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      リハビリ内容詳細3
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Text>リハビリ内容: </Text>
-                  <Input
-                    type="text"
-                    name="menu4"
-                    value={menu4}
-                    onChange={handleChange}
-                    placeholder="がんリハビリテーション"
-                  />
-                  <Text>費用: </Text>
-                  <Input
-                    type="text"
-                    name="price4"
-                    value={price4}
-                    onChange={handleChange}
-                    placeholder="20分○○○○円"
-                  />
-                </AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      リハビリ内容詳細4
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Text>リハビリ内容: </Text>
-                  <Input
-                    type="text"
-                    name="menu5"
-                    value={menu5}
-                    onChange={handleChange}
-                    placeholder="外来リハビリテーション"
-                  />
-                  <Text>費用: </Text>
-                  <Input
-                    type="text"
-                    name="price5"
-                    value={price5}
-                    onChange={handleChange}
-                    placeholder="脳血管20分○○○○円，運動器20分○○○○円"
-                  />
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-            <Text>所在地: </Text>
-            <Box w={170}>
-              <PrefectureSelector
-                prefecture={prefecture}
-                handleChange={handleChange}
-              />
-            </Box>
-            <Text>住所: </Text>
-            <Input
-              type="text"
-              name="address"
-              value={address}
-              onChange={handleChange}
-              placeholder="東京都新宿区○○○○"
-            />
-            <Text>電話番号: </Text>
-            <Input
-              type="text"
-              name="phone_number"
-              value={phone_number}
-              onChange={handleChange}
-              placeholder="01-1234-5678"
-            />
-            <Flex justify="end">
-              <Button
-                border="1px solid"
-                borderRadius="5px"
-                boxShadow="md"
-                py="3px"
-                px="8px"
-                w="100px"
-                onClick={createFacility}
-              >
-                登録
-              </Button>
-            </Flex>
-          </Stack>
+                </Box>
+                <FormLabel>住所: </FormLabel>
+                <Input
+                  type="text"
+                  name="address"
+                  value={address}
+                  onChange={handleChange}
+                  required
+                  placeholder="東京都新宿区○○○○"
+                />
+                <Text>電話番号: </Text>
+                <Input
+                  type="text"
+                  name="phone_number"
+                  value={phone_number}
+                  onChange={handleChange}
+                  required={false}
+                  placeholder="01-1234-5678"
+                />
+                <Flex justify="end">
+                  <Button
+                    type="submit"
+                    isLoading={isSubmitting}
+                    border="1px solid"
+                    borderRadius="5px"
+                    boxShadow="md"
+                    py="3px"
+                    px="8px"
+                    w="100px"
+                  >
+                    登録
+                  </Button>
+                </Flex>
+              </Stack>
+            </FormControl>
+          </form>
         </Flex>
       </Center>
     </>

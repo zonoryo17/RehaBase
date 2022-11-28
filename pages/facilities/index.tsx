@@ -57,7 +57,15 @@ const FacilitiesListPage: NextPage = () => {
         .select()
         .like('name', `%${keyword}%`);
       setFacilities(searchedValue);
-      if (!searchedValue) alert('検索された施設は見つかりませんでした');
+      if (searchedValue?.length === 0) {
+        toast({
+          title: '検索された施設は見つかりませんでした。',
+          status: 'error',
+          position: 'top',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
       if (error) {
         throw error;
       }

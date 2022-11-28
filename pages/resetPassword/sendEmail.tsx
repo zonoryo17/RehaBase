@@ -6,6 +6,8 @@ import {
   Button,
   Center,
   Flex,
+  FormControl,
+  FormLabel,
   Image,
   Input,
   Spinner,
@@ -60,20 +62,25 @@ const SendEmailToResetPassword: NextPage = () => {
             <Text fontSize={{ lg: '2xl', xl: '3xl' }} mb={10}>
               パスワードをお忘れですか？
             </Text>
-            <Text mb={2}>登録されているメールアドレスを入力してください</Text>
             <form onSubmit={handleSubmitEmail}>
-              <Input
-                value={email}
-                type="email"
-                onChange={handleSetEmail}
-                placeholder="example@email.com"
-              />
-              <Flex mt={3} justify="space-between">
-                <Button onClick={() => router.push('/login')}>戻る</Button>
-                <Button type="submit" w={100} colorScheme="blue">
-                  送信
-                </Button>
-              </Flex>
+              <FormControl isRequired>
+                <FormLabel mb={2}>
+                  登録されているメールアドレスを入力してください
+                </FormLabel>
+                <Input
+                  value={email}
+                  type="email"
+                  onChange={handleSetEmail}
+                  required={true}
+                  placeholder="example@email.com"
+                />
+                <Flex mt={3} justify="space-between">
+                  <Button onClick={() => router.push('/login')}>戻る</Button>
+                  <Button type="submit" w={100} colorScheme="blue">
+                    送信
+                  </Button>
+                </Flex>
+              </FormControl>
             </form>
           </Box>
         )}

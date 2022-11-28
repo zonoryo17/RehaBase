@@ -18,6 +18,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const LoginPage: NextPage = () => {
   //ダークモード対応用
@@ -125,6 +126,9 @@ const LoginPage: NextPage = () => {
     }
   };
 
+  //バリデーション
+  const { handleSubmit } = useForm();
+
   return (
     <>
       <Head>
@@ -134,6 +138,7 @@ const LoginPage: NextPage = () => {
         <Container minW={300} maxW={700} mx="auto" position="relative">
           <Image
             src={loginImage}
+            w={650}
             alt="ログイントップ画像"
             mt={10}
             mr={10}
@@ -168,76 +173,76 @@ const LoginPage: NextPage = () => {
             ユーザーログイン
           </Text>
           <Flex direction="column" py={5}>
-            <FormControl isRequired>
-              <FormLabel>Email</FormLabel>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                bg={inputBgColor}
-                placeholder="example@gmail.com"
-                isRequired
-              />
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                bg={inputBgColor}
-                placeholder="********"
-                isRequired
-              />
-            </FormControl>
-            <Flex mt="5">
-              <Button
-                onClick={handleSubmitLogin}
-                colorScheme="blue"
-                disabled={isLoading}
-              >
-                ログイン
-              </Button>
-              <Spacer />
-              <Flex direction="column">
-                <Link href="/signup">新規登録</Link>
-                <Link href="/resetPassword/sendEmail">パスワードを忘れた</Link>
-              </Flex>
-            </Flex>
-            <Flex justify="center" mt="5">
-              <Button onClick={handleGuestLogin} disabled={isLoading}>
-                ゲストユーザーログイン
-              </Button>
-            </Flex>
-            <Text
-              border="1px"
-              borderColor="gray.800"
-              mx="auto"
-              my="5"
-              w="90%"
-            ></Text>
-            <Flex justify="space-between" direction="column" mx={10} px={0}>
-              <Button
-                onClick={signInWithGoogle}
-                bg="none"
-                _hover={{ bg: 'none' }}
-              >
-                <Image
-                  src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/btn_google_signin_light_normal_web@2x.png?t=2022-11-12T07%3A15%3A16.040Z"
-                  w={240}
-                  h="14"
+            <form onSubmit={handleSubmit(handleSubmitLogin)}>
+              <FormControl isRequired>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  bg={inputBgColor}
+                  placeholder="example@gmail.com"
+                  required
                 />
-              </Button>
-              <Button
-                onClick={signInWithGithub}
-                bg="none"
-                _hover={{ bg: 'none' }}
-              >
-                <Image
-                  src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/GitHub.png?t=2022-11-20T12%3A59%3A19.959Z"
-                  w={231}
-                  mt={5}
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  bg={inputBgColor}
+                  placeholder="********"
+                  required
                 />
-              </Button>
-            </Flex>
+                <Flex mt="5">
+                  <Button type="submit" colorScheme="blue" disabled={isLoading}>
+                    ログイン
+                  </Button>
+                  <Spacer />
+                  <Flex direction="column">
+                    <Link href="/signup">新規登録</Link>
+                    <Link href="/resetPassword/sendEmail">
+                      パスワードを忘れた
+                    </Link>
+                  </Flex>
+                </Flex>
+                <Flex justify="center" mt="5">
+                  <Button onClick={handleGuestLogin} disabled={isLoading}>
+                    ゲストユーザーログイン
+                  </Button>
+                </Flex>
+                <Text
+                  border="1px"
+                  borderColor="gray.800"
+                  mx="auto"
+                  my="5"
+                  w="90%"
+                ></Text>
+                <Flex justify="space-between" direction="column" mx={10} px={0}>
+                  <Button
+                    onClick={signInWithGoogle}
+                    bg="none"
+                    _hover={{ bg: 'none' }}
+                  >
+                    <Image
+                      src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/btn_google_signin_light_normal_web@2x.png?t=2022-11-12T07%3A15%3A16.040Z"
+                      w={240}
+                      h="14"
+                    />
+                  </Button>
+                  <Button
+                    onClick={signInWithGithub}
+                    bg="none"
+                    _hover={{ bg: 'none' }}
+                  >
+                    <Image
+                      src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/GitHub.png?t=2022-11-20T12%3A59%3A19.959Z"
+                      w={231}
+                      mt={5}
+                    />
+                  </Button>
+                </Flex>
+              </FormControl>
+            </form>
           </Flex>
         </Container>
       </Flex>
