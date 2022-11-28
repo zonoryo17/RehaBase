@@ -4,6 +4,8 @@ import {
   Button,
   Container,
   Flex,
+  FormControl,
+  FormHelperText,
   FormLabel,
   Image,
   Input,
@@ -109,31 +111,34 @@ const SignUpPage: NextPage = () => {
               新規ユーザー登録
             </Text>
             <Flex direction="column" py={5}>
-              <FormLabel>Email</FormLabel>
               <form onSubmit={handleSubmitSignUp}>
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  bg={inputBgColor}
-                  placeholder="example@gmail.com"
-                  isRequired
-                />
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  bg={inputBgColor}
-                  placeholder="********"
-                  isRequired
-                />
-                <Flex mt="5" justify="space-between">
-                  <Button onClick={() => router.push('/login')}>戻る</Button>
-                  <Button type="submit" colorScheme="blue">
-                    登録
-                  </Button>
-                </Flex>
+                <FormControl isRequired>
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    bg={inputBgColor}
+                    placeholder="example@gmail.com"
+                    isRequired
+                  />
+                  <FormLabel mt={5}>Password</FormLabel>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    bg={inputBgColor}
+                    placeholder="********"
+                    isRequired
+                  />
+                  <FormHelperText>※半角英数6文字以上</FormHelperText>
+                  <Flex mt="5" justify="space-between">
+                    <Button onClick={() => router.push('/login')}>戻る</Button>
+                    <Button type="submit" colorScheme="blue">
+                      登録
+                    </Button>
+                  </Flex>
+                </FormControl>
               </form>
             </Flex>
           </Container>

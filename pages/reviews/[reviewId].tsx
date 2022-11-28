@@ -71,19 +71,29 @@ const ReviewDetailPage: NextPage = () => {
         py={5}
         mt={10}
         mb={32}
-        maxW="75rem"
+        maxW={1200}
+        minH={500}
         mx="auto"
       >
         <Box mx="5">
           <Flex justify="space-between">
             <Flex align="center">
-              <Image src={avatar_url} w={100} h={100} rounded="full" />
-              <Flex direction="column" align="center" ml={3}>
+              <Image
+                src={
+                  avatar_url
+                    ? avatar_url
+                    : 'https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/avatars/usersIcon/noNameUser.png'
+                }
+                w={100}
+                h={100}
+                rounded="full"
+              />
+              <Flex direction="column" ml={3}>
                 <Text fontSize="xl">{user_name}さんの口コミ</Text>
                 <Flex fontSize="xl" gap={4}>
-                  <Box>{age}歳</Box>
-                  <Box>{gender}</Box>
-                  <Box>{prefecture}</Box>
+                  <Text>{age ? `${age}歳` : ''}</Text>
+                  <Text>{gender === '選択しない' ? `性別未設定` : gender}</Text>
+                  <Text>{prefecture}</Text>
                 </Flex>
               </Flex>
             </Flex>
