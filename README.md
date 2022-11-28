@@ -20,7 +20,7 @@
 
 ## 仕様スタック
 - Frontend  
-  - Next.js, TypeScript
+  - React, Next.js, TypeScript
 - UI Liblary
   - Chakra UI
 - Backend/DB
