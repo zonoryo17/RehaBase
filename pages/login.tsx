@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import {
-  Box,
   Button,
   Container,
   Flex,
@@ -35,28 +34,36 @@ const LoginPage: NextPage = () => {
   const router = useRouter();
   const toast = useToast();
 
-  const handleSubmitLogin = async (e: any) => {
-    e.preventDefault();
+  const handleSubmitLogin = async () => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signIn({
+      const { user, error } = await supabase.auth.signIn({
         email: email,
         password: password,
       });
       if (error) throw error;
+      if (user) {
+        toast({
+          title: 'ログイン処理が完了しました',
+          status: 'success',
+          duration: 6000,
+          isClosable: true,
+          position: 'top',
+          variant: 'left-accent',
+        });
+      }
       router.push('/');
     } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setIsLoading(false);
       toast({
-        title: 'ログイン処理が完了しました',
-        status: 'success',
+        title: 'メールアドレスかパスワードが間違っています',
+        status: 'error',
         duration: 6000,
         isClosable: true,
         position: 'top',
         variant: 'left-accent',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,14 +74,14 @@ const LoginPage: NextPage = () => {
         provider: 'google',
       });
       if (error) throw error;
-      toast({
-        title: 'Googleログインが完了しました',
-        status: 'success',
-        duration: 6000,
-        isClosable: true,
-        position: 'top',
-        variant: 'left-accent',
-      });
+      // toast({
+      //   title: 'Googleログインが完了しました',
+      //   status: 'success',
+      //   duration: 6000,
+      //   isClosable: true,
+      //   position: 'top',
+      //   variant: 'left-accent',
+      // });
     } catch (error: any) {
       alert(error.error_description || error.message);
       console.log('Googleログインでエラーが発生しました');

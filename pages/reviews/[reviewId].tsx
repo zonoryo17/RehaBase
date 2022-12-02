@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReactStars from 'react-stars';
 import { Review } from '../../types/reviews';
+import dayjs from 'dayjs';
 
 const ReviewDetailPage: NextPage = () => {
   const [review, setReview] = useState<Review | null>(null);
@@ -104,7 +105,7 @@ const ReviewDetailPage: NextPage = () => {
           </Flex>
           <Box>
             <Text textColor="gray.400" mb={5} ml={5}>
-              {created_at}投稿
+              {dayjs(created_at).format('YYYY年MM月DD日 HH:mm')}　投稿
             </Text>
             <Box>
               <Flex align="center" mb={3}>
