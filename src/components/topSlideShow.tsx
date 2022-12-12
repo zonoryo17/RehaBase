@@ -35,7 +35,7 @@ const TopSlideShow = () => {
       >
         準備中...
       </Text>
-      <Text fontSize="3xl" fontWeight="bold" mb="5">
+      <Text fontSize={{ sm: 'xl', lg: '3xl' }} fontWeight="bold" mb="5">
         ブログ記事
       </Text>
       <Swiper

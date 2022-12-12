@@ -28,6 +28,7 @@ const Home: NextPage = () => {
 
   const [session, setSession] = useState<Session | null>(null);
   const [search, setSearch] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -55,7 +56,6 @@ const Home: NextPage = () => {
       <Head>
         <title>RehaBase</title>
       </Head>
-      {/* {session && ( */}
       <Box>
         <Box position="relative">
           <Center>
@@ -64,16 +64,22 @@ const Home: NextPage = () => {
           <Box
             p="10"
             position="absolute"
-            top="60%"
+            top={{ base: '60%', md: '70%', lg: '60%' }}
             left="50%"
             transform="translate(-50%, -50%)"
           >
             <Text
-              fontSize={{ sm: 'lg', md: '3xl', lg: '4xl', xl: '5xl' }}
+              fontSize={{
+                base: 'xl',
+                md: '2xl',
+                lg: '4xl',
+                xl: '5xl',
+              }}
               textAlign="center"
               textColor="white"
               textShadow="3px 3px 4px #171717"
-              mb="32"
+              mb={{ base: '10', md: '20', lg: '32' }}
+              w={{ base: 230, md: 400, lg: 600 }}
             >
               あなたの声でつくる
               <br />
@@ -86,8 +92,7 @@ const Home: NextPage = () => {
                 <Input
                   variant="outline"
                   bg={inputBgColor}
-                  size="lg"
-                  // width="80vh"
+                  size={{ base: 'sm', lg: 'lg' }}
                   type="text"
                   placeholder="リハビリ施設を入力"
                   value={search}
@@ -96,16 +101,11 @@ const Home: NextPage = () => {
                 />
                 <Button
                   type="submit"
-                  size="lg"
+                  size={{ sm: 'sm', lg: 'lg' }}
                   width="100px"
                   ml="2"
                   boxShadow="md"
                   colorScheme={btnColor}
-                  // _hover={{
-                  //   boxShadow: 'none',
-                  //   transition: '0.4s',
-                  //   bg: 'gray.300',
-                  // }}
                 >
                   検索
                 </Button>
@@ -113,21 +113,14 @@ const Home: NextPage = () => {
             </form>
           </Box>
         </Box>
-        <Box mt="10" px="10">
-          <Text fontSize="3xl" fontWeight="bold" mb="5">
+        <Box mt="10" px={{ base: 5, md: 10 }}>
+          <Text fontSize={{ base: 'xl', lg: '3xl' }} fontWeight="bold" mb="5">
             総合ランキング
           </Text>
-          <Flex
-            justify={{ sm: 'center', xl: 'space-between' }}
-            wrap={{ sm: 'wrap', xl: 'nowrap' }}
-          >
-            <TopPageRanking />
-          </Flex>
+          <TopPageRanking />
         </Box>
         <TopSlideShow />
       </Box>
-      {/* )} */}
-      {/* {!session && router.push('/about')} */}
     </>
   );
 };

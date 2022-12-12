@@ -7,7 +7,9 @@ type Props = {
 const HeaderUserIcon = ({ src }: Props) => {
   if (src) {
     return (
-      <Image src={src} w={16} h={16} rounded="full" alt="プロフィール画像" />
+      <Box w={16}>
+        <Image src={src} w={16} h={16} rounded="full" alt="プロフィール画像" />
+      </Box>
     );
   } else {
     return <Box w={10} h={10} bg="gray.400" rounded="full"></Box>;
