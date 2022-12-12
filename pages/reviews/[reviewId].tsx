@@ -105,7 +105,7 @@ const ReviewDetailPage: NextPage = () => {
           </Flex>
           <Box>
             <Text textColor="gray.400" mb={5} ml={5}>
-              {dayjs(created_at).format('YYYY年MM月DD日 HH:mm')}　投稿
+              {dayjs(created_at).format('YYYY年MM月DD日 HH時mm分')}　投稿
             </Text>
             <Box>
               <Flex align="center" mb={3}>

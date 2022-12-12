@@ -35,19 +35,21 @@ const SignUpPage: NextPage = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({
+      const { user, error } = await supabase.auth.signUp({
         email,
         password,
       });
-      if (error) throw error;
       setIsLoading(false);
-      toast({
-        title: 'ユーザー登録確認メールを送信しました。',
-        status: 'success',
-        position: 'top',
-        duration: 5000,
-        isClosable: true,
-      });
+      if (error) throw error;
+      if (user) {
+        toast({
+          title: 'ユーザー登録確認メールを送信しました。',
+          status: 'success',
+          position: 'top',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     } catch (error) {
       throw new Error('ユーザー登録でエラーが発生しました');
     } finally {

@@ -27,7 +27,6 @@ const NavMenuDrawer = () => {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>Menu</DrawerHeader>
-
           <DrawerBody px={0}>
             <Flex display="column" gap={5}>
               <Link href="/about">
