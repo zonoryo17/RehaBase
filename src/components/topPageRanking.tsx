@@ -42,7 +42,10 @@ const TopPageRanking = () => {
   };
 
   return (
-    <>
+    <Flex
+      justify={{ base: 'center', xl: 'space-between' }}
+      wrap={{ base: 'wrap', xl: 'nowrap' }}
+    >
       {topRankFacilities?.map(
         (
           { id, name, prefecture, image_url, phone_number, total_rating_ave },
@@ -55,10 +58,10 @@ const TopPageRanking = () => {
                 alignItems="center"
                 rounded="20px"
                 boxShadow="md"
-                maxW={{ sm: 400, md: 450, lg: 500 }}
-                minW={{ sm: 230, md: 300, lg: 420 }}
+                maxW={{ base: 410, md: 450, lg: 500 }}
+                minW={{ base: 240, md: 300, lg: 420 }}
                 h={{ sm: 200, md: 240, lg: 260 }}
-                mx={2}
+                mx={{ base: 0, lg: 2 }}
                 mb={3}
                 py={3}
                 px={3}
@@ -67,7 +70,7 @@ const TopPageRanking = () => {
                   {i === 0 && (
                     <Image
                       alt="ランキングのアイコン"
-                      w="50px"
+                      w={{ base: '40px', md: '50px' }}
                       rounded="10"
                       src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/crown1-opc.png?t=2022-11-19T11%3A39%3A02.631Z"
                     />
@@ -75,7 +78,7 @@ const TopPageRanking = () => {
                   {i === 1 && (
                     <Image
                       alt="ランキングのアイコン"
-                      w="50px"
+                      w={{ base: '40px', md: '50px' }}
                       rounded="10"
                       src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/crown2-opc.png"
                     />
@@ -83,12 +86,12 @@ const TopPageRanking = () => {
                   {i === 2 && (
                     <Image
                       alt="ランキングのアイコン"
-                      w="50px"
+                      w={{ base: '40px', md: '50px' }}
                       rounded="10"
                       src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/crown3-opc.png?t=2022-11-19T11%3A39%3A17.802Z"
                     />
                   )}
-                  <Text fontSize="2xl" ml="5">
+                  <Text fontSize={{ base: 'lg', md: '2xl' }} ml="5">
                     {name}
                   </Text>
                 </Flex>
@@ -96,7 +99,7 @@ const TopPageRanking = () => {
                   <Image
                     src={image_url ? image_url : '/no_image.jpg'}
                     alt="施設の画像"
-                    w={{ sm: '100px', md: '150px', lg: '200px' }}
+                    w={{ base: 100, md: 150, lg: 200 }}
                     // h="200px"
                   />
                   <TableContainer>
@@ -136,7 +139,7 @@ const TopPageRanking = () => {
           </Link>
         )
       )}
-    </>
+    </Flex>
   );
 };
 

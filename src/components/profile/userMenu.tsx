@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Menu,
@@ -74,20 +75,32 @@ const UserMenu = () => {
   return (
     <Menu>
       <Flex align="center">
+        {/* <Box>
+          <MenuButton
+            display={{ base: 'none', md: 'flex' }}
+            mr={2}
+            as={Button}
+            colorScheme="gray"
+            rightIcon={<HiChevronDown />}
+          >
+            <Text fontSize={{ sm: 'xs', md: 'md' }}>
+              {isLoggedIn ? user_name : 'ゲスト'}
+            </Text>
+          </MenuButton>
+        </Box> */}
         <MenuButton
-          mr={2}
+          // display={{ base: 'flex', md: 'none' }}
+          mr={0}
+          px={0}
           as={Button}
-          colorScheme="gray"
-          rightIcon={<HiChevronDown />}
+          bg="none"
+          colorScheme="none"
         >
-          <Text fontSize={{ sm: 'xs', md: 'md' }}>
-            {isLoggedIn ? user_name : 'ゲスト'}
-          </Text>
+          {isLoggedIn && (
+            <HeaderUserIcon src={avatar_url ? avatar_url : '/noNameUser.jpg'} />
+          )}
+          {!isLoggedIn && <HeaderUserIcon src="/noNameUser.jpg" />}
         </MenuButton>
-        {isLoggedIn && (
-          <HeaderUserIcon src={avatar_url ? avatar_url : '/noNameUser.jpg'} />
-        )}
-        {!isLoggedIn && <HeaderUserIcon src="/noNameUser.jpg" />}
       </Flex>
       <MenuList>
         {isLoggedIn && !isGuest && (

@@ -180,8 +180,8 @@ const LoginPage: NextPage = () => {
             ユーザーログイン
           </Text>
           <Flex direction="column" py={5}>
-            <form onSubmit={handleSubmit(handleSubmitLogin)}>
-              <FormControl isRequired>
+            <FormControl isRequired>
+              <form onSubmit={handleSubmit(handleSubmitLogin)}>
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
@@ -248,8 +248,8 @@ const LoginPage: NextPage = () => {
                     />
                   </Button>
                 </Flex>
-              </FormControl>
-            </form>
+              </form>
+            </FormControl>
           </Flex>
         </Container>
       </Flex>

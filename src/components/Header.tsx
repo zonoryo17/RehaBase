@@ -16,7 +16,7 @@ const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Flex px="8">
+    <Flex mx={{ base: 3, lg: 10 }} my={{ base: 5, lg: 0 }}>
       <Link href="/">
         <a>
           <Image
@@ -33,7 +33,7 @@ const Header = () => {
         gap="10"
         fontSize="xl"
         mr={3}
-        display={{ sm: 'none', lg: 'none', xl: 'flex' }}
+        display={{ base: 'none', xl: 'flex' }}
       >
         <Link href="/about">RehaBaseとは</Link>
         <Box opacity="0.4">記事</Box>
