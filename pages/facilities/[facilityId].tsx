@@ -29,15 +29,6 @@ import UploadFacilityImage from '@components/facilities/uploadFacilityImage';
 import { Review } from '../../types/reviews';
 import ReactStars from 'react-stars';
 
-// type RatingList = {
-//   total_rating?: number;
-//   reception_rating?: number;
-//   service_rating?: number;
-//   expence_rating?: number;
-//   equipment_rating?: number;
-//   environment_rating?: number;
-// };
-
 const FacilityDetailPage: NextPage = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
   const [totalRating, setTotalRating] = useState<Number>();
