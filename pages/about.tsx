@@ -30,22 +30,27 @@ const AboutPage: NextPage = () => {
         <title>RehaBaseとは</title>
       </Head>
       <Flex direction="column" align="center">
-        <Flex position="relative" justify="center" width="100%">
+        <Flex
+          position="relative"
+          justify="center"
+          w="100%"
+          mt={{ base: 0, md: 20 }}
+        >
           <Image
             src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/aboutImage?t=2022-11-19T12%3A19%3A16.448Z"
             alt="トップイメージ"
-            w="50%"
+            w={{ base: '80%', md: '50%' }}
             rounded="20"
           />
           <Box
             p="10"
             position="absolute"
-            top="60%"
+            top={{ base: '90%', sm: '60%' }}
             left="50%"
             transform="translate(-50%, -50%)"
           >
             <Text
-              fontSize={{ sm: '2xl', md: '3xl', lg: '4xl', xl: '5xl' }}
+              fontSize={{ base: '3xl', lg: '4xl', xl: '5xl' }}
               textAlign="center"
               textColor="orange.200"
               textShadow="4px 4px 5px #171717"
@@ -58,84 +63,98 @@ const AboutPage: NextPage = () => {
           </Box>
         </Flex>
         <Flex display="column" my="10" textAlign="center">
-          <Text fontWeight="bold" fontSize="3xl" my={5}>
+          <Text fontWeight="bold" fontSize={{ base: 'xl', md: '3xl' }} my={5}>
             RehaBaseについて
           </Text>
-          <Box fontSize="xl">
-            <Text my={7}>
-              RehaBaseはリハビリ情報を共有する口コミ型のリハビリ施設検索サービスです。
+          <Box fontSize={{ base: 'sm', md: 'xl' }}>
+            <Text mt={4} mb={2}>
+              RehaBaseはリハビリ情報を共有する
             </Text>
+            <Text mb={7}>口コミ型のリハビリ施設検索サービスです。</Text>
             <Text my={4}>「リハビリの情報を探すならここ！」</Text>
             <Text my={4}>そんなリハビリに関連する情報のプラットホームを</Text>
             <Text my={4}>あなたの「声」を借りて作ります。</Text>
           </Box>
-          <Text fontWeight="bold" fontSize="3xl" mt={20} mb={10}>
+          <Text
+            fontWeight="bold"
+            fontSize={{ base: 'xl', md: '3xl' }}
+            mt={20}
+            mb={10}
+          >
             こんなお悩みありませんか？
           </Text>
-          <Grid gap={3} maxW={600}>
-            <Flex>
+          <Grid gap={3} maxW={600} mx={{ base: 5, md: 0 }}>
+            <Flex align="center">
               <Image
                 src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/man1.png"
-                w={100}
+                w={{ base: 20, md: 100 }}
+                h={{ base: 20, md: 100 }}
               />
               <Text
                 border="1px solid"
                 rounded={10}
                 px={3}
-                py={5}
+                py={{ base: 3, md: 5 }}
                 mx={5}
+                fontSize={{ base: 'sm', md: 'xl' }}
                 textAlign="left"
                 shadow="md"
               >
                 「ここいいよ！」と言われて行ってみたけど、マッサージをされて終わった。
               </Text>
             </Flex>
-            <Flex>
+            <Flex align="center">
               <Image
                 src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/woman1.png"
-                w={100}
+                w={{ base: 20, md: 100 }}
+                h={{ base: 20, md: 100 }}
               />
               <Text
                 border="1px solid"
                 rounded={10}
                 px={3}
-                py={5}
+                py={{ base: 3, md: 5 }}
                 mx={5}
+                fontSize={{ base: 'sm', md: 'xl' }}
                 textAlign="left"
                 shadow="md"
               >
                 もうすぐ退院するけど、帰ってからどこでリハビリをしたらいいかわからない
               </Text>
             </Flex>
-            <Flex>
+            <Flex align="center">
               <Image
                 src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/man2.png"
-                w={100}
+                w={{ base: 20, md: 100 }}
+                h={{ base: 20, md: 100 }}
               />
               <Text
                 border="1px solid"
                 rounded={10}
                 px={3}
-                py={9}
+                py={{ base: 5, md: 9 }}
                 mx={5}
                 w="100%"
+                fontSize={{ base: 'sm', md: 'xl' }}
                 textAlign="left"
                 shadow="md"
               >
                 どこでどんなリハビリが受けられるのかよくわからない
               </Text>
             </Flex>
-            <Flex>
+            <Flex align="center">
               <Image
                 src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/woman2.png"
-                w={100}
+                w={{ base: 20, md: 100 }}
+                h={{ base: 20, md: 100 }}
               />
               <Text
                 border="1px solid"
                 rounded={10}
                 px={3}
-                py={5}
+                py={{ base: 3, md: 5 }}
                 mx={5}
+                fontSize={{ base: 'sm', md: 'xl' }}
                 textAlign="left"
                 shadow="md"
               >
@@ -145,7 +164,26 @@ const AboutPage: NextPage = () => {
           </Grid>
         </Flex>
         <Text
-          fontSize="3xl"
+          fontSize={{ base: 'xl' }}
+          display={{ base: 'block', md: 'none' }}
+          fontWeight="bold"
+          mt={4}
+          textShadow="2px 2px 4px #CCCCCC"
+        >
+          そんな様々なお悩みから
+        </Text>
+        <Text
+          fontSize={{ base: 'xl' }}
+          display={{ base: 'block', md: 'none' }}
+          fontWeight="bold"
+          mb={20}
+          textShadow="2px 2px 4px #CCCCCC"
+        >
+          生まれたサービスです！
+        </Text>
+        <Text
+          fontSize={{ base: 'xl', md: '3xl' }}
+          display={{ base: 'none', md: 'block' }}
           fontWeight="bold"
           my={20}
           textShadow="2px 2px 4px #CCCCCC"
@@ -161,11 +199,21 @@ const AboutPage: NextPage = () => {
           pt={10}
           pb={20}
         >
-          <Text fontWeight="bold" fontSize="3xl" mt={5} mb={14}>
+          <Text
+            fontWeight="bold"
+            fontSize={{ base: 'xl', md: '3xl' }}
+            mt={{ base: 0, md: 5 }}
+            mb={{ base: 8, md: 14 }}
+          >
             RehaBaseの特徴
           </Text>
-          <Flex align="center" gap={5} justify="center">
-            <UnorderedList fontSize="xl" spacing={2}>
+          <Flex
+            align="center"
+            gap={5}
+            justify="center"
+            direction={{ base: 'column-reverse', md: 'row' }}
+          >
+            <UnorderedList fontSize={{ base: 'sm', md: 'xl' }} spacing={2}>
               <ListItem>気になるリハビリ施設を検索できる！</ListItem>
               <ListItem>リハビリ施設のリアルな評価がわかる！</ListItem>
               <ListItem>受けたリハビリの口コミを投稿できる！</ListItem>
@@ -173,21 +221,39 @@ const AboutPage: NextPage = () => {
             </UnorderedList>
             <Image
               src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/about-feature.jpg"
-              w="45%"
+              w={{ base: '85%', md: '45%' }}
               rounded="5"
             />
           </Flex>
         </Flex>
-        <Text fontWeight="bold" fontSize="3xl" my={5}>
+        <Text
+          fontWeight="bold"
+          fontSize={{ base: 'xl', md: '3xl' }}
+          mb={5}
+          mt={{ base: 10, md: 14 }}
+        >
           RehaBaseの使用対象者
         </Text>
-        <Flex justify="center" align="center" w="100%" pt={10} pb={20} gap={5}>
+        <Flex
+          justify="center"
+          align="center"
+          direction={{ base: 'column', md: 'row' }}
+          w="100%"
+          mt={{ base: 3, md: 10 }}
+          mb={{ base: 10, md: 20 }}
+          gap={5}
+        >
           <Image
             src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/about-target.jpg?t=2022-11-19T12%3A26%3A39.626Z"
-            w="35%"
+            w={{ base: '80%', md: '45%' }}
             rounded="5"
           />
-          <UnorderedList fontSize="xl" spacing={2}>
+          <UnorderedList
+            fontSize={{ base: 'sm', md: 'xl' }}
+            spacing={2}
+            ml={{ base: 14, md: 6 }}
+            mr={{ base: 8, md: 6 }}
+          >
             <ListItem>これからリハビリを受けようと考えている方</ListItem>
             <ListItem>リハビリ施設でリハビリを受けられた方</ListItem>
             <ListItem>
@@ -210,18 +276,18 @@ const AboutPage: NextPage = () => {
           <Box>
             <Text
               fontWeight="bold"
-              fontSize="3xl"
+              fontSize={{ base: 'xl', md: '3xl' }}
               textColor={textColor}
-              mt={20}
-              mb={10}
+              mt={{ base: 10, md: 20 }}
+              mb={{ base: 5, md: 10 }}
             >
               リハビリ施設を探すなら
             </Text>
             <Text
               fontWeight="bold"
-              fontSize="5xl"
+              fontSize={{ base: '2xl', md: '5xl' }}
               textColor={textColor}
-              mb={20}
+              mb={{ base: 10, md: 20 }}
             >
               RehaBase
             </Text>
@@ -230,13 +296,14 @@ const AboutPage: NextPage = () => {
             direction="column"
             align="center"
             justify="center"
-            w="70%"
+            w={{ base: '80%', md: '70%' }}
             h={200}
+            px={{ base: 4, md: 0 }}
             bg={cordBgColor}
             shadow="md"
             rounded={20}
           >
-            <Text fontSize="2xl" mb={10}>
+            <Text fontSize={{ base: 'lg', md: '2xl' }} mb={10}>
               さぁ、さっそくあなたの「声」を投稿してみましょう！！
             </Text>
             <Button colorScheme="orange" onClick={handleClick}>
