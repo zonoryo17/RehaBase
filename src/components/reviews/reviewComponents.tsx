@@ -16,7 +16,7 @@ const ReviewComponents = (facilityId: Props) => {
 
   useEffect(() => {
     fetchUserData();
-  }, [reviews]);
+  }, []);
 
   const fetchUserData = async () => {
     try {
