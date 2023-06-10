@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
-import reviewStyle from '@styles/pages/reviews/review.module.scss';
+import reviewStyle from './reviewComponents.module.css';
 import { FC, useEffect, useState } from 'react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { Review } from '../../../../types/reviews';
 import ReactStars from 'react-stars';
+import { Review } from '../../../../../types/reviews';
 
 type Props = {
   facilityId: string | string[] | undefined;
@@ -82,7 +82,7 @@ const ReviewComponents: FC<Props> = ({ facilityId }) => {
               >
                 {title}
               </Text>
-              <Text w="30rem" pr="10">
+              <Text className={reviewStyle.reviewContent} w="30rem" pr="10">
                 {content}
               </Text>
               <Box position="absolute" right="0" bottom="0">
