@@ -9,7 +9,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { supabase } from '@utils/supabaseClient';
@@ -104,69 +104,71 @@ const FacilitiesListPage: NextPage = () => {
         </Button>
       )}
       <Box maxW={600} mx="auto">
-        <List>
-          {facilities &&
-            facilities.map(
-              ({
-                id,
-                name,
-                address,
-                phone_number,
-                image_url,
-                total_rating_ave,
-              }: Facility) => (
-                <Link href={`/facilities/${id}`} key={id}>
-                  <a>
-                    <Box
-                      border="1px solid"
-                      borderRadius="5px"
-                      minH={100}
-                      my={5}
-                      boxShadow="md"
-                      _hover={{
-                        transform: 'scale(1.03, 1.03)',
-                        transition: '0.3s',
-                      }}
-                    >
-                      <ListItem>
-                        <Flex>
-                          <Box m={1}>
-                            <Image
-                              src={image_url ? image_url : '/no_image.jpg'}
-                              w={200}
-                              h={150}
-                              objectFit="contain"
-                            />
-                          </Box>
-                          <Box mt={2} ml={2}>
-                            <Text fontFamily="YuGothic" fontWeight="bold">
-                              病院名：{name}
-                            </Text>
-                            <Flex align="center">
-                              <Text mr={2}>総合評価：{total_rating_ave}</Text>
-                              <ReactStars
-                                count={5}
-                                size={20}
-                                color2={'#ffd700'}
-                                value={total_rating_ave}
-                                edit={false}
+        <Suspense fallback={<p>Now Loading...</p>}>
+          <List>
+            {facilities &&
+              facilities.map(
+                ({
+                  id,
+                  name,
+                  address,
+                  phone_number,
+                  image_url,
+                  total_rating_ave,
+                }: Facility) => (
+                  <Link href={`/facilities/${id}`} key={id}>
+                    <a>
+                      <Box
+                        border="1px solid"
+                        borderRadius="5px"
+                        minH={100}
+                        my={5}
+                        boxShadow="md"
+                        _hover={{
+                          transform: 'scale(1.03, 1.03)',
+                          transition: '0.3s',
+                        }}
+                      >
+                        <ListItem>
+                          <Flex>
+                            <Box m={1}>
+                              <Image
+                                src={image_url ? image_url : '/no_image.jpg'}
+                                w={200}
+                                h={150}
+                                objectFit="contain"
                               />
-                            </Flex>
-                            <Text borderBottom="1px solid" w="100%" my={2} />
-                            <Text fontFamily="YuGothic">住所：{address}</Text>
-                            <Text fontFamily="YuGothic">
-                              電話番号：{phone_number}
-                            </Text>
-                          </Box>
-                        </Flex>
-                      </ListItem>
-                    </Box>
-                  </a>
-                </Link>
-              )
-            )}
-          {!facilities && <Text>施設情報が見つかりませんでした</Text>}
-        </List>
+                            </Box>
+                            <Box mt={2} ml={2}>
+                              <Text fontFamily="YuGothic" fontWeight="bold">
+                                病院名：{name}
+                              </Text>
+                              <Flex align="center">
+                                <Text mr={2}>総合評価：{total_rating_ave}</Text>
+                                <ReactStars
+                                  count={5}
+                                  size={20}
+                                  color2={'#ffd700'}
+                                  value={total_rating_ave}
+                                  edit={false}
+                                />
+                              </Flex>
+                              <Text borderBottom="1px solid" w="100%" my={2} />
+                              <Text fontFamily="YuGothic">住所：{address}</Text>
+                              <Text fontFamily="YuGothic">
+                                電話番号：{phone_number}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </ListItem>
+                      </Box>
+                    </a>
+                  </Link>
+                )
+              )}
+            {!facilities && <Text>施設情報が見つかりませんでした</Text>}
+          </List>
+        </Suspense>
       </Box>
     </>
   );

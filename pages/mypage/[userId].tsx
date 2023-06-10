@@ -1,11 +1,12 @@
 import { Box, Button, Flex, Spacer, Text } from '@chakra-ui/react';
-import Avatar from '@components/profile/avatar';
+import Avatar from '@components/pages/profile/avatar';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { UserDataContext } from '../_app';
+import { NextPage } from 'next';
 
-const MyPage = () => {
+const MyPage: NextPage = () => {
   const userData = useContext(UserDataContext);
 
   const { user_name, profile, gender, age, prefecture } = userData;

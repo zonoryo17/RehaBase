@@ -1,6 +1,6 @@
 import { ChakraProvider, useToast } from '@chakra-ui/react';
 import { AppProps } from 'next/app';
-import Layout from '@components/layout';
+import Layout from '@components/layouts/layout';
 import 'swiper/css/bundle';
 import { useEffect, useState, createContext } from 'react';
 import { User } from '../types/user';

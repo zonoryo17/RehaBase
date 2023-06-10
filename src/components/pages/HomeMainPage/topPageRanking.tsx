@@ -12,12 +12,12 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { supabase } from '@utils/supabaseClient';
 import ReactStars from 'react-stars';
-import { Facility } from '../../types/facility';
+import { Facility } from '../../../../types/facility';
 
-const TopPageRanking = () => {
+const TopPageRanking: FC = () => {
   const [topRankFacilities, setTopRankFacilities] = useState<Facility[] | null>(
     null
   );
