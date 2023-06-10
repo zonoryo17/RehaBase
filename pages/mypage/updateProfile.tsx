@@ -16,16 +16,17 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import Avatar from '@components/profile/avatar';
-import PrefectureSelector from '@components/profile/prefectureSelector';
+import Avatar from '@components/pages/profile/avatar';
+import PrefectureSelector from '@components/pages/profile/prefectureSelector';
 import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { User } from '../../types/user';
 import { UserDataContext } from '../_app';
 import { supabase } from '@utils/supabaseClient';
+import { NextPage } from 'next';
 
-const MyPage = () => {
+const UpdateProfilePage: NextPage = () => {
   const toast = useToast();
   const userData = useContext(UserDataContext);
   const userId = userData.id;
@@ -180,4 +181,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default UpdateProfilePage;
