@@ -22,7 +22,7 @@ import { supabase } from '@utils/supabaseClient';
 import DeleteFacilityButton from '@components/pages/facilities/deleteFacility';
 import UpdateFacilityModal from '@components/pages/facilities/updateFacilityModal';
 import { BsArrowLeftCircle } from 'react-icons/bs';
-import ReviewComponents from '@components/pages/reviews/reviewComponents';
+import ReviewComponents from '@components/pages/reviews/ReviewComponents/reviewComponents';
 import CreateReviewModal from '@components/pages/reviews/createReviewModal';
 import UploadReviewImage from '@components/pages/reviews/uploadReviewImage';
 import UploadFacilityImage from '@components/pages/facilities/uploadFacilityImage';
