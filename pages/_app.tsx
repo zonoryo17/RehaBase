@@ -1,8 +1,8 @@
-import { ChakraProvider, useToast } from '@chakra-ui/react';
+import { ChakraProvider, Skeleton, useToast } from '@chakra-ui/react';
 import { AppProps } from 'next/app';
-import Layout from '@components/layouts/layout';
+import Layout from '@components/layout';
 import 'swiper/css/bundle';
-import { useEffect, useState, createContext } from 'react';
+import { useEffect, useState, createContext, Suspense } from 'react';
 import { User } from '../types/user';
 import { supabase } from '@utils/supabaseClient';
 
@@ -67,13 +67,15 @@ const App = ({ Component, pageProps }: AppProps) => {
   };
 
   return (
-    <ChakraProvider>
-      <UserDataContext.Provider value={userData ?? {}}>
+    <UserDataContext.Provider value={userData ?? {}}>
+      <ChakraProvider>
         <Layout>
-          <Component {...pageProps} />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Component {...pageProps} />
+          </Suspense>
         </Layout>
-      </UserDataContext.Provider>
-    </ChakraProvider>
+      </ChakraProvider>
+    </UserDataContext.Provider>
   );
 };
 
