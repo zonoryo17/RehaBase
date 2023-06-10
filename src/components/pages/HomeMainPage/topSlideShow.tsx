@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Navigation } from 'swiper';
 import { Box, Text } from '@chakra-ui/react';
+import { FC } from 'react';
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -13,7 +14,7 @@ const imagePaths = [
   '/number_5.jpg',
 ];
 
-const TopSlideShow = () => {
+const TopSlideShow: FC = () => {
   return (
     <Box mt={20} mx={5} position="relative">
       <Box

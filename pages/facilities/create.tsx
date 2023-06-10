@@ -25,7 +25,7 @@ import Head from 'next/head';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import { Facility } from '../../types/facility';
 import { UserDataContext } from '../_app';
-import PrefectureSelector from '@components/profile/prefectureSelector';
+import PrefectureSelector from '@components/pages/profile/prefectureSelector';
 import { useForm } from 'react-hook-form';
 
 const Create: NextPage = () => {

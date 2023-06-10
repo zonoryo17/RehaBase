@@ -11,10 +11,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { HiOutlineMenu } from 'react-icons/hi';
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 
-const NavMenuDrawer = () => {
+const NavMenuDrawer: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
