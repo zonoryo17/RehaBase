@@ -2,6 +2,8 @@ import SignUpPage from '@components/pages/SignupPage';
 import { NextPage } from 'next';
 import React from 'react';
 
-export const SignupPageRouter: NextPage = () => {
+const SignupPageRouter: NextPage = () => {
   return <SignUpPage />;
 };
+
+export default SignupPageRouter;
