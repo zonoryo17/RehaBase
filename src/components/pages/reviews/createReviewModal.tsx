@@ -24,15 +24,16 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, FC } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactStars from 'react-stars';
-import { UserDataContext } from '../../../pages/_app';
+import { UserDataContext } from '../../../../pages/_app';
 
 type Props = {
   facilityName: string;
   facilityId: string;
 };
+
 type InitialState = {
   title: string;
   content: string;
@@ -47,7 +48,7 @@ type InitialState = {
   user_id?: string;
 };
 
-const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
+const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const {
@@ -122,10 +123,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     }
   };
 
-  const isTotalRatingError = total_rating === undefined;
-  const isTitleError = title === '';
-  const isContentError = content === '';
-
   return (
     <>
       {!isLoggedIn && (
@@ -180,7 +177,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                 />
                 <Accordion allowToggle>
                   <AccordionItem>
-
                     <AccordionButton>
                       <Text flex="1" textAlign="left">
                         詳細を評価

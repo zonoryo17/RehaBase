@@ -1,12 +1,12 @@
 import { Select } from '@chakra-ui/react';
+import { ChangeEventHandler, FC } from 'react';
 
-const PrefectureSelector = ({
-  handleChange,
-  prefecture,
-}: {
+type Props = {
   handleChange: any;
   prefecture?: string;
-}) => {
+};
+
+const PrefectureSelector: FC<Props> = ({ handleChange, prefecture }) => {
   return (
     <Select
       placeholder="都道府県を選択"

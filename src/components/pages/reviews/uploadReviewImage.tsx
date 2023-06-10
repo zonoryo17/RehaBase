@@ -9,16 +9,16 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { UserDataContext } from '../../../pages/_app';
+import { UserDataContext } from '../../../../pages/_app';
 
 type Props = {
   facilityId: string | string[] | undefined;
 };
 
 //画像ファイルのアップロードコンポーネント
-const UploadReviewImage = (facilityId: Props) => {
+const UploadReviewImage: FC<Props> = ({ facilityId }) => {
   const [facilityReviewImageUrls, setFacilityReviewImageUrls] = useState<
     string[]
   >([]);
@@ -31,7 +31,7 @@ const UploadReviewImage = (facilityId: Props) => {
       const { data, error } = await supabase
         .from('FacilityImages')
         .select('image_url')
-        .eq('facility_id', facilityId.facilityId);
+        .eq('facility_id', facilityId);
       if (data) {
         setFacilityReviewImageUrls(data);
       }

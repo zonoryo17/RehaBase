@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   Menu,
@@ -8,22 +7,16 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
-  Text,
   useToast,
 } from '@chakra-ui/react';
-import {
-  HiUser,
-  HiChevronDown,
-  HiOutlineLogout,
-  HiOutlineLogin,
-} from 'react-icons/hi';
+import { HiUser, HiOutlineLogout, HiOutlineLogin } from 'react-icons/hi';
 import { supabase } from '@utils/supabaseClient';
-import { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { UserDataContext } from '../../../pages/_app';
+import { UserDataContext } from '../../../../pages/_app';
 import HeaderUserIcon from './headerUserIcon';
 
-const UserMenu = () => {
+const UserMenu: FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isGuest, setIsGuest] = useState<boolean>(false);
   const router = useRouter();
@@ -75,27 +68,7 @@ const UserMenu = () => {
   return (
     <Menu>
       <Flex align="center">
-        {/* <Box>
-          <MenuButton
-            display={{ base: 'none', md: 'flex' }}
-            mr={2}
-            as={Button}
-            colorScheme="gray"
-            rightIcon={<HiChevronDown />}
-          >
-            <Text fontSize={{ sm: 'xs', md: 'md' }}>
-              {isLoggedIn ? user_name : 'ゲスト'}
-            </Text>
-          </MenuButton>
-        </Box> */}
-        <MenuButton
-          // display={{ base: 'flex', md: 'none' }}
-          mr={0}
-          px={0}
-          as={Button}
-          bg="none"
-          colorScheme="none"
-        >
+        <MenuButton mr={0} px={0} as={Button} bg="none" colorScheme="none">
           {isLoggedIn && (
             <HeaderUserIcon src={avatar_url ? avatar_url : '/noNameUser.jpg'} />
           )}

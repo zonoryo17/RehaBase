@@ -24,18 +24,18 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import PrefectureSelector from '@components/profile/prefectureSelector';
+import PrefectureSelector from '@components/pages/profile/prefectureSelector';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Facility } from '../../../types/facility';
+import { Facility } from '../../../../types/facility';
 
 type Props = {
   facility: Facility;
 };
 
-const UpdateFacilityModal = ({ facility: originalFacility }: Props) => {
+const UpdateFacilityModal: FC<Props> = ({ facility: originalFacility }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [facility, setFacility] = useState(originalFacility);
   const { isOpen, onOpen, onClose } = useDisclosure();

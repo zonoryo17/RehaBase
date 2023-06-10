@@ -1,10 +1,11 @@
 import { Box, Image } from '@chakra-ui/react';
+import { FC } from 'react';
 
 type Props = {
   src: string;
 };
 
-const HeaderUserIcon = ({ src }: Props) => {
+const HeaderUserIcon: FC<Props> = ({ src }) => {
   if (src) {
     return (
       <Box w={16}>

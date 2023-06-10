@@ -7,15 +7,15 @@ import {
   VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { useContext, useEffect, useState } from 'react';
-import { UserDataContext } from '../../../pages/_app';
+import { FC, useContext, useEffect, useState } from 'react';
+import { UserDataContext } from '../../../../pages/_app';
 
 type Avatar = {
   avatar_url: string;
 };
 
 //ユーザーアイコンの登録，更新用コンポーネント
-const Avatar = () => {
+const Avatar: FC = () => {
   const [uploading, setUploading] = useState(false);
   const [avatar, setAvatar] = useState<Avatar | null>(null);
 

@@ -9,10 +9,10 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 //施設トップ画像の登録，更新用コンポーネント
-const UploadFacilityImage = () => {
+const UploadFacilityImage: FC = () => {
   const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 

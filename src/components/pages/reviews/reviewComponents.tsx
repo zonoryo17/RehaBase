@@ -1,16 +1,16 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import reviewStyle from '../../../styles/review.module.css';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { Review } from '../../../types/reviews';
+import { Review } from '../../../../types/reviews';
 import ReactStars from 'react-stars';
 
 type Props = {
   facilityId: string | string[] | undefined;
 };
 
-const ReviewComponents = (facilityId: Props) => {
+const ReviewComponents: FC<Props> = ({ facilityId }) => {
   const [reviews, setReviews] = useState<Review[] | null>([]);
   const router = useRouter();
 
@@ -23,7 +23,7 @@ const ReviewComponents = (facilityId: Props) => {
       const { data: reviews, error } = await supabase
         .from<Review>('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)')
-        .eq('facility_id', facilityId.facilityId)
+        .eq('facility_id', facilityId)
         .order('created_at', { ascending: false });
       setReviews(reviews);
       if (error) console.log('error', error);
@@ -95,7 +95,6 @@ const ReviewComponents = (facilityId: Props) => {
                 >
                   詳細を見る
                 </Button>
-                {/* <ReviewDetailModal /> */}
               </Box>
             </Box>
           </Flex>

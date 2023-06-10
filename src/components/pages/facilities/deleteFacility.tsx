@@ -11,10 +11,10 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 //施設情報削除コンポーネント
-const DeleteFacilityButton = () => {
+const DeleteFacilityButton: FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 

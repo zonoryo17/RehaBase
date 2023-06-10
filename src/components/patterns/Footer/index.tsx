@@ -1,8 +1,9 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import Link from 'next/link';
+import { FC } from 'react';
 import { GrAnnounce } from 'react-icons/gr';
 
-const Footer = () => {
+const Footer: FC = () => {
   return (
     <Box p={{ base: 2, md: 7 }} w="100%" h="170px">
       <Flex justify="space-between">
