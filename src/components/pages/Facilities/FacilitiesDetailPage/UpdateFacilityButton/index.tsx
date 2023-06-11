@@ -29,7 +29,7 @@ import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Facility } from '../../../../../types/facility';
+import { Facility } from '../../../../../../types/facility';
 
 type Props = {
   facility: Facility;

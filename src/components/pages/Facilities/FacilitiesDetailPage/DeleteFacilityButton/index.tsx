@@ -72,7 +72,7 @@ const DeleteFacilityButton: FC = () => {
             })
           }
         >
-          施設情報を更新
+          施設情報を削除
         </Button>
       )}
       <AlertDialog
