@@ -25,8 +25,8 @@ import ReactStars from 'react-stars';
 import { Facility } from '../../../../../types/facility';
 import { supabase } from '@utils/supabaseClient';
 import { Review } from '../../../../../types/reviews';
-import DeleteFacilityButton from '../DeleteFacilityButton';
-import UpdateFacilityButton from '../UpdateFacilityButton';
+import DeleteFacilityButton from './DeleteFacilityButton';
+import UpdateFacilityButton from './UpdateFacilityButton';
 
 const FacilityDetailPage: FC = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
