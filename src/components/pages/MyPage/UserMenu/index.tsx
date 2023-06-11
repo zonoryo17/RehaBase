@@ -13,8 +13,8 @@ import { HiUser, HiOutlineLogout, HiOutlineLogin } from 'react-icons/hi';
 import { supabase } from '@utils/supabaseClient';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { UserDataContext } from '../../../../pages/_app';
-import HeaderUserIcon from './headerUserIcon';
+import { UserDataContext } from '../../../../../pages/_app';
+import HeaderUserIcon from './HeaderUserIcon';
 
 const UserMenu: FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
