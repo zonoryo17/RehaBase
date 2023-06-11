@@ -18,7 +18,8 @@
       "@api/*": ["./pages/api/*"],
       "@components/*": ["./src/components/*"],
       "@utils/*": ["./src/utils/*"],
-      "@supabase/*": ["./node_modules/@supabase/gotrue-js/src/lib/*"]
+      "@supabase/*": ["./node_modules/@supabase/gotrue-js/src/lib/*"],
+      "@pages/*": ["./pages/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

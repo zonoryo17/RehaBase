@@ -19,12 +19,17 @@ import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const LoginPage: FC = () => {
+  const TopImage = supabase.storage.from('apps').getPublicUrl('RB-login.jpg');
+  const TopDarkImage = supabase.storage
+    .from('apps')
+    .getPublicUrl('RB-login-removebg-preview.png');
+
   //ダークモード対応用
   const bgColor = useColorModeValue('blackAlpha.50', 'gray.700');
   const inputBgColor = useColorModeValue('white', 'gray.600');
   const loginImage = useColorModeValue(
-    'https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RB-login.jpg',
-    'https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RB-login-removebg-preview.png?t=2022-11-19T13%3A10%3A48.635Z'
+    TopImage.publicURL,
+    TopDarkImage.publicURL
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -135,7 +140,7 @@ const LoginPage: FC = () => {
       <Flex>
         <Container minW={300} maxW={700} mx="auto" position="relative">
           <Image
-            src={loginImage}
+            src={loginImage ?? ''}
             w={650}
             alt="ログイントップ画像"
             mt={10}
@@ -198,9 +203,7 @@ const LoginPage: FC = () => {
                   <Spacer />
                   <Flex direction="column">
                     <Link href="/signup">新規登録</Link>
-                    <Link href="/resetPassword/sendEmail">
-                      パスワードを忘れた
-                    </Link>
+                    <Link href="/forgot-password">パスワードを忘れた</Link>
                   </Flex>
                 </Flex>
                 <Flex justify="center" mt="5">

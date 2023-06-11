@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { FC, useContext, useEffect, useState } from 'react';
-import { UserDataContext } from '../../../../pages/_app';
+import { UserDataContext } from '../../../../../pages/_app';
 
 type Avatar = {
   avatar_url: string;
