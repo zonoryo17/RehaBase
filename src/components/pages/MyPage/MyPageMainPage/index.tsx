@@ -13,7 +13,7 @@ const MyPageMainPage: FC = () => {
   //プロフィール更新ボタンを押した時の処理
   const router = useRouter();
   const handleUpdateBtn = () => {
-    router.push('/mypage/updateProfile');
+    router.push('/mypage/update-profile');
   };
 
   return (
