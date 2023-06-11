@@ -45,7 +45,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   };
   const createUser = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('Users')
         .insert([
           {
