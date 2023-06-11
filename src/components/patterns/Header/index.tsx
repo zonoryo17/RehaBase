@@ -9,7 +9,7 @@ import {
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import Link from 'next/link';
 import NavMenuDrawer from '../Sidebar';
-import UserMenu from '../../pages/profile/userMenu';
+import UserMenu from '../../pages/MyPage/UserMenu';
 import { FC } from 'react';
 
 const Header: FC = () => {

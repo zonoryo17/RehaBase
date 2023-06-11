@@ -10,9 +10,9 @@ import {
   UnorderedList,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { FC, Suspense } from 'react';
+import { useAboutPage } from './useAboutPage';
 
 const AboutPage: FC = () => {
   //ダークモードの背景，テキストの設定
@@ -20,18 +20,23 @@ const AboutPage: FC = () => {
   const cordBgColor = useColorModeValue('whiteAlpha.900', 'gray.700');
   const textColor = useColorModeValue('gray.100', 'gray.700');
 
-  const router = useRouter();
-  const handleClick = () => {
-    router.push('/');
-  };
-
+  const {
+    AboutTopImage,
+    FeaturesImage,
+    TargetImage,
+    ManImage,
+    Man2_Image,
+    WomanImage,
+    Woman2_Image,
+    handleClick,
+  } = useAboutPage();
   return (
     <>
       <Head>
         <title>RehaBaseとは</title>
       </Head>
       <Flex direction="column" align="center">
-        <Suspense fallback={<Skeleton height="100px" />}>
+        <Suspense fallback={<Skeleton height="500px" />}>
           <Flex
             position="relative"
             justify="center"
@@ -39,7 +44,7 @@ const AboutPage: FC = () => {
             mt={{ base: 0, md: 20 }}
           >
             <Image
-              src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/aboutImage?t=2022-11-19T12%3A19%3A16.448Z"
+              src={AboutTopImage ?? ''}
               alt="トップイメージ"
               w={{ base: '80%', md: '50%' }}
               rounded="20"
@@ -89,7 +94,7 @@ const AboutPage: FC = () => {
           <Grid gap={3} maxW={600} mx={{ base: 5, md: 0 }}>
             <Flex align="center">
               <Image
-                src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/man1.png"
+                src={ManImage ?? ''}
                 w={{ base: 20, md: 100 }}
                 h={{ base: 20, md: 100 }}
               />
@@ -108,7 +113,7 @@ const AboutPage: FC = () => {
             </Flex>
             <Flex align="center">
               <Image
-                src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/woman1.png"
+                src={Man2_Image ?? ''}
                 w={{ base: 20, md: 100 }}
                 h={{ base: 20, md: 100 }}
               />
@@ -127,7 +132,7 @@ const AboutPage: FC = () => {
             </Flex>
             <Flex align="center">
               <Image
-                src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/man2.png"
+                src={WomanImage ?? ''}
                 w={{ base: 20, md: 100 }}
                 h={{ base: 20, md: 100 }}
               />
@@ -147,7 +152,7 @@ const AboutPage: FC = () => {
             </Flex>
             <Flex align="center">
               <Image
-                src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/woman2.png"
+                src={Woman2_Image ?? ''}
                 w={{ base: 20, md: 100 }}
                 h={{ base: 20, md: 100 }}
               />
@@ -223,7 +228,7 @@ const AboutPage: FC = () => {
               <ListItem>みんなでいいリハビリ施設の情報を共有できる！</ListItem>
             </UnorderedList>
             <Image
-              src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/about-feature.jpg"
+              src={FeaturesImage ?? ''}
               w={{ base: '85%', md: '45%' }}
               rounded="5"
             />
@@ -247,7 +252,7 @@ const AboutPage: FC = () => {
           gap={5}
         >
           <Image
-            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/about-target.jpg?t=2022-11-19T12%3A26%3A39.626Z"
+            src={TargetImage ?? ''}
             w={{ base: '80%', md: '45%' }}
             rounded="5"
           />
