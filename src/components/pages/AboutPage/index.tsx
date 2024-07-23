@@ -11,7 +11,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import Head from 'next/head';
-import { FC, Suspense } from 'react';
+import { type FC, Suspense } from 'react';
 import { useAboutPage } from './useAboutPage';
 
 const AboutPage: FC = () => {
