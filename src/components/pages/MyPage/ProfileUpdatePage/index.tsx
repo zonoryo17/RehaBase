@@ -18,12 +18,12 @@ import {
 } from '@chakra-ui/react';
 import Avatar from '@components/pages/MyPage/Avatar';
 import PrefectureSelector from '@components/pages/MyPage/prefectureSelector';
-import { FC, useContext, useState } from 'react';
+import { type FC, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { supabase } from '@utils/supabaseClient';
 import { UserDataContext } from '@pages/_app';
-import { User } from '../../../../../types/user';
+import type { User } from '@type/user';
 
 const ProfileUpdatePage: FC = () => {
   const toast = useToast();
@@ -165,7 +165,7 @@ const ProfileUpdatePage: FC = () => {
                 onChange={handleChange}
                 h={200}
                 mb={10}
-              ></Textarea>
+              />
             </Box>
           </Flex>
           <Flex justify="end" gap={5} w="100%" mr={20} mb={10}>

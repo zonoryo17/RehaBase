@@ -43,6 +43,7 @@ const UploadReviewImage = (facilityId: Props) => {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getFacilityReviewImages();
   }, []);

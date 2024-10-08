@@ -38,10 +38,11 @@ const Avatar = () => {
         throw error;
       }
     } catch (error) {
-      throw error;
+      throw new Error('画像の取得に失敗しました。');
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getAvatarUrl(); //初回レンダリング時にプロフィール画像を取得
   }, [userData]);
@@ -71,7 +72,7 @@ const Avatar = () => {
         .getPublicUrl(`usersIcon/${fileName}`);
       createAvatarUrl(data.publicURL ?? '');
     } catch (error) {
-      throw error;
+      throw new Error('画像のアップロードに失敗しました。');
     } finally {
       setUploading(false);
     }

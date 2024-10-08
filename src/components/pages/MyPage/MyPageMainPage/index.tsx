@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Spacer, Text } from '@chakra-ui/react';
 import Avatar from '@components/pages/MyPage/Avatar';
-import { FC, useContext } from 'react';
+import { type FC, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { UserDataContext } from '@pages/_app';

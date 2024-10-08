@@ -38,7 +38,7 @@ const UserMenu = () => {
     if (user?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
       setIsGuest(true);
     }
-  }, [user, userData]);
+  }, [user]);
 
   const { user_name, avatar_url } = userData;
 

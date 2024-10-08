@@ -54,8 +54,6 @@ const Avatar: FC = () => {
   }, []);
 
   // ファイル選択後の処理
-  // FIXME: any型を修正する
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSubmitUploadAvatar = async (e: any) => {
     try {
       setUploading(true);

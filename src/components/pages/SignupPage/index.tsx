@@ -14,7 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 

@@ -1,6 +1,5 @@
 import ProfileUpdatePage from '@components/pages/MyPage/ProfileUpdatePage';
-import { NextPage } from 'next';
-import React from 'react';
+import type { NextPage } from 'next';
 
 const ProfileUpdatePageRouter: NextPage = () => {
   return <ProfileUpdatePage />;

@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import Link from 'next/link';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { GrAnnounce } from 'react-icons/gr';
 
 const Footer: FC = () => {
@@ -9,13 +9,11 @@ const Footer: FC = () => {
       <Flex justify="space-between">
         <Box>
           <Link href="/">
-            <a>
-              <Image
-                src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RehaBase.png?t=2022-11-19T14%3A36%3A32.712Z"
-                alt="サービスロゴ"
-                width={200}
-              />
-            </a>
+            <Image
+              src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RehaBase.png?t=2022-11-19T14%3A36%3A32.712Z"
+              alt="サービスロゴ"
+              width={200}
+            />
           </Link>
         </Box>
         <Box fontSize="xs" _hover={{ opacity: 0.7, transition: '0.4s' }}>

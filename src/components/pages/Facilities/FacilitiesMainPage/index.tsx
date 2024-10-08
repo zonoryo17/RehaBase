@@ -8,13 +8,13 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { FC, Suspense, useEffect, useState } from 'react';
+import { type FC, Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import ReactStars from 'react-stars';
-import { Facility } from '../../../../../types/facility';
+import type { Facility } from '@type/facility';
 
 const FacilitiesMainPage: FC = () => {
   const [facilities, setFacilities] = useState<Facility[] | null>([]);
@@ -27,7 +27,7 @@ const FacilitiesMainPage: FC = () => {
     fetchData();
     if (query.keyword) searchQueryFacilities();
     if (user) setIsLoggedIn(true);
-  }, []);
+  }, [user]);
 
   const fetchData = async () => {
     try {
@@ -105,6 +105,7 @@ const FacilitiesMainPage: FC = () => {
       <Box maxW={600} mx="auto">
         <Suspense fallback={<p>Now Loading...</p>}>
           <List>
+            {/* biome-ignore lint/complexity/useOptionalChain: <explanation> */}
             {facilities &&
               facilities.map(
                 ({
@@ -116,52 +117,50 @@ const FacilitiesMainPage: FC = () => {
                   total_rating_ave,
                 }: Facility) => (
                   <Link href={`/facilities/${id}`} key={id}>
-                    <a>
-                      <Box
-                        border="1px solid"
-                        borderRadius="5px"
-                        minH={100}
-                        my={5}
-                        boxShadow="md"
-                        _hover={{
-                          transform: 'scale(1.03, 1.03)',
-                          transition: '0.3s',
-                        }}
-                      >
-                        <ListItem>
-                          <Flex>
-                            <Box m={1}>
-                              <Image
-                                src={image_url ? image_url : '/no_image.jpg'}
-                                w={200}
-                                h={150}
-                                objectFit="contain"
+                    <Box
+                      border="1px solid"
+                      borderRadius="5px"
+                      minH={100}
+                      my={5}
+                      boxShadow="md"
+                      _hover={{
+                        transform: 'scale(1.03, 1.03)',
+                        transition: '0.3s',
+                      }}
+                    >
+                      <ListItem>
+                        <Flex>
+                          <Box m={1}>
+                            <Image
+                              src={image_url ? image_url : '/no_image.jpg'}
+                              w={200}
+                              h={150}
+                              objectFit="contain"
+                            />
+                          </Box>
+                          <Box mt={2} ml={2}>
+                            <Text fontFamily="YuGothic" fontWeight="bold">
+                              病院名：{name}
+                            </Text>
+                            <Flex align="center">
+                              <Text mr={2}>総合評価：{total_rating_ave}</Text>
+                              <ReactStars
+                                count={5}
+                                size={20}
+                                color2={'#ffd700'}
+                                value={total_rating_ave}
+                                edit={false}
                               />
-                            </Box>
-                            <Box mt={2} ml={2}>
-                              <Text fontFamily="YuGothic" fontWeight="bold">
-                                病院名：{name}
-                              </Text>
-                              <Flex align="center">
-                                <Text mr={2}>総合評価：{total_rating_ave}</Text>
-                                <ReactStars
-                                  count={5}
-                                  size={20}
-                                  color2={'#ffd700'}
-                                  value={total_rating_ave}
-                                  edit={false}
-                                />
-                              </Flex>
-                              <Text borderBottom="1px solid" w="100%" my={2} />
-                              <Text fontFamily="YuGothic">住所：{address}</Text>
-                              <Text fontFamily="YuGothic">
-                                電話番号：{phone_number}
-                              </Text>
-                            </Box>
-                          </Flex>
-                        </ListItem>
-                      </Box>
-                    </a>
+                            </Flex>
+                            <Text borderBottom="1px solid" w="100%" my={2} />
+                            <Text fontFamily="YuGothic">住所：{address}</Text>
+                            <Text fontFamily="YuGothic">
+                              電話番号：{phone_number}
+                            </Text>
+                          </Box>
+                        </Flex>
+                      </ListItem>
+                    </Box>
                   </Link>
                 )
               )}

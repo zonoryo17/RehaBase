@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { HiOutlineMenu } from 'react-icons/hi';
-import React, { FC } from 'react';
+import type { FC } from 'react';
 import Link from 'next/link';
 
 const NavMenuDrawer: FC = () => {

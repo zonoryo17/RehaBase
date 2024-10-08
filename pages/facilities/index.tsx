@@ -1,6 +1,5 @@
 import FacilitiesMainPage from '@components/pages/Facilities/FacilitiesMainPage';
-import { NextPage } from 'next';
-import React from 'react';
+import type { NextPage } from 'next';
 
 const FacilitiesMainPageRouter: NextPage = () => {
   return <FacilitiesMainPage />;

@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { FC, useContext, useEffect, useState } from 'react';
+import { type FC, useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { UserDataContext } from '../../../../pages/_app';
 

@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 
 //施設トップ画像の登録，更新用コンポーネント
 const UploadFacilityImage: FC = () => {
@@ -65,7 +65,7 @@ const UploadFacilityImage: FC = () => {
       if (data) setImageFileUrl(data.publicURL);
       handleCreateFacilityImage(data.publicURL ?? '');
     } catch (error) {
-      throw error;
+      throw new Error('画像のアップロードに失敗しました。');
     } finally {
       setUploading(false);
     }

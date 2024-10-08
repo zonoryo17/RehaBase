@@ -10,7 +10,7 @@ import {
 import { supabase } from '@utils/supabaseClient';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 
 const FirstView: FC = () => {
   const [search, setSearch] = useState<string>('');

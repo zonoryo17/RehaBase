@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 type Props = {
   facility_id: string;
