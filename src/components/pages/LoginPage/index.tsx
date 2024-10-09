@@ -15,7 +15,7 @@ import { supabase } from '@utils/supabaseClient';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const LoginPage: FC = () => {
@@ -80,7 +80,6 @@ const LoginPage: FC = () => {
       if (error) throw error;
     } catch (error: any) {
       alert(error.error_description || error.message);
-      console.log('Googleログインでエラーが発生しました');
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +102,6 @@ const LoginPage: FC = () => {
       });
     } catch (error: any) {
       alert(error.error_description || error.message);
-      console.log('GitHubログインでエラーが発生しました');
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +123,7 @@ const LoginPage: FC = () => {
       if (error) throw error;
       router.push('/');
     } catch (error) {
-      throw error;
+      throw new Error('ゲストログインに失敗しました');
     }
   };
 
@@ -217,7 +215,7 @@ const LoginPage: FC = () => {
                   mx="auto"
                   my="5"
                   w="90%"
-                ></Text>
+                />
                 <Flex justify="space-between" direction="column" mx={10} px={0}>
                   <Button
                     onClick={signInWithGoogle}

@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 type Props = {
   facility_id: string;
@@ -27,16 +27,7 @@ const DeleteReviewButton: FC<Props> = ({ facility_id }) => {
 
   const handleDelete = async () => {
     try {
-      const { data, error } = await supabase
-        .from('Reviews')
-        .delete()
-        .eq('id', query.reviewId);
-      if (error) {
-        console.log(error);
-      }
-      if (data) {
-        console.log(data);
-      }
+      await supabase.from('Reviews').delete().eq('id', query.reviewId);
       toast({
         title: '口コミ情報を削除しました。',
         status: 'success',
@@ -44,6 +35,7 @@ const DeleteReviewButton: FC<Props> = ({ facility_id }) => {
         duration: 5000,
         isClosable: true,
       });
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.message);
     } finally {

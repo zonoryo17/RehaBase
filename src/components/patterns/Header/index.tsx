@@ -10,7 +10,7 @@ import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import Link from 'next/link';
 import NavMenuDrawer from '../Sidebar';
 import UserMenu from '../../pages/MyPage/UserMenu';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 const Header: FC = () => {
   //ダークモード用
@@ -19,14 +19,12 @@ const Header: FC = () => {
   return (
     <Flex mx={{ base: 3, lg: 10 }} my={{ base: 5, lg: 0 }}>
       <Link href="/">
-        <a>
-          <Image
-            src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RehaBase.png?t=2022-11-19T14%3A36%3A32.712Z"
-            alt="サービスロゴ"
-            objectFit="contain"
-            width={300}
-          />
-        </a>
+        <Image
+          src="https://xfqdxmysyinpeegwdcsu.supabase.co/storage/v1/object/public/apps/RehaBase.png?t=2022-11-19T14%3A36%3A32.712Z"
+          alt="サービスロゴ"
+          objectFit="contain"
+          width={300}
+        />
       </Link>
       <Spacer />
       <Flex

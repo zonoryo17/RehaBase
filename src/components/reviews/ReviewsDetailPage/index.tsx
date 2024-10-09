@@ -4,11 +4,11 @@ import { supabase } from '@utils/supabaseClient';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReactStars from 'react-stars';
 import dayjs from 'dayjs';
-import { Review } from '../../../../types/reviews';
+import type { Review } from '@type/reviews';
 
 const ReviewsDetailPage: FC = () => {
   const [review, setReview] = useState<Review | null>(null);
@@ -18,7 +18,7 @@ const ReviewsDetailPage: FC = () => {
 
   useEffect(() => {
     fetchReviewData();
-  }, [query]);
+  }, []);
 
   //レビューの詳細情報を取得
   const fetchReviewData = async () => {
@@ -92,7 +92,7 @@ const ReviewsDetailPage: FC = () => {
                 <Text fontSize="xl">{user_name}さんの口コミ</Text>
                 <Flex fontSize="xl" gap={4}>
                   <Text>{age ? `${age}歳` : ''}</Text>
-                  <Text>{gender === '選択しない' ? `性別未設定` : gender}</Text>
+                  <Text>{gender === '選択しない' ? '性別未設定' : gender}</Text>
                   <Text>{prefecture}</Text>
                 </Flex>
               </Flex>
@@ -171,7 +171,7 @@ const ReviewsDetailPage: FC = () => {
                   />
                 </Flex>
               </Flex>
-              <Text borderBottom="1px solid black" my="5"></Text>
+              <Text borderBottom="1px solid black" my="5" />
               <Text fontSize="xl" fontWeight="bold" mb="3">
                 {title}
               </Text>

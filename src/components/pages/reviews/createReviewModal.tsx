@@ -24,7 +24,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { useState, useContext, useEffect, FC } from 'react';
+import { useState, useContext, useEffect, type FC } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactStars from 'react-stars';
 import { UserDataContext } from '../../../../pages/_app';
@@ -62,7 +62,7 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
 
   useEffect(() => {
     if (user) setIsLoggedIn(true);
-  }, []);
+  }, [user]);
 
   const initialReviewState: InitialState = {
     title: '',
@@ -163,7 +163,7 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
                 <Text fontSize="2xl" fontWeight="bold" textAlign="center">
                   {facilityName}
                 </Text>
-                <Text borderBottom="1px solid black"></Text>
+                <Text borderBottom="1px solid black" />
                 <FormLabel mt={3}>総合評価</FormLabel>
                 {/* 評価点数用の星コンポーネント */}
                 <ReactStars
@@ -269,7 +269,7 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
                     </AccordionPanel>
                   </AccordionItem>
                 </Accordion>
-                <Text borderBottom="1px solid black"></Text>
+                <Text borderBottom="1px solid black" />
                 <FormLabel htmlFor="title" mt={3}>
                   タイトル
                 </FormLabel>

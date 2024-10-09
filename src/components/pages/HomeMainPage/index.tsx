@@ -1,7 +1,7 @@
 import { Box, Skeleton, Text } from '@chakra-ui/react';
 import FirstView from '@components/pages/HomeMainPage/FirstView';
 import Head from 'next/head';
-import React, { FC, Suspense } from 'react';
+import { type FC, Suspense } from 'react';
 import TopPageRanking from './topPageRanking';
 import TopSlideShow from './topSlideShow';
 

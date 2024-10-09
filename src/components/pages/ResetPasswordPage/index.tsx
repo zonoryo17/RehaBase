@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { FC, FormEvent, useState } from 'react';
+import { type FC, type FormEvent, useState } from 'react';
 
 const ResetPasswordPage: FC = () => {
   const [password, setPassword] = useState<string>('');

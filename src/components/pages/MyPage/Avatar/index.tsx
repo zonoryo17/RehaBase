@@ -7,7 +7,7 @@ import {
   VisuallyHiddenInput,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { FC, useContext, useEffect, useState } from 'react';
+import { type FC, useContext, useEffect, useState } from 'react';
 import { UserDataContext } from '../../../../../pages/_app';
 
 type Avatar = {
@@ -38,13 +38,20 @@ const Avatar: FC = () => {
         throw error;
       }
     } catch (error) {
-      throw error;
+      toast({
+        title: '画像の取得に失敗しました。',
+        status: 'error',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getAvatarUrl(); //初回レンダリング時にプロフィール画像を取得
-  }, [userData]);
+  }, []);
 
   // ファイル選択後の処理
   const handleSubmitUploadAvatar = async (e: any) => {
@@ -71,7 +78,13 @@ const Avatar: FC = () => {
         .getPublicUrl(`usersIcon/${fileName}`);
       createAvatarUrl(data.publicURL ?? '');
     } catch (error) {
-      throw error;
+      toast({
+        title: '画像のアップロードに失敗しました。',
+        status: 'error',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      });
     } finally {
       setUploading(false);
     }
@@ -94,8 +107,16 @@ const Avatar: FC = () => {
         isClosable: true,
       });
       getAvatarUrl();
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast({
+          title: '画像のURLの保存に失敗しました。',
+          status: 'error',
+          position: 'top',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     }
   };
 

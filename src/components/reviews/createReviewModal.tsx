@@ -61,7 +61,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
 
   useEffect(() => {
     if (user) setIsLoggedIn(true);
-  }, []);
+  }, [user]);
 
   const initialReviewState: InitialState = {
     title: '',
@@ -166,7 +166,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                 <Text fontSize="2xl" fontWeight="bold" textAlign="center">
                   {facilityName}
                 </Text>
-                <Text borderBottom="1px solid black"></Text>
+                <Text borderBottom="1px solid black" />
                 <FormLabel mt={3}>総合評価</FormLabel>
                 {/* 評価点数用の星コンポーネント */}
                 <ReactStars
@@ -180,7 +180,6 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                 />
                 <Accordion allowToggle>
                   <AccordionItem>
-
                     <AccordionButton>
                       <Text flex="1" textAlign="left">
                         詳細を評価
@@ -273,7 +272,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
                     </AccordionPanel>
                   </AccordionItem>
                 </Accordion>
-                <Text borderBottom="1px solid black"></Text>
+                <Text borderBottom="1px solid black" />
                 <FormLabel htmlFor="title" mt={3}>
                   タイトル
                 </FormLabel>

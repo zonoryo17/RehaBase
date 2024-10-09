@@ -25,11 +25,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import PrefectureSelector from '@components/pages/MyPage/prefectureSelector';
+import type { Facility } from '@type/facility';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Facility } from '../../../../../../types/facility';
 
 type Props = {
   facility: Facility;
@@ -52,7 +52,7 @@ const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
 
   useEffect(() => {
     if (user) setIsLoggedIn(true);
-  }, []);
+  }, [user]);
 
   const {
     name,
@@ -72,9 +72,9 @@ const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
     phone_number,
   } = facility;
 
-  const handleChange = (e: {
-    target: HTMLInputElement | HTMLTextAreaElement;
-  }) => {
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  > = (e) => {
     setFacility({ ...facility, [e.target.name]: e.target.value });
   };
 
@@ -99,8 +99,8 @@ const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
         duration: 5000,
         isClosable: true,
       });
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     } finally {
       router.push('/facilities');
     }
