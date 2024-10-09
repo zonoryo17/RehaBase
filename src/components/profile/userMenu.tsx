@@ -20,8 +20,8 @@ import {
 import { supabase } from '@utils/supabaseClient';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { UserDataContext } from '../../../pages/_app';
 import HeaderUserIcon from './headerUserIcon';
+import { UserDataContext } from '@pages/_app';
 
 const UserMenu = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const UserMenu = () => {
     if (user?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
       setIsGuest(true);
     }
-  }, [user, userData]);
+  }, [user]);
 
   const { user_name, avatar_url } = userData;
 

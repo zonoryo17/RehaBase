@@ -1,8 +1,8 @@
 import { Select } from '@chakra-ui/react';
-import { ChangeEventHandler, FC } from 'react';
+import type { FC } from 'react';
 
 type Props = {
-  handleChange: any;
+  handleChange: React.ChangeEventHandler<HTMLSelectElement>;
   prefecture?: string;
 };
 

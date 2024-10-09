@@ -1,22 +1,22 @@
 import { ChakraProvider, useToast } from '@chakra-ui/react';
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import Layout from '@components/layouts/layout';
 import 'swiper/css/bundle';
 import { useEffect, useState, createContext } from 'react';
-import { User } from '../types/user';
 import { supabase } from '@utils/supabaseClient';
+import type { User } from '../types/user';
 
 export const UserDataContext = createContext<User>({});
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<User>({});
   const toast = useToast();
   const user = supabase.auth.user();
 
   useEffect(() => {
     if (user && !userData) createUser(); //新規登録したユーザーのみデフォルトのプロフィールを作成
     if (user) fetchLoginUsersData();
-  }, [user]);
+  }, [user, userData]);
 
   //ログインしているユーザーの情報を取得
   const fetchLoginUsersData = async () => {
@@ -28,7 +28,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         .single();
       if (error) throw error;
       setUserData(data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw new Error('情報が正しく取得できませんでした');
     }
   };
@@ -62,13 +62,13 @@ const App = ({ Component, pageProps }: AppProps) => {
         isClosable: true,
       });
     } catch (error) {
-      throw error;
+      throw new Error('ユーザー情報の登録に失敗しました');
     }
   };
 
   return (
     <ChakraProvider>
-      <UserDataContext.Provider value={userData ?? {}}>
+      <UserDataContext.Provider value={userData}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

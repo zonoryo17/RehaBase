@@ -1,6 +1,5 @@
 import ResetPasswordPage from '@components/pages/ResetPasswordPage';
-import { NextPage } from 'next';
-import React from 'react';
+import type { NextPage } from 'next';
 
 const ResetPasswordPageRouter: NextPage = () => {
   return <ResetPasswordPage />;

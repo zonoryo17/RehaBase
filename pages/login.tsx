@@ -1,6 +1,5 @@
 import LoginPage from '@components/pages/LoginPage';
-import { NextPage } from 'next';
-import React from 'react';
+import type { NextPage } from 'next';
 
 const LoginPageRouter: NextPage = () => {
   return <LoginPage />;

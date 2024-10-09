@@ -16,7 +16,7 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import { FC, useContext, useState } from 'react';
+import { type FC, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -25,7 +25,7 @@ import PrefectureSelector from '@components/pages/MyPage/prefectureSelector';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@utils/supabaseClient';
 import { UserDataContext } from '@pages/_app';
-import { Facility } from '../../../../../types/facility';
+import type { Facility } from '@type/facility';
 
 const FacilitiesCreatePage: FC = () => {
   const userData = useContext(UserDataContext);
@@ -71,9 +71,9 @@ const FacilitiesCreatePage: FC = () => {
   const router = useRouter();
   const toast = useToast();
 
-  const handleChange = (e: {
-    target: HTMLInputElement | HTMLTextAreaElement;
-  }) => {
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  > = (e) => {
     setFacility({ ...facility, [e.target.name]: e.target.value });
   };
   //Facility情報のcreate処理
@@ -96,8 +96,8 @@ const FacilitiesCreatePage: FC = () => {
         duration: 5000,
         isClosable: true,
       });
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     } finally {
       router.push('/facilities');
     }

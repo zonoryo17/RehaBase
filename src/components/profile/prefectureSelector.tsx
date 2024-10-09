@@ -4,7 +4,7 @@ const PrefectureSelector = ({
   handleChange,
   prefecture,
 }: {
-  handleChange: any;
+  handleChange: () => void;
   prefecture?: string;
 }) => {
   return (

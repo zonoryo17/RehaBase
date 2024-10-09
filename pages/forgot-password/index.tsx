@@ -1,6 +1,5 @@
 import ForgotPasswordPage from '@components/pages/ForgotPasswordPage';
-import { NextPage } from 'next';
-import React from 'react';
+import type { NextPage } from 'next';
 
 const ForgotPasswordPageRouter: NextPage = () => {
   return <ForgotPasswordPage />;

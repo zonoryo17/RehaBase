@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { HiUser, HiOutlineLogout, HiOutlineLogin } from 'react-icons/hi';
 import { supabase } from '@utils/supabaseClient';
-import { FC, useContext, useEffect, useState } from 'react';
+import { type FC, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { UserDataContext } from '../../../../../pages/_app';
 import HeaderUserIcon from './HeaderUserIcon';
@@ -31,7 +31,7 @@ const UserMenu: FC = () => {
     if (user?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
       setIsGuest(true);
     }
-  }, [user, userData]);
+  }, [user]);
 
   const { user_name, avatar_url } = userData;
 

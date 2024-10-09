@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { HiOutlineMenu } from 'react-icons/hi';
-import React, { FC } from 'react';
+import type { FC } from 'react';
 import Link from 'next/link';
 
 const NavMenuDrawer: FC = () => {
@@ -29,7 +29,7 @@ const NavMenuDrawer: FC = () => {
           <DrawerHeader>Menu</DrawerHeader>
           <DrawerBody px={0}>
             <Flex display="column" gap={5}>
-              <Link href="/about">
+              <Link href="/about" onClick={onClose}>
                 <a onClick={onClose}>
                   <Flex
                     w="100%"

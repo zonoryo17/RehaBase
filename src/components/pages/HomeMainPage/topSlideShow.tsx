@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Navigation } from 'swiper';
 import { Box, Text } from '@chakra-ui/react';
-import { FC } from 'react';
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -14,7 +13,7 @@ const imagePaths = [
   '/number_5.jpg',
 ];
 
-const TopSlideShow: FC = () => {
+const TopSlideShow: React.FC = () => {
   return (
     <Box mt={20} mx={5} position="relative">
       <Box
@@ -26,7 +25,7 @@ const TopSlideShow: FC = () => {
         top="0"
         opacity="0.5"
         zIndex={10}
-      ></Box>
+      />
       <Text
         position="absolute"
         top="50%"
@@ -48,9 +47,9 @@ const TopSlideShow: FC = () => {
         navigation
         loop={true}
       >
-        {imagePaths.map((src: string, index: number) => {
+        {imagePaths.map((src: string) => {
           return (
-            <SwiperSlide key={`${index}`}>
+            <SwiperSlide key={src}>
               <Image
                 src={src}
                 layout="responsive"

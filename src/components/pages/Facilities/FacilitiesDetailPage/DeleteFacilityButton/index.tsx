@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 
 //施設情報削除コンポーネント
 const DeleteFacilityButton: FC = () => {
@@ -26,7 +26,7 @@ const DeleteFacilityButton: FC = () => {
 
   useEffect(() => {
     if (user) setIsLoggedIn(true);
-  }, []);
+  }, [user]);
 
   const handleDelete = async () => {
     try {
@@ -44,8 +44,8 @@ const DeleteFacilityButton: FC = () => {
         duration: 5000,
         isClosable: true,
       });
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     } finally {
       router.push('/facilities');
     }

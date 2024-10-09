@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { FC, useContext, useEffect, useState } from 'react';
+import { type FC, useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { UserDataContext } from '../../../../pages/_app';
 
@@ -39,15 +39,17 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
         throw error;
       }
     } catch (error) {
-      console.error(error);
+      throw new Error('正しく情報を取得できませんでした');
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getFacilityReviewImages();
   }, []);
 
   // 画像ファイル選択後の処理
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSelectImageFile = async (e: any) => {
     try {
       setUploading(true);
@@ -67,8 +69,8 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
         .from('reviews')
         .getPublicUrl(`facilityReviews/${fileName}`);
       handleCreateFacilityReviewImage(fileName, data.publicURL ?? '');
-    } catch (error) {
-      console.error(error);
+    } catch {
+      throw new Error('画像のアップロードに失敗しました');
     } finally {
       setUploading(false);
     }
@@ -101,6 +103,7 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
         isClosable: true,
       });
       getFacilityReviewImages();
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.message);
     }
@@ -109,8 +112,9 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
   return (
     <Flex aria-live="polite" align="center">
       <Flex gap="24px" flexWrap="wrap" align="center">
-        {facilityReviewImageUrls.map((facilityReviewImage: any, i) => (
-          <Flex w="200px" h="200px" key={i}>
+        {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+        {facilityReviewImageUrls.map((facilityReviewImage: any) => (
+          <Flex w="200px" h="200px" key={facilityReviewImage.image_url}>
             <Image
               src={
                 facilityReviewImage

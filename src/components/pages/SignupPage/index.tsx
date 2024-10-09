@@ -14,7 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -30,6 +30,7 @@ const SignUpPage: FC = () => {
   const toast = useToast();
   const router = useRouter();
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSubmitSignUp = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);

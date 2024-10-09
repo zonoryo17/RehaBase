@@ -38,15 +38,17 @@ const Avatar = () => {
         throw error;
       }
     } catch (error) {
-      throw error;
+      throw new Error('画像の取得に失敗しました。');
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getAvatarUrl(); //初回レンダリング時にプロフィール画像を取得
   }, [userData]);
 
   // ファイル選択後の処理
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSubmitUploadAvatar = async (e: any) => {
     try {
       setUploading(true);
@@ -71,7 +73,7 @@ const Avatar = () => {
         .getPublicUrl(`usersIcon/${fileName}`);
       createAvatarUrl(data.publicURL ?? '');
     } catch (error) {
-      throw error;
+      throw new Error('画像のアップロードに失敗しました。');
     } finally {
       setUploading(false);
     }
@@ -94,8 +96,8 @@ const Avatar = () => {
         isClosable: true,
       });
       getAvatarUrl();
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     }
   };
 
@@ -113,55 +115,51 @@ const Avatar = () => {
         rounded="full"
       />
       {uploading && (
-        <>
-          <Flex direction="column" align="center">
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
-            />
-            <Text fontWeight="bold" fontSize="lg">
-              アップロード中...
-            </Text>
-          </Flex>
-        </>
+        <Flex direction="column" align="center">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+          <Text fontWeight="bold" fontSize="lg">
+            アップロード中...
+          </Text>
+        </Flex>
       )}
       {!uploading && (
-        <>
-          <form onSubmit={handleSubmitUploadAvatar}>
-            <label htmlFor="avatar">
-              <Flex
-                justify="center"
-                alignItems="center"
-                fontSize="sm"
-                textAlign="center"
-                bg="teal.400"
-                mt={3}
-                w={130}
-                h={12}
-                rounded={10}
-                _hover={{
-                  bg: 'teal.300',
-                  transition: '0.2s',
-                  cursor: 'pointer',
-                }}
-              >
-                プロフィール画像
-                <br />
-                アップロード
-              </Flex>
-            </label>
-            <VisuallyHiddenInput // ★ ファイル選択ダイアログ
-              id="avatar"
-              type="file"
-              accept=".jpeg, .jpg, .png"
-              onChange={handleSubmitUploadAvatar}
-              disabled={uploading}
-            />
-          </form>
-        </>
+        <form onSubmit={handleSubmitUploadAvatar}>
+          <label htmlFor="avatar">
+            <Flex
+              justify="center"
+              alignItems="center"
+              fontSize="sm"
+              textAlign="center"
+              bg="teal.400"
+              mt={3}
+              w={130}
+              h={12}
+              rounded={10}
+              _hover={{
+                bg: 'teal.300',
+                transition: '0.2s',
+                cursor: 'pointer',
+              }}
+            >
+              プロフィール画像
+              <br />
+              アップロード
+            </Flex>
+          </label>
+          <VisuallyHiddenInput // ★ ファイル選択ダイアログ
+            id="avatar"
+            type="file"
+            accept=".jpeg, .jpg, .png"
+            onChange={handleSubmitUploadAvatar}
+            disabled={uploading}
+          />
+        </form>
       )}
     </Flex>
   );
