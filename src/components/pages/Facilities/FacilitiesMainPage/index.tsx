@@ -36,7 +36,7 @@ const FacilitiesMainPage: FC = () => {
         .select('*')
         .order('total_rating_ave', { ascending: false });
       setFacilities(facilities);
-      if (error) console.log('error', error);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.message);
     }

@@ -28,18 +28,15 @@ const UploadReviewImage = (facilityId: Props) => {
   //FacilityImagesテーブルから画像情報の一覧を取得
   const getFacilityReviewImages = async () => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('FacilityImages')
         .select('image_url')
         .eq('facility_id', facilityId.facilityId);
       if (data) {
         setFacilityReviewImageUrls(data);
       }
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      console.error(error);
+    } catch {
+      throw new Error('正しく情報を取得できませんでした');
     }
   };
 
@@ -49,6 +46,7 @@ const UploadReviewImage = (facilityId: Props) => {
   }, []);
 
   // 画像ファイル選択後の処理
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSelectImageFile = async (e: any) => {
     try {
       setUploading(true);
@@ -68,8 +66,8 @@ const UploadReviewImage = (facilityId: Props) => {
         .from('reviews')
         .getPublicUrl(`facilityReviews/${fileName}`);
       handleCreateFacilityReviewImage(fileName, data.publicURL ?? '');
-    } catch (error) {
-      console.error(error);
+    } catch {
+      throw new Error('画像のアップロードに失敗しました');
     } finally {
       setUploading(false);
     }
@@ -102,6 +100,7 @@ const UploadReviewImage = (facilityId: Props) => {
         isClosable: true,
       });
       getFacilityReviewImages();
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.message);
     }
@@ -110,8 +109,9 @@ const UploadReviewImage = (facilityId: Props) => {
   return (
     <Flex aria-live="polite" align="center">
       <Flex gap="24px" flexWrap="wrap" align="center">
-        {facilityReviewImageUrls.map((facilityReviewImage: any, i) => (
-          <Flex w="200px" h="200px" key={i}>
+        {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+        {facilityReviewImageUrls.map((facilityReviewImage: any) => (
+          <Flex w="200px" h="200px" key={facilityReviewImage.image_url}>
             <Image
               src={
                 facilityReviewImage

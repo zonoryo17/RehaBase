@@ -20,13 +20,13 @@ const ReviewComponents: FC<Props> = ({ facilityId }) => {
 
   const fetchUserData = async () => {
     try {
-      const { data: reviews, error } = await supabase
+      const { data: reviews } = await supabase
         .from<Review>('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)')
         .eq('facility_id', facilityId)
         .order('created_at', { ascending: false });
       setReviews(reviews);
-      if (error) console.log('error', error);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.message);
     }

@@ -20,8 +20,8 @@ import {
 import { supabase } from '@utils/supabaseClient';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { UserDataContext } from '../../../pages/_app';
 import HeaderUserIcon from './headerUserIcon';
+import { UserDataContext } from '@pages/_app';
 
 const UserMenu = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

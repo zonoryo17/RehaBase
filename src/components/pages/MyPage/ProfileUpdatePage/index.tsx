@@ -29,8 +29,6 @@ const ProfileUpdatePage: FC = () => {
   const toast = useToast();
   const userData = useContext(UserDataContext);
   const userId = userData.id;
-  console.log('userId', userId);
-  console.log('userData', userData);
 
   const initialState = {
     ...userData,
@@ -67,6 +65,7 @@ const ProfileUpdatePage: FC = () => {
         duration: 5000,
         isClosable: true,
       });
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.message);
     } finally {

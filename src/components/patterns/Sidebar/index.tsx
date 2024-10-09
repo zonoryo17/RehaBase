@@ -29,7 +29,7 @@ const NavMenuDrawer: FC = () => {
           <DrawerHeader>Menu</DrawerHeader>
           <DrawerBody px={0}>
             <Flex display="column" gap={5}>
-              <Link href="/about">
+              <Link href="/about" onClick={onClose}>
                 <a onClick={onClose}>
                   <Flex
                     w="100%"

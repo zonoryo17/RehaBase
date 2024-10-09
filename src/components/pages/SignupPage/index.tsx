@@ -30,6 +30,7 @@ const SignUpPage: FC = () => {
   const toast = useToast();
   const router = useRouter();
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSubmitSignUp = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);

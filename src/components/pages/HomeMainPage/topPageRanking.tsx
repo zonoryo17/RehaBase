@@ -34,7 +34,6 @@ const TopPageRanking: FC = () => {
         .order('total_rating_ave', { ascending: false })
         .limit(3);
       setTopRankFacilities(data);
-      console.log('topRankingFacilities', data);
       if (error) throw error;
     } catch (error) {
       throw new Error('正しく情報を取得できませんでした');
@@ -51,7 +50,7 @@ const TopPageRanking: FC = () => {
           { id, name, prefecture, image_url, phone_number, total_rating_ave },
           i
         ) => (
-          <Link href={`/facilities/${id}`} key={i}>
+          <Link href={`/facilities/${id}`} key={id}>
             <Box
               border="solid 1px"
               alignItems="center"
