@@ -71,9 +71,9 @@ const FacilitiesCreatePage: FC = () => {
   const router = useRouter();
   const toast = useToast();
 
-  const handleChange = (e: {
-    target: HTMLInputElement | HTMLTextAreaElement;
-  }) => {
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  > = (e) => {
     setFacility({ ...facility, [e.target.name]: e.target.value });
   };
   //Facility情報のcreate処理

@@ -2,9 +2,7 @@ import { Select } from '@chakra-ui/react';
 import type { FC } from 'react';
 
 type Props = {
-  handleChange: (e: {
-    target: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-  }) => void;
+  handleChange: React.ChangeEventHandler<HTMLSelectElement>;
   prefecture?: string;
 };
 

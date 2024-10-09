@@ -72,9 +72,9 @@ const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
     phone_number,
   } = facility;
 
-  const handleChange = (e: {
-    target: HTMLInputElement | HTMLTextAreaElement;
-  }) => {
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  > = (e) => {
     setFacility({ ...facility, [e.target.name]: e.target.value });
   };
 
