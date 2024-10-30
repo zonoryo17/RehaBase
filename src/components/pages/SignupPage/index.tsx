@@ -35,7 +35,10 @@ const SignUpPage: FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { user, error } = await supabase.auth.signUp({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signUp({
         email,
         password,
       });

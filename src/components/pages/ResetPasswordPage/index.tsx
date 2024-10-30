@@ -21,7 +21,7 @@ const ResetPasswordPage: FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.update({ password: password });
+      const { error } = await supabase.auth.updateUser({ password: password });
       if (error) {
         throw error;
       }
@@ -46,7 +46,7 @@ const ResetPasswordPage: FC = () => {
 
   return (
     <Flex mx={20} my={10} justify="center">
-      <Image src={TopImage.publicURL ?? ''} w={600} />
+      <Image src={TopImage.data.publicUrl} w={600} />
       {!isLoading && !isSend && (
         <Box ml={100} mt={20}>
           <Text>新しいパスワードを入力してください</Text>

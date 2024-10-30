@@ -21,14 +21,13 @@ const ReviewComponents: FC<Props> = ({ facilityId }) => {
   const fetchUserData = async () => {
     try {
       const { data: reviews } = await supabase
-        .from<Review>('Reviews')
+        .from('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)')
         .eq('facility_id', facilityId)
         .order('created_at', { ascending: false });
       setReviews(reviews);
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error) {
+      if (error instanceof Error) alert(error.message);
     }
   };
 

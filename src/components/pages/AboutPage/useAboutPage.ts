@@ -4,25 +4,22 @@ import { useRouter } from 'next/router';
 export const useAboutPage = () => {
   const AboutTopImage = supabase.storage
     .from('apps')
-    .getPublicUrl('About/about-top').publicURL;
+    .getPublicUrl('About/about-top').data.publicUrl;
   const FeaturesImage = supabase.storage
     .from('apps')
-    .getPublicUrl('About/about-feature').publicURL;
+    .getPublicUrl('About/about-feature').data.publicUrl;
   const TargetImage = supabase.storage
     .from('apps')
-    .getPublicUrl('About/about-target').publicURL;
-  const ManImage = supabase.storage
-    .from('apps')
-    .getPublicUrl('About/man1').publicURL;
-  const Man2_Image = supabase.storage
-    .from('apps')
-    .getPublicUrl('About/man2').publicURL;
-  const WomanImage = supabase.storage
-    .from('apps')
-    .getPublicUrl('About/woman1').publicURL;
+    .getPublicUrl('About/about-target').data.publicUrl;
+  const ManImage = supabase.storage.from('apps').getPublicUrl('About/man1')
+    .data.publicUrl;
+  const Man2_Image = supabase.storage.from('apps').getPublicUrl('About/man2')
+    .data.publicUrl;
+  const WomanImage = supabase.storage.from('apps').getPublicUrl('About/woman1')
+    .data.publicUrl;
   const Woman2_Image = supabase.storage
     .from('apps')
-    .getPublicUrl('About/woman2').publicURL;
+    .getPublicUrl('About/woman2').data.publicUrl;
 
   const router = useRouter();
   const handleClick = () => {

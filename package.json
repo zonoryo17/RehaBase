@@ -15,7 +15,7 @@
     "@emotion/styled": "11",
     "@supabase/auth-helpers-nextjs": "^0.4.1",
     "@supabase/auth-helpers-react": "^0.3.0",
-    "@supabase/supabase-js": "^1.35.6",
+    "@supabase/supabase-js": "^2.45.4",
     "@types/react-stars": "^2.2.1",
     "bun": "^1.1.16",
     "dayjs": "^1.11.6",

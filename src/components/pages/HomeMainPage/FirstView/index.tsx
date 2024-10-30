@@ -27,11 +27,12 @@ const FirstView: FC = () => {
   const btnColor = useColorModeValue('gray', 'blue');
   const inputBgColor = useColorModeValue('gray.100', 'blue.900');
   const topImage = useColorModeValue(
-    TopImage.publicURL,
-    TopDarkImage.publicURL
+    TopImage.data.publicUrl,
+    TopDarkImage.data.publicUrl
   );
 
   //検索機能の実装
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleSubmitSearch = async (e: any) => {
     e.preventDefault();
     router.push({
@@ -47,12 +48,7 @@ const FirstView: FC = () => {
   return (
     <>
       <Center>
-        <Image
-          src={topImage ?? ''}
-          alt="トップイメージ"
-          width={1200}
-          height={600}
-        />
+        <Image src={topImage} alt="トップイメージ" width={1200} height={600} />
       </Center>
       <Box
         p="10"
