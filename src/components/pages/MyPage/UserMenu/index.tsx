@@ -11,29 +11,28 @@ import {
 } from '@chakra-ui/react';
 import { HiUser, HiOutlineLogout, HiOutlineLogin } from 'react-icons/hi';
 import { supabase } from '@utils/supabaseClient';
-import { type FC, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { UserDataContext } from '../../../../../pages/_app';
 import HeaderUserIcon from './HeaderUserIcon';
+import { UserDataContext } from '@pages/_app';
+import type { User } from '@type/user';
 
-const UserMenu: FC = () => {
+const UserMenu: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isGuest, setIsGuest] = useState<boolean>(false);
   const router = useRouter();
   const toast = useToast();
 
-  const userData = useContext(UserDataContext);
-  const user = supabase.auth.user();
+  const userData = useContext<User>(UserDataContext);
+  const { avatar_url } = userData;
 
   useEffect(() => {
-    if (user) setIsLoggedIn(true);
+    if (userData) setIsLoggedIn(true);
     //ゲストログイン用アカウントをisGuestとして設定
-    if (user?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
+    if (userData?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
       setIsGuest(true);
     }
-  }, [user]);
-
-  const { user_name, avatar_url } = userData;
+  }, [userData]);
 
   if (!userData) {
     return null;

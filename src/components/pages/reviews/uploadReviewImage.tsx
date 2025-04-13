@@ -7,20 +7,20 @@ import {
   useToast,
   VisuallyHiddenInput,
 } from '@chakra-ui/react';
+import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { type FC, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { UserDataContext } from '../../../../pages/_app';
 
 type Props = {
   facilityId: string | string[] | undefined;
 };
 
 //画像ファイルのアップロードコンポーネント
-const UploadReviewImage: FC<Props> = ({ facilityId }) => {
+const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
   const [facilityReviewImageUrls, setFacilityReviewImageUrls] = useState<
-    string[]
+    { image_url: string }[]
   >([]);
   const [uploading, setUploading] = useState(false);
   const toast = useToast();
@@ -65,10 +65,10 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
       if (uploadError) {
         throw uploadError;
       }
-      const data = supabase.storage //storageからuploadした画像のURLを取得
+      const { data } = supabase.storage //storageからuploadした画像のURLを取得
         .from('reviews')
         .getPublicUrl(`facilityReviews/${fileName}`);
-      handleCreateFacilityReviewImage(fileName, data.publicURL ?? '');
+      handleCreateFacilityReviewImage(fileName, data.publicUrl ?? '');
     } catch {
       throw new Error('画像のアップロードに失敗しました');
     } finally {
@@ -85,14 +85,17 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
     imageUrl: string
   ) => {
     try {
-      const { error } = await supabase.from('FacilityImages').insert([
-        {
-          name: fileName,
-          image_url: imageUrl,
-          facility_id: query.facilityId,
-          user_id: userData?.id,
-        },
-      ]);
+      const { error } = await supabase
+        .from('FacilityImages')
+        .insert([
+          {
+            name: fileName,
+            image_url: imageUrl,
+            facility_id: query.facilityId,
+            user_id: userData?.id,
+          },
+        ])
+        .select();
       if (error) throw error;
       // 作成完了のポップアップ
       toast({

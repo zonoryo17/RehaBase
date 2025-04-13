@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   Menu,
@@ -8,39 +7,32 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
-  Text,
   useToast,
 } from '@chakra-ui/react';
-import {
-  HiUser,
-  HiChevronDown,
-  HiOutlineLogout,
-  HiOutlineLogin,
-} from 'react-icons/hi';
+import { HiUser, HiOutlineLogout, HiOutlineLogin } from 'react-icons/hi';
 import { supabase } from '@utils/supabaseClient';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import HeaderUserIcon from './headerUserIcon';
 import { UserDataContext } from '@pages/_app';
 
-const UserMenu = () => {
+const UserMenu: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isGuest, setIsGuest] = useState<boolean>(false);
   const router = useRouter();
   const toast = useToast();
 
   const userData = useContext(UserDataContext);
-  const user = supabase.auth.user();
 
   useEffect(() => {
-    if (user) setIsLoggedIn(true);
+    if (userData) setIsLoggedIn(true);
     //ゲストログイン用アカウントをisGuestとして設定
-    if (user?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
+    if (userData?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
       setIsGuest(true);
     }
-  }, [user]);
+  }, [userData]);
 
-  const { user_name, avatar_url } = userData;
+  const { avatar_url } = userData;
 
   if (!userData) {
     return null;
@@ -75,19 +67,6 @@ const UserMenu = () => {
   return (
     <Menu>
       <Flex align="center">
-        {/* <Box>
-          <MenuButton
-            display={{ base: 'none', md: 'flex' }}
-            mr={2}
-            as={Button}
-            colorScheme="gray"
-            rightIcon={<HiChevronDown />}
-          >
-            <Text fontSize={{ sm: 'xs', md: 'md' }}>
-              {isLoggedIn ? user_name : 'ゲスト'}
-            </Text>
-          </MenuButton>
-        </Box> */}
         <MenuButton
           // display={{ base: 'flex', md: 'none' }}
           mr={0}

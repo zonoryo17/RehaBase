@@ -1,13 +1,12 @@
 import { Box, Button, Flex, Spacer, Text } from '@chakra-ui/react';
 import Avatar from '@components/pages/MyPage/Avatar';
-import { type FC, useContext } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { UserDataContext } from '@pages/_app';
 
-const MyPageMainPage: FC = () => {
+const MyPageMainPage: React.FC = () => {
   const userData = useContext(UserDataContext);
-
   const { user_name, profile, gender, age, prefecture } = userData;
 
   //プロフィール更新ボタンを押した時の処理

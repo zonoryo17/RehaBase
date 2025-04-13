@@ -6,21 +6,22 @@ import {
   useToast,
   VisuallyHiddenInput,
 } from '@chakra-ui/react';
+import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
-import { type FC, useContext, useEffect, useState } from 'react';
-import { UserDataContext } from '../../../../../pages/_app';
+import { useContext, useEffect, useState } from 'react';
 
 type Avatar = {
   avatar_url: string;
 };
 
 //ユーザーアイコンの登録，更新用コンポーネント
-const Avatar: FC = () => {
+const Avatar: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [avatar, setAvatar] = useState<Avatar | null>(null);
 
   const userData = useContext(UserDataContext);
   const { id } = userData;
+
   const toast = useToast();
 
   // Usersテーブルからプロフィール画像のを取得
@@ -31,6 +32,7 @@ const Avatar: FC = () => {
         .select('avatar_url')
         .eq('id', id)
         .single();
+
       if (data) {
         setAvatar(data);
       }
@@ -54,7 +56,9 @@ const Avatar: FC = () => {
   }, []);
 
   // ファイル選択後の処理
-  const handleSubmitUploadAvatar = async (e: any) => {
+  const handleSubmitUploadAvatar = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     try {
       setUploading(true);
 
@@ -73,10 +77,10 @@ const Avatar: FC = () => {
       if (uploadError) {
         throw uploadError;
       }
-      const data = supabase.storage //storageからuploadした画像のURLを取得
+      const { data } = supabase.storage //storageからuploadした画像のURLを取得
         .from('avatars')
         .getPublicUrl(`usersIcon/${fileName}`);
-      createAvatarUrl(data.publicURL ?? '');
+      createAvatarUrl(data.publicUrl);
     } catch (error) {
       toast({
         title: '画像のアップロードに失敗しました。',
@@ -96,7 +100,8 @@ const Avatar: FC = () => {
       const { error } = await supabase
         .from('Users')
         .update({ avatar_url: avatarUrl })
-        .eq('id', id);
+        .eq('id', id)
+        .select();
       if (error) throw error;
       // 作成完了のポップアップ
       toast({
@@ -134,55 +139,51 @@ const Avatar: FC = () => {
         rounded="full"
       />
       {uploading && (
-        <>
-          <Flex direction="column" align="center">
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
-            />
-            <Text fontWeight="bold" fontSize="lg">
-              アップロード中...
-            </Text>
-          </Flex>
-        </>
+        <Flex direction="column" align="center">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+          <Text fontWeight="bold" fontSize="lg">
+            アップロード中...
+          </Text>
+        </Flex>
       )}
       {!uploading && (
-        <>
-          <form onSubmit={handleSubmitUploadAvatar}>
-            <label htmlFor="avatar">
-              <Flex
-                justify="center"
-                alignItems="center"
-                fontSize="sm"
-                textAlign="center"
-                bg="teal.400"
-                mt={3}
-                w={130}
-                h={12}
-                rounded={10}
-                _hover={{
-                  bg: 'teal.300',
-                  transition: '0.2s',
-                  cursor: 'pointer',
-                }}
-              >
-                プロフィール画像
-                <br />
-                アップロード
-              </Flex>
-            </label>
-            <VisuallyHiddenInput // ★ ファイル選択ダイアログ
-              id="avatar"
-              type="file"
-              accept=".jpeg, .jpg, .png"
-              onChange={handleSubmitUploadAvatar}
-              disabled={uploading}
-            />
-          </form>
-        </>
+        <div>
+          <label htmlFor="avatar">
+            <Flex
+              justify="center"
+              alignItems="center"
+              fontSize="sm"
+              textAlign="center"
+              bg="teal.400"
+              mt={3}
+              w={130}
+              h={12}
+              rounded={10}
+              _hover={{
+                bg: 'teal.300',
+                transition: '0.2s',
+                cursor: 'pointer',
+              }}
+            >
+              プロフィール画像
+              <br />
+              アップロード
+            </Flex>
+          </label>
+          <VisuallyHiddenInput // ★ ファイル選択ダイアログ
+            id="avatar"
+            type="file"
+            accept=".jpeg, .jpg, .png"
+            onChange={handleSubmitUploadAvatar}
+            disabled={uploading}
+          />
+        </div>
       )}
     </Flex>
   );

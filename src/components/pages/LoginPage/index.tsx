@@ -43,7 +43,6 @@ const LoginPage: React.FC = () => {
       setIsLoading(true);
       const {
         data: { user },
-        error,
       } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,

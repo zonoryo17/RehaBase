@@ -8,20 +8,21 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { type FC, Suspense, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import ReactStars from 'react-stars';
 import type { Facility } from '@type/facility';
+import { UserDataContext } from '@pages/_app';
 
-const FacilitiesMainPage: FC = () => {
+const FacilitiesMainPage: React.FC = () => {
   const [facilities, setFacilities] = useState<Facility[] | null>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const toast = useToast();
   const router = useRouter();
-  const user = supabase.auth.user();
+  const user = useContext(UserDataContext);
 
   useEffect(() => {
     fetchData();
@@ -32,7 +33,7 @@ const FacilitiesMainPage: FC = () => {
   const fetchData = async () => {
     try {
       const { data: facilities, error } = await supabase
-        .from<Facility>('Facilities')
+        .from('Facilities')
         .select('*')
         .order('total_rating_ave', { ascending: false });
       setFacilities(facilities);
@@ -49,6 +50,7 @@ const FacilitiesMainPage: FC = () => {
   //施設情報の検索機能
   const query = router.query; //検索フォームから入力されたキーワードをクエリで取得
   const { keyword } = query;
+
   const searchQueryFacilities = async () => {
     try {
       const { data: searchedValue, error } = await supabase
@@ -56,6 +58,7 @@ const FacilitiesMainPage: FC = () => {
         .select()
         .like('name', `%${keyword}%`);
       setFacilities(searchedValue);
+
       if (searchedValue?.length === 0) {
         toast({
           title: '検索された施設は見つかりませんでした。',
@@ -65,6 +68,7 @@ const FacilitiesMainPage: FC = () => {
           isClosable: true,
         });
       }
+
       if (error) {
         throw error;
       }
@@ -105,65 +109,63 @@ const FacilitiesMainPage: FC = () => {
       <Box maxW={600} mx="auto">
         <Suspense fallback={<p>Now Loading...</p>}>
           <List>
-            {/* biome-ignore lint/complexity/useOptionalChain: <explanation> */}
-            {facilities &&
-              facilities.map(
-                ({
-                  id,
-                  name,
-                  address,
-                  phone_number,
-                  image_url,
-                  total_rating_ave,
-                }: Facility) => (
-                  <Link href={`/facilities/${id}`} key={id}>
-                    <Box
-                      border="1px solid"
-                      borderRadius="5px"
-                      minH={100}
-                      my={5}
-                      boxShadow="md"
-                      _hover={{
-                        transform: 'scale(1.03, 1.03)',
-                        transition: '0.3s',
-                      }}
-                    >
-                      <ListItem>
-                        <Flex>
-                          <Box m={1}>
-                            <Image
-                              src={image_url ? image_url : '/no_image.jpg'}
-                              w={200}
-                              h={150}
-                              objectFit="contain"
+            {facilities?.map(
+              ({
+                id,
+                name,
+                address,
+                phone_number,
+                image_url,
+                total_rating_ave,
+              }: Facility) => (
+                <Link href={`/facilities/${id}`} key={id}>
+                  <Box
+                    border="1px solid"
+                    borderRadius="5px"
+                    minH={100}
+                    my={5}
+                    boxShadow="md"
+                    _hover={{
+                      transform: 'scale(1.03, 1.03)',
+                      transition: '0.3s',
+                    }}
+                  >
+                    <ListItem>
+                      <Flex>
+                        <Box m={1}>
+                          <Image
+                            src={image_url ? image_url : '/no_image.jpg'}
+                            w={200}
+                            h={150}
+                            objectFit="contain"
+                          />
+                        </Box>
+                        <Box mt={2} ml={2}>
+                          <Text fontFamily="YuGothic" fontWeight="bold">
+                            病院名：{name}
+                          </Text>
+                          <Flex align="center">
+                            <Text mr={2}>総合評価：{total_rating_ave}</Text>
+                            <ReactStars
+                              count={5}
+                              size={20}
+                              color2={'#ffd700'}
+                              value={total_rating_ave}
+                              edit={false}
                             />
-                          </Box>
-                          <Box mt={2} ml={2}>
-                            <Text fontFamily="YuGothic" fontWeight="bold">
-                              病院名：{name}
-                            </Text>
-                            <Flex align="center">
-                              <Text mr={2}>総合評価：{total_rating_ave}</Text>
-                              <ReactStars
-                                count={5}
-                                size={20}
-                                color2={'#ffd700'}
-                                value={total_rating_ave}
-                                edit={false}
-                              />
-                            </Flex>
-                            <Text borderBottom="1px solid" w="100%" my={2} />
-                            <Text fontFamily="YuGothic">住所：{address}</Text>
-                            <Text fontFamily="YuGothic">
-                              電話番号：{phone_number}
-                            </Text>
-                          </Box>
-                        </Flex>
-                      </ListItem>
-                    </Box>
-                  </Link>
-                )
-              )}
+                          </Flex>
+                          <Text borderBottom="1px solid" w="100%" my={2} />
+                          <Text fontFamily="YuGothic">住所：{address}</Text>
+                          <Text fontFamily="YuGothic">
+                            電話番号：{phone_number}
+                          </Text>
+                        </Box>
+                      </Flex>
+                    </ListItem>
+                  </Box>
+                </Link>
+              )
+            )}
             {!facilities && <Text>施設情報が見つかりませんでした</Text>}
           </List>
         </Suspense>

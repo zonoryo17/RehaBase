@@ -6,16 +6,16 @@ import {
   useToast,
   VisuallyHiddenInput,
 } from '@chakra-ui/react';
+import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
 import { useContext, useEffect, useState } from 'react';
-import { UserDataContext } from '../../../pages/_app';
 
 type Avatar = {
   avatar_url: string;
 };
 
 //ユーザーアイコンの登録，更新用コンポーネント
-const Avatar = () => {
+const Avatar: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [avatar, setAvatar] = useState<Avatar | null>(null);
 
@@ -68,10 +68,10 @@ const Avatar = () => {
       if (uploadError) {
         throw uploadError;
       }
-      const data = supabase.storage //storageからuploadした画像のURLを取得
+      const { data } = supabase.storage //storageからuploadした画像のURLを取得
         .from('avatars')
         .getPublicUrl(`usersIcon/${fileName}`);
-      createAvatarUrl(data.publicURL ?? '');
+      createAvatarUrl(data.publicUrl);
     } catch (error) {
       throw new Error('画像のアップロードに失敗しました。');
     } finally {

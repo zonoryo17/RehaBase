@@ -9,12 +9,13 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { type FC, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 //施設情報削除コンポーネント
-const DeleteFacilityButton: FC = () => {
+const DeleteFacilityButton: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -22,7 +23,7 @@ const DeleteFacilityButton: FC = () => {
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const query = router.query;
-  const user = supabase.auth.user();
+  const user = useContext(UserDataContext);
 
   useEffect(() => {
     if (user) setIsLoggedIn(true);

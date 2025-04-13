@@ -23,11 +23,11 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
 import { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactStars from 'react-stars';
-import { UserDataContext } from '../../../pages/_app';
 
 type Props = {
   facilityName: string;
@@ -47,7 +47,7 @@ type InitialState = {
   user_id?: string;
 };
 
-const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
+const CreateReviewModal: React.FC<Props> = ({ facilityName, facilityId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const {
@@ -57,11 +57,10 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
 
   const toast = useToast();
   const userData = useContext(UserDataContext);
-  const user = supabase.auth.user();
 
   useEffect(() => {
-    if (user) setIsLoggedIn(true);
-  }, [user]);
+    if (userData) setIsLoggedIn(true);
+  }, [userData]);
 
   const initialReviewState: InitialState = {
     title: '',
@@ -73,7 +72,7 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
     equipment_rating: undefined,
     environment_rating: undefined,
     facility_id: facilityId,
-    auth_id: user?.id,
+    auth_id: userData?.id,
     user_id: userData?.id,
   };
   const [review, setReview] = useState(initialReviewState);
@@ -114,17 +113,13 @@ const CreateReviewModal = ({ facilityName, facilityId }: Props) => {
         duration: 5000,
         isClosable: true,
       });
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     } finally {
       setReview(initialReviewState);
       onClose();
     }
   };
-
-  const isTotalRatingError = total_rating === undefined;
-  const isTitleError = title === '';
-  const isContentError = content === '';
 
   return (
     <>

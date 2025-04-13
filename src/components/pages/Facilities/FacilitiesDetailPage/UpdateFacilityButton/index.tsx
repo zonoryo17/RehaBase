@@ -9,7 +9,6 @@ import {
   Center,
   Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   Modal,
@@ -25,29 +24,33 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import PrefectureSelector from '@components/pages/MyPage/prefectureSelector';
+import { UserDataContext } from '@pages/_app';
 import type { Facility } from '@type/facility';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { type FC, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 type Props = {
   facility: Facility;
 };
 
-const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
+const UpdateFacilityButton: React.FC<Props> = ({
+  facility: originalFacility,
+}) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [facility, setFacility] = useState(originalFacility);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const router = useRouter();
   const query = router.query;
   const toast = useToast();
-  const user = supabase.auth.user();
+  const user = useContext(UserDataContext);
 
   //バリデーション
   const {
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm();
 
   useEffect(() => {

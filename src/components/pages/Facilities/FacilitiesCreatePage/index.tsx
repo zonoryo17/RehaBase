@@ -25,11 +25,10 @@ import PrefectureSelector from '@components/pages/MyPage/prefectureSelector';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@utils/supabaseClient';
 import { UserDataContext } from '@pages/_app';
-import type { Facility } from '@type/facility';
 
-const FacilitiesCreatePage: FC = () => {
+const FacilitiesCreatePage: React.FC = () => {
   const userData = useContext(UserDataContext);
-  const user = supabase.auth.user();
+  const user = useContext(UserDataContext);
   const initialState = {
     name: '',
     explanation: '',
@@ -80,7 +79,7 @@ const FacilitiesCreatePage: FC = () => {
   const createFacility = async () => {
     try {
       const { error } = await supabase
-        .from<Facility>('Facilities')
+        .from('Facilities')
         .insert([
           {
             ...facility,
