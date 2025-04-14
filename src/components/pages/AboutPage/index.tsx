@@ -3,7 +3,6 @@ import {
   Button,
   Flex,
   Grid,
-  Image,
   ListItem,
   Skeleton,
   Text,
@@ -13,6 +12,8 @@ import {
 import Head from 'next/head';
 import { type FC, Suspense } from 'react';
 import { useAboutPage } from './useAboutPage';
+import Image from 'next/image';
+import styles from './index.module.css';
 
 const AboutPage: FC = () => {
   //ダークモードの背景，テキストの設定
@@ -45,23 +46,18 @@ const AboutPage: FC = () => {
           >
             <Image
               src={AboutTopImage ?? ''}
-              alt="トップイメージ"
-              w={{ base: '80%', md: '50%' }}
-              rounded="20"
+              alt="Aboutページのトップイメージ"
+              className={styles.topImage}
+              width={800}
+              height={500}
+              priority
             />
-            <Box
-              p="10"
-              position="absolute"
-              top={{ base: '90%', sm: '60%' }}
-              left="50%"
-              transform="translate(-50%, -50%)"
-            >
+            <Box position="absolute" className={styles.topImageTextWrapper}>
               <Text
                 fontSize={{ base: '3xl', lg: '4xl', xl: '5xl' }}
                 textAlign="center"
                 textColor="orange.200"
                 textShadow="4px 4px 5px #171717"
-                mb="32"
               >
                 What's
                 <br />
@@ -95,8 +91,10 @@ const AboutPage: FC = () => {
             <Flex align="center">
               <Image
                 src={ManImage ?? ''}
-                w={{ base: 20, md: 100 }}
-                h={{ base: 20, md: 100 }}
+                className={styles.personImage}
+                width={100}
+                height={100}
+                alt="男性の画像1"
               />
               <Text
                 border="1px solid"
@@ -114,8 +112,10 @@ const AboutPage: FC = () => {
             <Flex align="center">
               <Image
                 src={Man2_Image ?? ''}
-                w={{ base: 20, md: 100 }}
-                h={{ base: 20, md: 100 }}
+                className={styles.personImage}
+                width={100}
+                height={100}
+                alt="男性の画像2"
               />
               <Text
                 border="1px solid"
@@ -133,8 +133,10 @@ const AboutPage: FC = () => {
             <Flex align="center">
               <Image
                 src={WomanImage ?? ''}
-                w={{ base: 20, md: 100 }}
-                h={{ base: 20, md: 100 }}
+                className={styles.personImage}
+                width={100}
+                height={100}
+                alt="女性の画像1"
               />
               <Text
                 border="1px solid"
@@ -153,8 +155,10 @@ const AboutPage: FC = () => {
             <Flex align="center">
               <Image
                 src={Woman2_Image ?? ''}
-                w={{ base: 20, md: 100 }}
-                h={{ base: 20, md: 100 }}
+                className={styles.personImage}
+                width={100}
+                height={100}
+                alt="女性の画像2"
               />
               <Text
                 border="1px solid"
@@ -229,8 +233,10 @@ const AboutPage: FC = () => {
             </UnorderedList>
             <Image
               src={FeaturesImage ?? ''}
-              w={{ base: '85%', md: '45%' }}
-              rounded="5"
+              className={styles.featureImage}
+              width={500}
+              height={300}
+              alt="特徴の画像"
             />
           </Flex>
         </Flex>
@@ -253,8 +259,10 @@ const AboutPage: FC = () => {
         >
           <Image
             src={TargetImage ?? ''}
-            w={{ base: '80%', md: '45%' }}
-            rounded="5"
+            className={styles.targetImage}
+            width={500}
+            height={300}
+            alt="ターゲットの画像"
           />
           <UnorderedList
             fontSize={{ base: 'sm', md: 'xl' }}

@@ -1,0 +1,51 @@
+.topImage {
+  width: 50%;
+  border-radius: 20px;
+}
+
+.topImageTextWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 32px;
+  border-radius: 20px;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(2px);
+  mask-image: linear-gradient(
+      to top,
+      rgb(0 0 0 / 100%) 95%,
+      rgb(0 0 0 / 0%) 100%
+    ),
+    linear-gradient(to bottom, rgb(0 0 0 / 100%) 95%, rgb(0 0 0 / 0%) 100%),
+    linear-gradient(to left, rgb(0 0 0 / 100%) 95%, rgb(0 0 0 / 0%) 100%),
+    linear-gradient(to right, rgb(0 0 0 / 100%) 95%, rgb(0 0 0 / 0%) 100%);
+  mask-composite: intersect;
+}
+
+.personImage {
+  width: 80px;
+  height: 80px;
+
+  @container (min-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.featureImage {
+  width: 50%;
+  border-radius: 5px;
+
+  @container (min-width: 768px) {
+    width: 45%;
+  }
+}
+
+.targetImage {
+  width: 50%;
+  border-radius: 5px;
+
+  @container (min-width: 768px) {
+    width: 45%;
+  }
+}
