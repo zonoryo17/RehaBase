@@ -11,6 +11,7 @@ import { supabase } from '@utils/supabaseClient';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { type FC, useState } from 'react';
+import styles from './index.module.css';
 
 const FirstView: FC = () => {
   const [search, setSearch] = useState<string>('');
@@ -32,8 +33,7 @@ const FirstView: FC = () => {
   );
 
   //検索機能の実装
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const handleSubmitSearch = async (e: any) => {
+  const handleSubmitSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push({
       pathname: '/facilities',
@@ -54,6 +54,7 @@ const FirstView: FC = () => {
           width={1200}
           height={600}
           priority
+          className={styles.topImage}
         />
       </Center>
       <Box
