@@ -11,40 +11,29 @@ import {
 } from '@chakra-ui/react';
 import { HiUser, HiOutlineLogout, HiOutlineLogin } from 'react-icons/hi';
 import { supabase } from '@utils/supabaseClient';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import HeaderUserIcon from './HeaderUserIcon';
-import { UserDataContext } from '@pages/_app';
-import type { User } from '@type/user';
+import { type UserContextType, UserDataContext } from '@pages/_app';
 
 const UserMenu: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [isGuest, setIsGuest] = useState<boolean>(false);
   const router = useRouter();
   const toast = useToast();
 
-  const userData = useContext<User>(UserDataContext);
-  const { avatar_url } = userData;
+  const { userData, isLoggedIn }: UserContextType = useContext(UserDataContext);
+  const { avatar_url } = userData || {};
 
-  useEffect(() => {
-    if (userData) setIsLoggedIn(true);
-    //ゲストログイン用アカウントをisGuestとして設定
-    if (userData?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
-      setIsGuest(true);
-    }
-  }, [userData]);
-
-  if (!userData) {
-    return null;
-  }
+  // ゲストログイン判定
+  const isGuest = userData?.id === process.env.GUEST_USER_ID;
 
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      setIsLoggedIn(false);
+
       if (error) {
         throw error;
       }
+
       toast({
         title: 'ログアウトが完了しました',
         status: 'success',

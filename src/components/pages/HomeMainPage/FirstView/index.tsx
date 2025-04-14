@@ -48,7 +48,13 @@ const FirstView: FC = () => {
   return (
     <>
       <Center>
-        <Image src={topImage} alt="トップイメージ" width={1200} height={600} />
+        <Image
+          src={topImage}
+          alt="トップイメージ"
+          width={1200}
+          height={600}
+          priority
+        />
       </Center>
       <Box
         p="10"

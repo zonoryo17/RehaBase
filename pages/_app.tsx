@@ -4,38 +4,73 @@ import Layout from '@components/layouts/layout';
 import 'swiper/css/bundle';
 import { useEffect, useState, createContext } from 'react';
 import { supabase } from '@utils/supabaseClient';
-import type { User } from '../types/user';
+import type { User } from '@type/user';
 import type { User as AuthUser } from '@supabase/supabase-js';
 
-export const UserDataContext = createContext<User>({});
+// ユーザーデータと認証状態を含むコンテキストの型定義
+export type UserContextType = {
+  userData: User;
+  authUser: AuthUser | null;
+  isLoggedIn: boolean;
+};
+
+// デフォルト値を持つコンテキストを作成
+export const UserDataContext = createContext<UserContextType>({
+  userData: {},
+  authUser: null,
+  isLoggedIn: false,
+});
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [userData, setUserData] = useState<User>({});
   const toast = useToast();
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     // ユーザー情報を取得
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
       setAuthUser(data.user);
+      setIsLoggedIn(!!data.user);
     };
 
     fetchUser();
+
+    // Supabaseの認証状態変更イベントを購読
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        const currentUser = session?.user || null;
+        setAuthUser(currentUser);
+        setIsLoggedIn(!!currentUser);
+
+        // ログアウト時にユーザーデータをリセット
+        if (event === 'SIGNED_OUT') {
+          setUserData({});
+        }
+      }
+    );
+
+    // クリーンアップ関数
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
-    if (authUser && !userData) createUser(); //新規登録したユーザーのみデフォルトのプロフィールを作成
+    if (authUser && !userData) createUser(); // 新規登録したユーザーのみデフォルトのプロフィールを作成
     if (authUser) fetchLoginUsersData();
   }, [authUser, userData]);
 
   //ログインしているユーザーの情報を取得
   const fetchLoginUsersData = async () => {
+    if (!authUser) return; // authUserがnullの場合は処理を行わない
+
     try {
       const { data, error } = await supabase
         .from('Users')
         .select('*')
-        .eq('auth_id', authUser?.id)
+        .eq('auth_id', authUser.id)
         .single();
       if (error) throw error;
       setUserData(data);
@@ -100,9 +135,16 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     }
   };
 
+  // コンテキスト値を作成
+  const contextValue: UserContextType = {
+    userData,
+    authUser,
+    isLoggedIn,
+  };
+
   return (
     <ChakraProvider>
-      <UserDataContext.Provider value={userData}>
+      <UserDataContext.Provider value={contextValue}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
