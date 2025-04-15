@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 type Avatar = {
   avatar_url: string;
@@ -19,37 +19,37 @@ const Avatar: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [avatar, setAvatar] = useState<Avatar | null>(null);
 
-  const userData = useContext(UserDataContext);
+  const { userData } = useContext(UserDataContext);
   const { id } = userData;
   const toast = useToast();
 
   // Usersテーブルからプロフィール画像のを取得
-  const getAvatarUrl = async () => {
+  const getAvatarUrl = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('Users')
         .select('avatar_url')
         .eq('id', id)
         .single();
+
       if (data) {
         setAvatar(data);
       }
-      if (error) {
-        throw error;
-      }
+
+      if (error) throw error;
     } catch (error) {
       throw new Error('画像の取得に失敗しました。');
     }
-  };
+  }, [id]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getAvatarUrl(); //初回レンダリング時にプロフィール画像を取得
-  }, [userData]);
+  }, [getAvatarUrl]);
 
   // ファイル選択後の処理
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const handleSubmitUploadAvatar = async (e: any) => {
+  const handleSubmitUploadAvatar = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     try {
       setUploading(true);
 
@@ -65,12 +65,13 @@ const Avatar: React.FC = () => {
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(`usersIcon/${fileName}`, file);
-      if (uploadError) {
-        throw uploadError;
-      }
+
+      if (uploadError) throw uploadError;
+
       const { data } = supabase.storage //storageからuploadした画像のURLを取得
         .from('avatars')
         .getPublicUrl(`usersIcon/${fileName}`);
+
       createAvatarUrl(data.publicUrl);
     } catch (error) {
       throw new Error('画像のアップロードに失敗しました。');
@@ -87,6 +88,7 @@ const Avatar: React.FC = () => {
         .update({ avatar_url: avatarUrl })
         .eq('id', id);
       if (error) throw error;
+
       // 作成完了のポップアップ
       toast({
         title: '画像ファイルの投稿が完了しました。',
@@ -95,6 +97,7 @@ const Avatar: React.FC = () => {
         duration: 5000,
         isClosable: true,
       });
+
       getAvatarUrl();
     } catch (error: unknown) {
       if (error instanceof Error) alert(error.message);
@@ -129,7 +132,7 @@ const Avatar: React.FC = () => {
         </Flex>
       )}
       {!uploading && (
-        <form onSubmit={handleSubmitUploadAvatar}>
+        <form>
           <label htmlFor="avatar">
             <Flex
               justify="center"

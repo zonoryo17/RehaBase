@@ -20,11 +20,13 @@ const UserMenu: React.FC = () => {
   const router = useRouter();
   const toast = useToast();
 
-  const { userData, isLoggedIn }: UserContextType = useContext(UserDataContext);
+  const { userData, authUser, isLoggedIn }: UserContextType =
+    useContext(UserDataContext);
   const { avatar_url } = userData || {};
 
   // ゲストログイン判定
-  const isGuest = userData?.id === process.env.GUEST_USER_ID;
+  const guestUserId = process.env.NEXT_PUBLIC_GUEST_USER_ID;
+  const isGuest = authUser?.id === guestUserId;
 
   const handleLogout = async () => {
     try {
@@ -72,7 +74,7 @@ const UserMenu: React.FC = () => {
             </MenuItem>
           </MenuGroup>
         )}
-        {!isLoggedIn && !isGuest && (
+        {!isLoggedIn && (
           <MenuGroup title="Profile">
             <MenuItem
               onClick={() =>

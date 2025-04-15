@@ -49,8 +49,9 @@ const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
   }, []);
 
   // 画像ファイル選択後の処理
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const handleSelectImageFile = async (e: any) => {
+  const handleSelectImageFile = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     try {
       setUploading(true);
       if (!e.target.files || e.target.files.length === 0) {
@@ -78,7 +79,7 @@ const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
 
   //facilityImagesテーブルに画像情報を保存
   const query = useRouter().query; //facilityのqueryIDを取得
-  const userData = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
+  const { userData } = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
 
   const handleCreateFacilityReviewImage = async (
     fileName: string,
@@ -92,7 +93,7 @@ const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
             name: fileName,
             image_url: imageUrl,
             facility_id: query.facilityId,
-            user_id: userData?.id,
+            user_id: userData.id,
           },
         ])
         .select();
@@ -115,20 +116,21 @@ const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
   return (
     <Flex aria-live="polite" align="center">
       <Flex gap="24px" flexWrap="wrap" align="center">
-        {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
-        {facilityReviewImageUrls.map((facilityReviewImage: any) => (
-          <Flex w="200px" h="200px" key={facilityReviewImage.image_url}>
-            <Image
-              src={
-                facilityReviewImage
-                  ? facilityReviewImage.image_url
-                  : '/no_image.jpg'
-              }
-              alt={facilityReviewImage ? 'プロフィール画像' : '画像なし'}
-              objectFit="contain"
-            />
-          </Flex>
-        ))}
+        {facilityReviewImageUrls.map(
+          (facilityReviewImage: { image_url: string }) => (
+            <Flex w="200px" h="200px" key={facilityReviewImage.image_url}>
+              <Image
+                src={
+                  facilityReviewImage
+                    ? facilityReviewImage.image_url
+                    : '/no_image.jpg'
+                }
+                alt={facilityReviewImage ? 'プロフィール画像' : '画像なし'}
+                objectFit="contain"
+              />
+            </Flex>
+          )
+        )}
         {uploading && (
           <Flex direction="column" align="center" width="300px">
             <Spinner
