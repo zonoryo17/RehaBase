@@ -48,7 +48,7 @@ type FacilityFormData = {
 };
 
 const FacilitiesCreatePage: React.FC = () => {
-  const { userData, authUser }: UserContextType = useContext(UserDataContext);
+  const { authUser, userData }: UserContextType = useContext(UserDataContext);
   const router = useRouter();
   const toast = useToast();
 
@@ -98,7 +98,7 @@ const FacilitiesCreatePage: React.FC = () => {
           {
             ...data,
             auth_id: authUser?.id,
-            user_id: userData?.id,
+            user_id: userData.id,
           },
         ])
         .single();

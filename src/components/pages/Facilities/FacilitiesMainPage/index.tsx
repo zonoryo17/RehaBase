@@ -15,24 +15,22 @@ import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
 import ReactStars from 'react-stars';
 import type { Facility } from '@type/facility';
-import { UserDataContext } from '@pages/_app';
+import { type UserContextType, UserDataContext } from '@pages/_app';
 
 const FacilitiesMainPage: React.FC = () => {
   const [facilities, setFacilities] = useState<Facility[] | null>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const toast = useToast();
   const router = useRouter();
-  const user = useContext(UserDataContext);
+  const { isLoggedIn }: UserContextType = useContext(UserDataContext);
 
   useEffect(() => {
     fetchData();
     if (query.keyword) searchQueryFacilities();
-    if (user) setIsLoggedIn(true);
-  }, [user]);
+  }, []);
 
   const fetchData = async () => {
     try {
-      const { data: facilities, error } = await supabase
+      const { data: facilities } = await supabase
         .from('Facilities')
         .select('*')
         .order('total_rating_ave', { ascending: false });
@@ -44,6 +42,14 @@ const FacilitiesMainPage: React.FC = () => {
   };
 
   const handleClickCreateFacility = () => {
+    if (!isLoggedIn) {
+      toast({
+        title: 'ログインしていないユーザーは施設情報の登録はできません',
+        status: 'error',
+        position: 'top',
+      });
+      return;
+    }
     router.push('/facilities/create');
   };
 
@@ -85,27 +91,9 @@ const FacilitiesMainPage: React.FC = () => {
       <Text fontSize="2xl" fontWeight="bold" textAlign="center">
         施設情報一覧
       </Text>
-      {isLoggedIn && (
-        <Button onClick={handleClickCreateFacility} ml={5}>
-          施設情報を登録
-        </Button>
-      )}
-      {!isLoggedIn && (
-        <Button
-          ml={5}
-          onClick={() =>
-            toast({
-              title: 'ログインされていない場合、施設情報の削除はできません',
-              status: 'error',
-              duration: 6000,
-              position: 'top',
-              isClosable: true,
-            })
-          }
-        >
-          施設情報を登録
-        </Button>
-      )}
+      <Button onClick={handleClickCreateFacility} ml={5}>
+        施設情報を登録
+      </Button>
       <Box maxW={600} mx="auto">
         <Suspense fallback={<p>Now Loading...</p>}>
           <List>
