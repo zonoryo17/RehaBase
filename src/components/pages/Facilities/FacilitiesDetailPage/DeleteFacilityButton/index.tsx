@@ -12,22 +12,32 @@ import {
 import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 
 //施設情報削除コンポーネント
 const DeleteFacilityButton: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const query = router.query;
-  const user = useContext(UserDataContext);
+  const { isLoggedIn } = useContext(UserDataContext);
 
-  useEffect(() => {
-    if (user) setIsLoggedIn(true);
-  }, [user]);
+  const handleClickDeleteFacility = () => {
+    if (!isLoggedIn) {
+      toast({
+        title: 'ログインしていない場合、施設情報の削除はできません',
+        status: 'error',
+        duration: 6000,
+        position: 'top',
+        isClosable: true,
+      });
+      return;
+    }
+
+    onOpen();
+  };
 
   const handleDelete = async () => {
     try {
@@ -54,28 +64,9 @@ const DeleteFacilityButton: React.FC = () => {
 
   return (
     <>
-      {isLoggedIn && (
-        <Button colorScheme="red" onClick={onOpen} mx="10px">
-          施設情報を削除
-        </Button>
-      )}
-      {!isLoggedIn && (
-        <Button
-          colorScheme="red"
-          mx="10px"
-          onClick={() =>
-            toast({
-              title: 'ログインされていない場合、施設情報の削除はできません',
-              status: 'error',
-              duration: 6000,
-              position: 'top',
-              isClosable: true,
-            })
-          }
-        >
-          施設情報を削除
-        </Button>
-      )}
+      <Button colorScheme="red" onClick={handleClickDeleteFacility} mx="10px">
+        施設情報を削除
+      </Button>
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

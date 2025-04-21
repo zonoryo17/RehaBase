@@ -14,25 +14,23 @@ import { supabase } from '@utils/supabaseClient';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import HeaderUserIcon from './headerUserIcon';
-import { UserDataContext } from '@pages/_app';
+import { type UserContextType, UserDataContext } from '@pages/_app';
 
 const UserMenu: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isGuest, setIsGuest] = useState<boolean>(false);
+  const contextData = useContext(UserDataContext);
+  const { isLoggedIn, userData } = contextData;
   const router = useRouter();
   const toast = useToast();
 
-  const userData = useContext(UserDataContext);
-
   useEffect(() => {
-    if (userData) setIsLoggedIn(true);
     //ゲストログイン用アカウントをisGuestとして設定
     if (userData?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
       setIsGuest(true);
     }
   }, [userData]);
 
-  const { avatar_url } = userData;
+  const { avatar_url } = userData || {};
 
   if (!userData) {
     return null;
@@ -41,7 +39,6 @@ const UserMenu: React.FC = () => {
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      setIsLoggedIn(false);
       if (error) {
         throw error;
       }
@@ -67,14 +64,7 @@ const UserMenu: React.FC = () => {
   return (
     <Menu>
       <Flex align="center">
-        <MenuButton
-          // display={{ base: 'flex', md: 'none' }}
-          mr={0}
-          px={0}
-          as={Button}
-          bg="none"
-          colorScheme="none"
-        >
+        <MenuButton mr={0} px={0} as={Button} bg="none" colorScheme="none">
           {isLoggedIn && (
             <HeaderUserIcon src={avatar_url ? avatar_url : '/noNameUser.jpg'} />
           )}

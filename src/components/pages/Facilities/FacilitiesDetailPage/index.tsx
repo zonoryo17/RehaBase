@@ -82,26 +82,28 @@ const FacilityDetailPage: React.FC = () => {
           'total_rating, reception_rating, service_rating, expense_rating, equipment_rating, environment_rating'
         )
         .eq('facility_id', facilityId);
+
       //各項目の合計点を取得
       if (data) {
         // 総合評価平均値の取得
         const sumTotalRating = data.reduce((sum, element) => {
           return sum + element?.total_rating;
         }, 0);
+
         if (sumTotalRating > 0) {
           const totalRatingAve = sumTotalRating / data?.length;
           setTotalRating(Number(totalRatingAve.toFixed(1)));
         }
       }
-      if (error) {
-        throw error;
-      }
+
+      if (error) throw error;
     } catch (error: unknown) {
-      if (error instanceof Error) alert(error.message);
+      if (error instanceof Error) throw error;
     } finally {
       updateTotalRatingAve();
     }
   };
+
   getTotalRating();
 
   //総合得点平均値をFacilitiesテーブルに保存
