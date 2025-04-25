@@ -18,17 +18,17 @@ import {
 } from '@chakra-ui/react';
 import Avatar from '@components/pages/MyPage/Avatar';
 import PrefectureSelector from '@components/pages/MyPage/prefectureSelector';
-import { type FC, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { supabase } from '@utils/supabaseClient';
-import { UserDataContext } from '@pages/_app';
 import type { User } from '@type/user';
+import { UserDataContext } from '@pages/_app';
 
-const ProfileUpdatePage: FC = () => {
+const ProfileUpdatePage: React.FC = () => {
   const toast = useToast();
-  const userData = useContext(UserDataContext);
-  const userId = userData.id;
+  const { userData } = useContext(UserDataContext);
+  const userId = userData?.id;
 
   const initialState = {
     ...userData,

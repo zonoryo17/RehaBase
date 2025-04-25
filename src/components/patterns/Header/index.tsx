@@ -8,9 +8,9 @@ import {
 } from '@chakra-ui/react';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import Link from 'next/link';
-import NavMenuDrawer from '../Sidebar';
-import UserMenu from '../../pages/MyPage/UserMenu';
 import type { FC } from 'react';
+import NavMenuDrawer from '../Sidebar';
+import UserMenu from '@components/pages/MyPage/UserMenu';
 
 const Header: FC = () => {
   //ダークモード用

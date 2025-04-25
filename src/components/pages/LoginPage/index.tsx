@@ -15,10 +15,10 @@ import { supabase } from '@utils/supabaseClient';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { type FC, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const LoginPage: FC = () => {
+const LoginPage: React.FC = () => {
   const TopImage = supabase.storage.from('apps').getPublicUrl('RB-login.jpg');
   const TopDarkImage = supabase.storage
     .from('apps')
@@ -28,8 +28,8 @@ const LoginPage: FC = () => {
   const bgColor = useColorModeValue('blackAlpha.50', 'gray.700');
   const inputBgColor = useColorModeValue('white', 'gray.600');
   const loginImage = useColorModeValue(
-    TopImage.publicURL,
-    TopDarkImage.publicURL
+    TopImage.data.publicUrl,
+    TopDarkImage.data.publicUrl
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -41,11 +41,12 @@ const LoginPage: FC = () => {
   const handleSubmitLogin = async () => {
     try {
       setIsLoading(true);
-      const { user, error } = await supabase.auth.signIn({
+      const {
+        data: { user },
+      } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
-      if (error) throw error;
       if (user) {
         toast({
           title: 'ログイン処理が完了しました',
@@ -57,7 +58,7 @@ const LoginPage: FC = () => {
         });
       }
       router.push('/');
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'メールアドレスかパスワードが間違っています',
         status: 'error',
@@ -74,10 +75,11 @@ const LoginPage: FC = () => {
   const signInWithGoogle = async () => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signIn({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
       });
       if (error) throw error;
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.error_description || error.message);
     } finally {
@@ -88,7 +90,7 @@ const LoginPage: FC = () => {
   const signInWithGithub = async () => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signIn({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
       });
       if (error) throw error;
@@ -100,6 +102,7 @@ const LoginPage: FC = () => {
         position: 'top',
         variant: 'left-accent',
       });
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       alert(error.error_description || error.message);
     } finally {
@@ -109,9 +112,9 @@ const LoginPage: FC = () => {
 
   const handleGuestLogin = async () => {
     try {
-      const { error } = await supabase.auth.signIn({
-        email: 'r.nakazono17@gmail.com',
-        password: 'zonopassword',
+      const { error } = await supabase.auth.signInWithPassword({
+        email: process.env.NEXT_PUBLIC_GUEST_EMAIL ?? '',
+        password: process.env.NEXT_PUBLIC_GUEST_PASSWORD ?? '',
       });
       toast({
         title: 'ゲストログインが完了しました',
@@ -138,7 +141,7 @@ const LoginPage: FC = () => {
       <Flex>
         <Container minW={300} maxW={700} mx="auto" position="relative">
           <Image
-            src={loginImage ?? ''}
+            src={loginImage}
             w={650}
             alt="ログイントップ画像"
             mt={10}

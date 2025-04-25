@@ -29,7 +29,7 @@ const TopPageRanking: FC = () => {
   const topRankingFacilities = async () => {
     try {
       const { data, error } = await supabase
-        .from<Facility>('Facilities')
+        .from('Facilities')
         .select('*, Reviews(id)')
         .order('total_rating_ave', { ascending: false })
         .limit(3);

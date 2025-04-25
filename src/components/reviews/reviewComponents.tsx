@@ -21,7 +21,7 @@ const ReviewComponents = (facilityId: Props) => {
   const fetchUserData = async () => {
     try {
       const { data: reviews } = await supabase
-        .from<Review>('Reviews')
+        .from('Reviews')
         .select('*, Users(id, user_name, gender, age, prefecture, avatar_url)')
         .eq('facility_id', facilityId.facilityId)
         .order('created_at', { ascending: false });

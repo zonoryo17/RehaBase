@@ -32,6 +32,7 @@ const TopSlideShow: React.FC = () => {
         left="50%"
         zIndex={15}
         fontSize={{ sm: '2xl', lg: '5xl' }}
+        userSelect="none"
       >
         準備中...
       </Text>

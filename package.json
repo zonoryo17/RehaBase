@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "tsc": "tsc --noEmit",
     "lint": "eslint --ext 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "eslint --cache --fix 'src/**/*.{js,jsx,ts,tsx}' && prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
   },
@@ -15,7 +16,7 @@
     "@emotion/styled": "11",
     "@supabase/auth-helpers-nextjs": "^0.4.1",
     "@supabase/auth-helpers-react": "^0.3.0",
-    "@supabase/supabase-js": "^1.35.6",
+    "@supabase/supabase-js": "^2.45.4",
     "@types/react-stars": "^2.2.1",
     "bun": "^1.1.16",
     "dayjs": "^1.11.6",
@@ -23,19 +24,20 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "framer-motion": "6",
     "lefthook": "^1.7.18",
-    "next": "12.3.0",
-    "react": "18.2.0",
+    "next": "15.3.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-aria-components": "^1.4.0",
-    "react-dom": "18.2.0",
     "react-hook-form": "^7.39.5",
     "react-icons": "^4.4.0",
     "react-stars": "^2.2.5",
-    "swiper": "^8.4.2"
+    "swiper": "^8.4.2",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
     "@types/bun": "^1",
-    "@types/node": "18.7.16",
+    "@types/node": "20.14.0",
     "@types/react": "18.0.19",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
@@ -50,6 +52,6 @@
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.7.1",
-    "typescript": "*"
+    "typescript": "^5.8.3"
   }
 }

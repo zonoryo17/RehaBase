@@ -9,7 +9,6 @@ import {
   Center,
   Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   Modal,
@@ -25,34 +24,33 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import PrefectureSelector from '@components/pages/MyPage/prefectureSelector';
+import { UserDataContext } from '@pages/_app';
 import type { Facility } from '@type/facility';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { type FC, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 type Props = {
   facility: Facility;
 };
 
-const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+const UpdateFacilityButton: React.FC<Props> = ({
+  facility: originalFacility,
+}) => {
   const [facility, setFacility] = useState(originalFacility);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const router = useRouter();
   const query = router.query;
   const toast = useToast();
-  const user = supabase.auth.user();
+  const { isLoggedIn } = useContext(UserDataContext);
 
   //バリデーション
   const {
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm();
-
-  useEffect(() => {
-    if (user) setIsLoggedIn(true);
-  }, [user]);
 
   const {
     name,
@@ -76,6 +74,21 @@ const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   > = (e) => {
     setFacility({ ...facility, [e.target.name]: e.target.value });
+  };
+
+  const handleClickSubmitUpdateFacility = async () => {
+    if (!isLoggedIn) {
+      toast({
+        title: 'ログインしていない場合、施設情報の更新はできません',
+        status: 'error',
+        duration: 6000,
+        position: 'top',
+        isClosable: true,
+      });
+      return;
+    }
+
+    onOpen();
   };
 
   // Facility情報のupdate処理
@@ -108,27 +121,9 @@ const UpdateFacilityButton: FC<Props> = ({ facility: originalFacility }) => {
 
   return (
     <>
-      {isLoggedIn && (
-        <Button colorScheme="blue" onClick={onOpen}>
-          施設情報を更新
-        </Button>
-      )}
-      {!isLoggedIn && (
-        <Button
-          colorScheme="blue"
-          onClick={() =>
-            toast({
-              title: 'ログインされていない場合、施設情報の更新はできません',
-              status: 'error',
-              duration: 6000,
-              position: 'top',
-              isClosable: true,
-            })
-          }
-        >
-          施設情報を更新
-        </Button>
-      )}
+      <Button colorScheme="blue" onClick={handleClickSubmitUpdateFacility}>
+        施設情報を更新
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalOverlay />
         <ModalContent>

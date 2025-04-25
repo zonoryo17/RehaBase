@@ -20,7 +20,7 @@ type Props = {
 //画像ファイルのアップロードコンポーネント
 const UploadReviewImage = (facilityId: Props) => {
   const [facilityReviewImageUrls, setFacilityReviewImageUrls] = useState<
-    string[]
+    { image_url: string }[]
   >([]);
   const [uploading, setUploading] = useState(false);
   const toast = useToast();
@@ -62,10 +62,10 @@ const UploadReviewImage = (facilityId: Props) => {
       if (uploadError) {
         throw uploadError;
       }
-      const data = supabase.storage //storageからuploadした画像のURLを取得
+      const { data } = supabase.storage //storageからuploadした画像のURLを取得
         .from('reviews')
         .getPublicUrl(`facilityReviews/${fileName}`);
-      handleCreateFacilityReviewImage(fileName, data.publicURL ?? '');
+      handleCreateFacilityReviewImage(fileName, data.publicUrl);
     } catch {
       throw new Error('画像のアップロードに失敗しました');
     } finally {
@@ -75,21 +75,24 @@ const UploadReviewImage = (facilityId: Props) => {
 
   //facilityImagesテーブルに画像情報を保存
   const query = useRouter().query; //facilityのqueryIDを取得
-  const userData = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
+  const { userData } = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
 
   const handleCreateFacilityReviewImage = async (
     fileName: string,
     imageUrl: string
   ) => {
     try {
-      const { error } = await supabase.from('FacilityImages').insert([
-        {
-          name: fileName,
-          image_url: imageUrl,
-          facility_id: query.facilityId,
-          user_id: userData?.id,
-        },
-      ]);
+      const { error } = await supabase
+        .from('FacilityImages')
+        .insert([
+          {
+            name: fileName,
+            image_url: imageUrl,
+            facility_id: query.facilityId,
+            user_id: userData?.id,
+          },
+        ])
+        .select();
       if (error) throw error;
       // 作成完了のポップアップ
       toast({

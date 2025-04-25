@@ -9,10 +9,10 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { type FC, useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 //施設トップ画像の登録，更新用コンポーネント
-const UploadFacilityImage: FC = () => {
+const UploadFacilityImage: React.FC = () => {
   const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -21,7 +21,7 @@ const UploadFacilityImage: FC = () => {
   const toast = useToast();
 
   // Facilitiesテーブルから施設画像のを取得
-  const getFacilityImages = async () => {
+  const getFacilityImages = useCallback(async () => {
     const { data, error } = await supabase
       .from('Facilities')
       .select('image_url')
@@ -33,14 +33,16 @@ const UploadFacilityImage: FC = () => {
     if (error) {
       throw error;
     }
-  };
+  }, [facilityId]);
 
   useEffect(() => {
     getFacilityImages(); //初回レンダリング時に施設画像を取得
-  }, []);
+  }, [getFacilityImages]);
 
   // ファイル選択後の処理
-  const uploadFacilityImage = async (e: any) => {
+  const uploadFacilityImage = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     try {
       setUploading(true);
 
@@ -59,11 +61,13 @@ const UploadFacilityImage: FC = () => {
       if (uploadError) {
         throw uploadError;
       }
-      const data = supabase.storage //storageからuploadした画像のURLを取得
+      const {
+        data: { publicUrl },
+      } = supabase.storage //storageからuploadした画像のURLを取得
         .from('facilities')
         .getPublicUrl(`facilityImage/${fileName}`);
-      if (data) setImageFileUrl(data.publicURL);
-      handleCreateFacilityImage(data.publicURL ?? '');
+      if (publicUrl) setImageFileUrl(publicUrl);
+      handleCreateFacilityImage(publicUrl);
     } catch (error) {
       throw new Error('画像のアップロードに失敗しました。');
     } finally {
@@ -77,7 +81,8 @@ const UploadFacilityImage: FC = () => {
       const { data, error } = await supabase
         .from('Facilities')
         .update({ image_url: fileUrl })
-        .eq('id', facilityId);
+        .eq('id', facilityId)
+        .select();
       if (error) throw error;
       // 作成完了のポップアップ
       toast({
@@ -88,8 +93,8 @@ const UploadFacilityImage: FC = () => {
         isClosable: true,
       });
       getFacilityImages();
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     }
   };
 
@@ -106,20 +111,18 @@ const UploadFacilityImage: FC = () => {
         />
       </Box>
       {uploading && (
-        <>
-          <Flex direction="column" align="center">
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
-            />
-            <Text fontWeight="bold" fontSize="lg">
-              アップロード中...
-            </Text>
-          </Flex>
-        </>
+        <Flex direction="column" align="center">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+          <Text fontWeight="bold" fontSize="lg">
+            アップロード中...
+          </Text>
+        </Flex>
       )}
       {!uploading && (
         <>
@@ -130,7 +133,6 @@ const UploadFacilityImage: FC = () => {
             onChange={uploadFacilityImage}
             disabled={uploading}
           />
-
           <label htmlFor="facilityImage">
             <Flex
               justify="center"

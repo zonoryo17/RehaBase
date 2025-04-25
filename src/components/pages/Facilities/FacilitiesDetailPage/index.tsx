@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Head from 'next/head';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReviewComponents from '@components/pages/reviews/ReviewComponents/reviewComponents';
@@ -22,15 +22,14 @@ import CreateReviewModal from '@components/pages/reviews/createReviewModal';
 import UploadReviewImage from '@components/pages/reviews/uploadReviewImage';
 import UploadFacilityImage from '@components/pages/Facilities/FacilitiesDetailPage/UploadFacilityImage';
 import ReactStars from 'react-stars';
-import { Facility } from '../../../../../types/facility';
 import { supabase } from '@utils/supabaseClient';
-import { Review } from '../../../../../types/reviews';
 import DeleteFacilityButton from './DeleteFacilityButton';
 import UpdateFacilityButton from './UpdateFacilityButton';
+import type { Facility } from '@type/facility';
 
-const FacilityDetailPage: FC = () => {
+const FacilityDetailPage: React.FC = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
-  const [totalRating, setTotalRating] = useState<Number>();
+  const [totalRating, setTotalRating] = useState(0);
 
   const query = useRouter().query;
   const { facilityId } = query;
@@ -43,7 +42,7 @@ const FacilityDetailPage: FC = () => {
   const fetchFacility = async () => {
     try {
       const { data: facility, error } = await supabase
-        .from<Facility>('Facilities')
+        .from('Facilities')
         .select('*')
         .eq('id', facilityId)
         .single();
@@ -51,11 +50,11 @@ const FacilityDetailPage: FC = () => {
         setFacility(facility);
       }
       if (error) throw error;
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     }
   };
-  if (!facility) return <div></div>;
+  if (!facility) return <p>loading...</p>;
   const {
     id,
     name,
@@ -78,31 +77,33 @@ const FacilityDetailPage: FC = () => {
   const getTotalRating = async () => {
     try {
       const { data, error } = await supabase
-        .from<Review>('Reviews')
+        .from('Reviews')
         .select(
           'total_rating, reception_rating, service_rating, expense_rating, equipment_rating, environment_rating'
         )
         .eq('facility_id', facilityId);
+
       //各項目の合計点を取得
       if (data) {
         // 総合評価平均値の取得
         const sumTotalRating = data.reduce((sum, element) => {
           return sum + element?.total_rating;
         }, 0);
+
         if (sumTotalRating > 0) {
           const totalRatingAve = sumTotalRating / data?.length;
           setTotalRating(Number(totalRatingAve.toFixed(1)));
         }
       }
-      if (error) {
-        throw error;
-      }
-    } catch (error: any) {
-      alert(error.message);
+
+      if (error) throw error;
+    } catch (error: unknown) {
+      if (error instanceof Error) throw error;
     } finally {
       updateTotalRatingAve();
     }
   };
+
   getTotalRating();
 
   //総合得点平均値をFacilitiesテーブルに保存
@@ -110,7 +111,8 @@ const FacilityDetailPage: FC = () => {
     await supabase
       .from('Facilities')
       .update({ total_rating_ave: totalRating })
-      .eq('id', facilityId);
+      .eq('id', facilityId)
+      .select();
   };
 
   return (

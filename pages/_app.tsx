@@ -4,55 +4,114 @@ import Layout from '@components/layouts/layout';
 import 'swiper/css/bundle';
 import { useEffect, useState, createContext } from 'react';
 import { supabase } from '@utils/supabaseClient';
-import type { User } from '../types/user';
+import type { User } from '@type/user';
+import type { User as AuthUser } from '@supabase/supabase-js';
 
-export const UserDataContext = createContext<User>({});
+// ユーザーデータと認証状態を含むコンテキストの型定義
+export type UserContextType = {
+  userData: User;
+  authUser: AuthUser | null;
+  isLoggedIn: boolean;
+};
 
-const App = ({ Component, pageProps }: AppProps) => {
+// デフォルト値を持つコンテキストを作成
+export const UserDataContext = createContext<UserContextType>({
+  userData: {},
+  authUser: null,
+  isLoggedIn: false,
+});
+
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [userData, setUserData] = useState<User>({});
   const toast = useToast();
-  const user = supabase.auth.user();
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    if (user && !userData) createUser(); //新規登録したユーザーのみデフォルトのプロフィールを作成
-    if (user) fetchLoginUsersData();
-  }, [user, userData]);
+    // ユーザー情報を取得
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setAuthUser(data.user);
+      setIsLoggedIn(!!data.user);
+    };
+
+    fetchUser();
+
+    // Supabaseの認証状態変更イベントを購読
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        const currentUser = session?.user || null;
+        setAuthUser(currentUser);
+        setIsLoggedIn(!!currentUser);
+
+        // ログアウト時にユーザーデータをリセット
+        if (event === 'SIGNED_OUT') {
+          setUserData({});
+        }
+      }
+    );
+
+    // クリーンアップ関数
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (authUser && !userData) createUser(); // 新規登録したユーザーのみデフォルトのプロフィールを作成
+    if (authUser) fetchLoginUsersData();
+  }, [authUser, userData]);
 
   //ログインしているユーザーの情報を取得
   const fetchLoginUsersData = async () => {
+    if (!authUser) return; // authUserがnullの場合は処理を行わない
+
     try {
       const { data, error } = await supabase
-        .from<User>('Users')
+        .from('Users')
         .select('*')
-        .eq('auth_id', user?.id)
+        .eq('auth_id', authUser.id)
         .single();
       if (error) throw error;
       setUserData(data);
     } catch (error: unknown) {
-      throw new Error('情報が正しく取得できませんでした');
+      console.error('ユーザー情報取得エラー:', error);
+      toast({
+        title: '情報が正しく取得できませんでした',
+        status: 'error',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   //ユーザー登録後，新規ユーザー情報をUsersテーブルに保存
-  const newUser = {
-    user_name: 'ユーザー',
-    profile: '未設定',
-    gender: '選択しない',
-    prefecture: '',
-    age: undefined,
-    avatar_url: '',
-    auth_id: user?.id,
-  };
   const createUser = async () => {
+    // 関数内で新規ユーザーオブジェクトを作成
+    const newUser = {
+      user_name: 'ユーザー',
+      profile: '未設定',
+      gender: '選択しない',
+      prefecture: '',
+      age: undefined,
+      avatar_url: '',
+      auth_id: authUser?.id,
+    };
+
+    // authUserが存在することを確認
+    if (!authUser?.id) {
+      console.error('認証されたユーザーIDがありません');
+      return;
+    }
+
     try {
-      const { error } = await supabase
-        .from('Users')
-        .insert([
-          {
-            ...newUser,
-          },
-        ])
-        .single();
+      const { error } = await supabase.from('Users').insert([
+        {
+          ...newUser,
+        },
+      ]);
+
       if (error) throw error;
       toast({
         title: 'ユーザー登録が完了しました。',
@@ -61,14 +120,31 @@ const App = ({ Component, pageProps }: AppProps) => {
         duration: 5000,
         isClosable: true,
       });
-    } catch (error) {
-      throw new Error('ユーザー情報の登録に失敗しました');
+    } catch (error: unknown) {
+      console.error('ユーザー登録エラー:', error);
+      const errorMessage =
+        error instanceof Error ? error.message : '不明なエラーが発生しました';
+      toast({
+        title: 'ユーザー情報の登録に失敗しました',
+        description: errorMessage,
+        status: 'error',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      });
     }
+  };
+
+  // コンテキスト値を作成
+  const contextValue: UserContextType = {
+    userData,
+    authUser,
+    isLoggedIn,
   };
 
   return (
     <ChakraProvider>
-      <UserDataContext.Provider value={userData}>
+      <UserDataContext.Provider value={contextValue}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

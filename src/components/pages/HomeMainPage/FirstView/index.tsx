@@ -11,6 +11,7 @@ import { supabase } from '@utils/supabaseClient';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { type FC, useState } from 'react';
+import styles from './index.module.css';
 
 const FirstView: FC = () => {
   const [search, setSearch] = useState<string>('');
@@ -27,12 +28,12 @@ const FirstView: FC = () => {
   const btnColor = useColorModeValue('gray', 'blue');
   const inputBgColor = useColorModeValue('gray.100', 'blue.900');
   const topImage = useColorModeValue(
-    TopImage.publicURL,
-    TopDarkImage.publicURL
+    TopImage.data.publicUrl,
+    TopDarkImage.data.publicUrl
   );
 
   //検索機能の実装
-  const handleSubmitSearch = async (e: any) => {
+  const handleSubmitSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push({
       pathname: '/facilities',
@@ -48,10 +49,12 @@ const FirstView: FC = () => {
     <>
       <Center>
         <Image
-          src={topImage ?? ''}
+          src={topImage}
           alt="トップイメージ"
           width={1200}
           height={600}
+          priority
+          className={styles.topImage}
         />
       </Center>
       <Box

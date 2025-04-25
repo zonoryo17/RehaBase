@@ -11,41 +11,31 @@ import {
 } from '@chakra-ui/react';
 import { HiUser, HiOutlineLogout, HiOutlineLogin } from 'react-icons/hi';
 import { supabase } from '@utils/supabaseClient';
-import { type FC, useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { UserDataContext } from '../../../../../pages/_app';
 import HeaderUserIcon from './HeaderUserIcon';
+import { type UserContextType, UserDataContext } from '@pages/_app';
 
-const UserMenu: FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [isGuest, setIsGuest] = useState<boolean>(false);
+const UserMenu: React.FC = () => {
   const router = useRouter();
   const toast = useToast();
 
-  const userData = useContext(UserDataContext);
-  const user = supabase.auth.user();
+  const { userData, authUser, isLoggedIn }: UserContextType =
+    useContext(UserDataContext);
+  const { avatar_url } = userData || {};
 
-  useEffect(() => {
-    if (user) setIsLoggedIn(true);
-    //ゲストログイン用アカウントをisGuestとして設定
-    if (user?.id === 'a44837ca-04a7-4ff3-83ad-f6b46dcc67b2') {
-      setIsGuest(true);
-    }
-  }, [user]);
-
-  const { user_name, avatar_url } = userData;
-
-  if (!userData) {
-    return null;
-  }
+  // ゲストログイン判定
+  const guestUserId = process.env.NEXT_PUBLIC_GUEST_USER_ID;
+  const isGuest = authUser?.id === guestUserId;
 
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      setIsLoggedIn(false);
+
       if (error) {
         throw error;
       }
+
       toast({
         title: 'ログアウトが完了しました',
         status: 'success',
@@ -84,7 +74,7 @@ const UserMenu: FC = () => {
             </MenuItem>
           </MenuGroup>
         )}
-        {!isLoggedIn && !isGuest && (
+        {!isLoggedIn && (
           <MenuGroup title="Profile">
             <MenuItem
               onClick={() =>

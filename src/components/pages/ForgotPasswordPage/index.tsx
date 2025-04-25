@@ -25,7 +25,7 @@ const ForgotPasswordPage: FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.api.resetPasswordForEmail(email, {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: 'https://rehabase-app.com/reset-password',
       });
       if (error) {

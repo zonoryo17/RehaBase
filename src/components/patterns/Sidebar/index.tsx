@@ -30,22 +30,20 @@ const NavMenuDrawer: FC = () => {
           <DrawerBody px={0}>
             <Flex display="column" gap={5}>
               <Link href="/about" onClick={onClose}>
-                <a onClick={onClose}>
-                  <Flex
-                    w="100%"
-                    h={50}
-                    align="center"
-                    justify="center"
-                    fontSize="xl"
-                    px={5}
-                    _hover={{
-                      backgroundColor: 'blackAlpha.100',
-                      transition: '0.5s',
-                    }}
-                  >
-                    RehaBaseとは
-                  </Flex>
-                </a>
+                <Flex
+                  w="100%"
+                  h={50}
+                  align="center"
+                  justify="center"
+                  fontSize="xl"
+                  px={5}
+                  _hover={{
+                    backgroundColor: 'blackAlpha.100',
+                    transition: '0.5s',
+                  }}
+                >
+                  RehaBaseとは
+                </Flex>
               </Link>
               <Box>
                 <Flex
@@ -59,41 +57,37 @@ const NavMenuDrawer: FC = () => {
                   記事
                 </Flex>
               </Box>
-              <Link href="/facilities">
-                <a onClick={onClose}>
-                  <Flex
-                    w="100%"
-                    h={50}
-                    align="center"
-                    justify="center"
-                    fontSize="xl"
-                    px={5}
-                    _hover={{
-                      backgroundColor: 'blackAlpha.100',
-                      transition: '0.5s',
-                    }}
-                  >
-                    施設情報一覧
-                  </Flex>
-                </a>
+              <Link href="/facilities" onClick={onClose}>
+                <Flex
+                  w="100%"
+                  h={50}
+                  align="center"
+                  justify="center"
+                  fontSize="xl"
+                  px={5}
+                  _hover={{
+                    backgroundColor: 'blackAlpha.100',
+                    transition: '0.5s',
+                  }}
+                >
+                  施設情報一覧
+                </Flex>
               </Link>
-              <Link href="/login">
-                <a onClick={onClose}>
-                  <Flex
-                    w="100%"
-                    h={50}
-                    align="center"
-                    justify="center"
-                    fontSize="xl"
-                    px={5}
-                    _hover={{
-                      backgroundColor: 'blackAlpha.100',
-                      transition: '0.5s',
-                    }}
-                  >
-                    無料会員登録/ログイン
-                  </Flex>
-                </a>
+              <Link href="/login" onClick={onClose}>
+                <Flex
+                  w="100%"
+                  h={50}
+                  align="center"
+                  justify="center"
+                  fontSize="xl"
+                  px={5}
+                  _hover={{
+                    backgroundColor: 'blackAlpha.100',
+                    transition: '0.5s',
+                  }}
+                >
+                  無料会員登録/ログイン
+                </Flex>
               </Link>
             </Flex>
           </DrawerBody>

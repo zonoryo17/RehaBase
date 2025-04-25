@@ -23,11 +23,11 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { type UserContextType, UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
-import { useState, useContext, useEffect, type FC } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactStars from 'react-stars';
-import { UserDataContext } from '../../../../pages/_app';
 
 type Props = {
   facilityName: string;
@@ -48,21 +48,16 @@ type InitialState = {
   user_id?: string;
 };
 
-const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
+const CreateReviewModal: React.FC<Props> = ({ facilityName, facilityId }) => {
+  const { isLoggedIn, userData }: UserContextType = useContext(UserDataContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   const {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
 
   const toast = useToast();
-  const userData = useContext(UserDataContext);
-  const user = supabase.auth.user();
-
-  useEffect(() => {
-    if (user) setIsLoggedIn(true);
-  }, [user]);
 
   const initialReviewState: InitialState = {
     title: '',
@@ -74,7 +69,7 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
     equipment_rating: undefined,
     environment_rating: undefined,
     facility_id: facilityId,
-    auth_id: user?.id,
+    auth_id: userData?.auth_id,
     user_id: userData?.id,
   };
   const [review, setReview] = useState(initialReviewState);
@@ -95,8 +90,21 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
     setReview({ ...review, [e.target.name]: e.target.value });
   };
 
+  const handleClickCreateReview = () => {
+    if (!isLoggedIn) {
+      toast({
+        title: 'ログインしていない場合、口コミ投稿はご利用いただけません',
+        status: 'error',
+        position: 'top',
+      });
+      return;
+    }
+
+    onOpen();
+  };
+
   //Reviewのcreate処理
-  const handleClickCreateReview = async () => {
+  const handleSubmitCreateReview = async () => {
     try {
       const { error } = await supabase
         .from('Reviews')
@@ -106,7 +114,9 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
           },
         ])
         .single();
+
       if (error) throw error;
+
       // 作成完了のポップアップ
       toast({
         title: '口コミの投稿が完了しました。',
@@ -115,8 +125,8 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
         duration: 5000,
         isClosable: true,
       });
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) alert(error.message);
     } finally {
       setReview(initialReviewState);
       onClose();
@@ -125,23 +135,7 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
 
   return (
     <>
-      {!isLoggedIn && (
-        <Button
-          onClick={() =>
-            toast({
-              title:
-                'ログインされていない場合、口コミ投稿はご利用いただけません',
-              status: 'error',
-              duration: 6000,
-              position: 'top',
-              isClosable: true,
-            })
-          }
-        >
-          口コミを投稿
-        </Button>
-      )}
-      {isLoggedIn && <Button onClick={onOpen}>口コミを投稿</Button>}
+      <Button onClick={handleClickCreateReview}>口コミを投稿</Button>
 
       <Modal
         blockScrollOnMount={false}
@@ -154,7 +148,7 @@ const CreateReviewModal: FC<Props> = ({ facilityName, facilityId }) => {
           <ModalHeader>口コミ投稿画面</ModalHeader>
           <ModalCloseButton />
 
-          <form onSubmit={handleSubmit(handleClickCreateReview)}>
+          <form onSubmit={handleSubmit(handleSubmitCreateReview)}>
             <ModalBody>
               <FormControl
                 isRequired

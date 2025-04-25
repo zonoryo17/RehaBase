@@ -21,3 +21,13 @@ start-sb:
 .PHONY: component
 component:
 	bunx hygen component new
+
+# Supabaeのスキーマから肩を生成
+.PHONY: codegen
+codegen:
+	bunx supabase login
+	bunx supabase init
+	bunx supabase gen types --lang=typescript --project-id "$PROJECT_REF" --schema public > database.types.ts
+	bunx supabase gen types --lang=typescript --local > database.types.ts
+
+

@@ -7,20 +7,20 @@ import {
   useToast,
   VisuallyHiddenInput,
 } from '@chakra-ui/react';
+import { UserDataContext } from '@pages/_app';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import { type FC, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { UserDataContext } from '../../../../pages/_app';
 
 type Props = {
   facilityId: string | string[] | undefined;
 };
 
 //画像ファイルのアップロードコンポーネント
-const UploadReviewImage: FC<Props> = ({ facilityId }) => {
+const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
   const [facilityReviewImageUrls, setFacilityReviewImageUrls] = useState<
-    string[]
+    { image_url: string }[]
   >([]);
   const [uploading, setUploading] = useState(false);
   const toast = useToast();
@@ -49,8 +49,9 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
   }, []);
 
   // 画像ファイル選択後の処理
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const handleSelectImageFile = async (e: any) => {
+  const handleSelectImageFile = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     try {
       setUploading(true);
       if (!e.target.files || e.target.files.length === 0) {
@@ -65,10 +66,10 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
       if (uploadError) {
         throw uploadError;
       }
-      const data = supabase.storage //storageからuploadした画像のURLを取得
+      const { data } = supabase.storage //storageからuploadした画像のURLを取得
         .from('reviews')
         .getPublicUrl(`facilityReviews/${fileName}`);
-      handleCreateFacilityReviewImage(fileName, data.publicURL ?? '');
+      handleCreateFacilityReviewImage(fileName, data.publicUrl ?? '');
     } catch {
       throw new Error('画像のアップロードに失敗しました');
     } finally {
@@ -78,21 +79,24 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
 
   //facilityImagesテーブルに画像情報を保存
   const query = useRouter().query; //facilityのqueryIDを取得
-  const userData = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
+  const { userData } = useContext(UserDataContext); //Usersテーブルからログインしているユーザーの情報を取得
 
   const handleCreateFacilityReviewImage = async (
     fileName: string,
     imageUrl: string
   ) => {
     try {
-      const { error } = await supabase.from('FacilityImages').insert([
-        {
-          name: fileName,
-          image_url: imageUrl,
-          facility_id: query.facilityId,
-          user_id: userData?.id,
-        },
-      ]);
+      const { error } = await supabase
+        .from('FacilityImages')
+        .insert([
+          {
+            name: fileName,
+            image_url: imageUrl,
+            facility_id: query.facilityId,
+            user_id: userData.id,
+          },
+        ])
+        .select();
       if (error) throw error;
       // 作成完了のポップアップ
       toast({
@@ -112,20 +116,21 @@ const UploadReviewImage: FC<Props> = ({ facilityId }) => {
   return (
     <Flex aria-live="polite" align="center">
       <Flex gap="24px" flexWrap="wrap" align="center">
-        {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
-        {facilityReviewImageUrls.map((facilityReviewImage: any) => (
-          <Flex w="200px" h="200px" key={facilityReviewImage.image_url}>
-            <Image
-              src={
-                facilityReviewImage
-                  ? facilityReviewImage.image_url
-                  : '/no_image.jpg'
-              }
-              alt={facilityReviewImage ? 'プロフィール画像' : '画像なし'}
-              objectFit="contain"
-            />
-          </Flex>
-        ))}
+        {facilityReviewImageUrls.map(
+          (facilityReviewImage: { image_url: string }) => (
+            <Flex w="200px" h="200px" key={facilityReviewImage.image_url}>
+              <Image
+                src={
+                  facilityReviewImage
+                    ? facilityReviewImage.image_url
+                    : '/no_image.jpg'
+                }
+                alt={facilityReviewImage ? 'プロフィール画像' : '画像なし'}
+                objectFit="contain"
+              />
+            </Flex>
+          )
+        )}
         {uploading && (
           <Flex direction="column" align="center" width="300px">
             <Spinner
