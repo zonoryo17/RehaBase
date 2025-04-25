@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { UserDataContext } from '@pages/_app';
 
 const MyPageMainPage: React.FC = () => {
-  const userData = useContext(UserDataContext);
+  const { userData } = useContext(UserDataContext);
   const { user_name, profile, gender, age, prefecture } = userData;
 
   //プロフィール更新ボタンを押した時の処理

@@ -100,7 +100,7 @@ const ReviewsDetailPage: React.FC = () => {
               </Flex>
             </Flex>
             {/* 口コミ削除コンポーネント　投稿者のみ表示 */}
-            {review.auth_id === userData?.id && (
+            {review.auth_id === userData?.userData?.id && (
               <DeleteReviewButton facility_id={facility_id ?? ''} />
             )}
           </Flex>

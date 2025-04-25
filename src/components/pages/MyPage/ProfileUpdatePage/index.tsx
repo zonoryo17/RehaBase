@@ -27,7 +27,7 @@ import { UserDataContext } from '@pages/_app';
 
 const ProfileUpdatePage: React.FC = () => {
   const toast = useToast();
-  const userData = useContext(UserDataContext);
+  const { userData } = useContext(UserDataContext);
   const userId = userData?.id;
 
   const initialState = {

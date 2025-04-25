@@ -114,7 +114,9 @@ const CreateReviewModal: React.FC<Props> = ({ facilityName, facilityId }) => {
           },
         ])
         .single();
+
       if (error) throw error;
+
       // 作成完了のポップアップ
       toast({
         title: '口コミの投稿が完了しました。',

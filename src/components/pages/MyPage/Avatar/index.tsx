@@ -19,8 +19,7 @@ const Avatar: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [avatar, setAvatar] = useState<Avatar | null>(null);
 
-  const userData = useContext(UserDataContext);
-  const { id } = userData;
+  const { userData } = useContext(UserDataContext);
 
   const toast = useToast();
 
@@ -30,7 +29,7 @@ const Avatar: React.FC = () => {
       const { data, error } = await supabase
         .from('Users')
         .select('avatar_url')
-        .eq('id', id)
+        .eq('id', userData?.id)
         .single();
 
       if (data) {
@@ -100,7 +99,7 @@ const Avatar: React.FC = () => {
       const { error } = await supabase
         .from('Users')
         .update({ avatar_url: avatarUrl })
-        .eq('id', id)
+        .eq('id', userData?.id)
         .select();
       if (error) throw error;
       // 作成完了のポップアップ
