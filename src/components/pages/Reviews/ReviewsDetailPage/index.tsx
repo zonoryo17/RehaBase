@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
-import DeleteReviewButton from '@components/pages/reviews/deleteReview';
+import DeleteReviewButton from '@components/models/reviews/deleteReview';
 import { supabase } from '@utils/supabaseClient';
 import Link from 'next/link';
 import Head from 'next/head';

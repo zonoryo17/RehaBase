@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
-import Footer from '@components/patterns/Footer';
-import Header from '@components/patterns/Header';
+import Footer from '@components/ui/Footer';
+import Header from '@components/ui/Header';
 
 type Props = {
   children: React.ReactElement;
