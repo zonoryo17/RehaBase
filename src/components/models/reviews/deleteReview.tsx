@@ -11,13 +11,13 @@ import {
 } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
-import React, { type FC } from 'react';
+import React from 'react';
 
 type Props = {
   facility_id: string;
 };
 
-const DeleteReviewButton: FC<Props> = ({ facility_id }) => {
+const DeleteReviewButton: React.FC<Props> = ({ facility_id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const cancelRef = React.useRef<HTMLButtonElement>(null);

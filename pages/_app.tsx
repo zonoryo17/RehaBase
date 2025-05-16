@@ -72,7 +72,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
         .select('*')
         .eq('auth_id', authUser.id)
         .single();
+
       if (error) throw error;
+
       setUserData(data);
     } catch (error: unknown) {
       console.error('ユーザー情報取得エラー:', error);

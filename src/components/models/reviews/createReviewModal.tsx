@@ -49,8 +49,8 @@ type InitialState = {
 };
 
 const CreateReviewModal: React.FC<Props> = ({ facilityName, facilityId }) => {
-  const { isLoggedIn, userData }: UserContextType = useContext(UserDataContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isLoggedIn, userData }: UserContextType = useContext(UserDataContext);
 
   const {
     handleSubmit,
@@ -69,10 +69,12 @@ const CreateReviewModal: React.FC<Props> = ({ facilityName, facilityId }) => {
     equipment_rating: undefined,
     environment_rating: undefined,
     facility_id: facilityId,
-    auth_id: userData?.auth_id,
+    auth_id: userData?.id,
     user_id: userData?.id,
   };
+
   const [review, setReview] = useState(initialReviewState);
+
   const {
     title,
     content,
@@ -95,7 +97,9 @@ const CreateReviewModal: React.FC<Props> = ({ facilityName, facilityId }) => {
       toast({
         title: 'ログインしていない場合、口コミ投稿はご利用いただけません',
         status: 'error',
+        duration: 6000,
         position: 'top',
+        isClosable: true,
       });
       return;
     }
@@ -136,7 +140,6 @@ const CreateReviewModal: React.FC<Props> = ({ facilityName, facilityId }) => {
   return (
     <>
       <Button onClick={handleClickCreateReview}>口コミを投稿</Button>
-
       <Modal
         blockScrollOnMount={false}
         isOpen={isOpen}
