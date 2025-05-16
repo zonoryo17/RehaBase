@@ -1,4 +1,4 @@
-import ReviewsDetailPage from '@components/reviews/ReviewsDetailPage';
+import ReviewsDetailPage from '@components/pages/Reviews/ReviewsDetailPage';
 import type { NextPage } from 'next';
 import React from 'react';
 

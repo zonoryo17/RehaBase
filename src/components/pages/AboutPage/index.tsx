@@ -4,18 +4,16 @@ import {
   Flex,
   Grid,
   ListItem,
-  Skeleton,
   Text,
   UnorderedList,
   useColorModeValue,
 } from '@chakra-ui/react';
 import Head from 'next/head';
-import { type FC, Suspense } from 'react';
 import { useAboutPage } from './useAboutPage';
 import Image from 'next/image';
 import styles from './index.module.css';
 
-const AboutPage: FC = () => {
+const AboutPage: React.FC = () => {
   //ダークモードの背景，テキストの設定
   const bgColor = useColorModeValue('gray.700', 'gray.200');
   const cordBgColor = useColorModeValue('whiteAlpha.900', 'gray.700');
@@ -37,35 +35,33 @@ const AboutPage: FC = () => {
         <title>RehaBaseとは</title>
       </Head>
       <Flex direction="column" align="center">
-        <Suspense fallback={<Skeleton height="500px" />}>
-          <Flex
-            position="relative"
-            justify="center"
-            w="100%"
-            mt={{ base: 0, md: 20 }}
-          >
-            <Image
-              src={AboutTopImage ?? ''}
-              alt="Aboutページのトップイメージ"
-              className={styles.topImage}
-              width={800}
-              height={500}
-              priority
-            />
-            <Box position="absolute" className={styles.topImageTextWrapper}>
-              <Text
-                fontSize={{ base: '3xl', lg: '4xl', xl: '5xl' }}
-                textAlign="center"
-                textColor="orange.200"
-                textShadow="4px 4px 5px #171717"
-              >
-                What's
-                <br />
-                RehaBase
-              </Text>
-            </Box>
-          </Flex>
-        </Suspense>
+        <Flex
+          position="relative"
+          justify="center"
+          w="100%"
+          mt={{ base: 0, md: 20 }}
+        >
+          <Image
+            src={AboutTopImage ?? ''}
+            alt="Aboutページのトップイメージ"
+            className={styles.topImage}
+            width={800}
+            height={500}
+            priority
+          />
+          <Box position="absolute" className={styles.topImageTextWrapper}>
+            <Text
+              fontSize={{ base: '3xl', lg: '4xl', xl: '5xl' }}
+              textAlign="center"
+              textColor="orange.200"
+              textShadow="4px 4px 5px #171717"
+            >
+              What's
+              <br />
+              RehaBase
+            </Text>
+          </Box>
+        </Flex>
         <Flex display="column" my="10" textAlign="center">
           <Text fontWeight="bold" fontSize={{ base: 'xl', md: '3xl' }} my={5}>
             RehaBaseについて
