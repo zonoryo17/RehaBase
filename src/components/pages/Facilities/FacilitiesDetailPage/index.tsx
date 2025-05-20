@@ -20,12 +20,12 @@ import { BsArrowLeftCircle } from 'react-icons/bs';
 import ReviewComponents from '@components/models/reviews/ReviewComponents/reviewComponents';
 import CreateReviewModal from '@components/models/reviews/createReviewModal';
 import UploadReviewImage from '@components/models/reviews/uploadReviewImage';
-import UploadFacilityImage from '@components/pages/Facilities/FacilitiesDetailPage/UploadFacilityImage';
 import ReactStars from 'react-stars';
 import { supabase } from '@utils/supabaseClient';
-import DeleteFacilityButton from './DeleteFacilityButton';
-import UpdateFacilityButton from './UpdateFacilityButton';
 import type { Facility } from '@type/facility';
+import DeleteFacilityButton from '@components/models/facilities/DeleteFacilityButton';
+import UpdateFacilityButton from '@components/models/facilities/UpdateFacilityButton';
+import UploadFacilityImage from '@components/models/facilities/UploadFacilityImage';
 
 const FacilityDetailPage: React.FC = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
