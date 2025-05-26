@@ -17,15 +17,15 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsArrowLeftCircle } from 'react-icons/bs';
-import CreateReviewModal from '@components/models/reviews/createReviewModal';
-import UploadReviewImage from '@components/models/reviews/uploadReviewImage';
 import ReactStars from 'react-stars';
 import { supabase } from '@utils/supabaseClient';
 import type { Facility } from '@type/facility';
 import DeleteFacilityButton from '@components/models/facilities/DeleteFacilityButton';
 import UpdateFacilityButton from '@components/models/facilities/UpdateFacilityButton';
 import UploadFacilityImage from '@components/models/facilities/UploadFacilityImage';
-import { ReviewCard } from '@components/models/reviews/ReviewCard/reviewCard';
+import { ReviewCard } from '@components/models/reviews/ReviewCard/ReviewCard';
+import UploadReviewImage from '@components/models/reviews/UploadReviewImage';
+import CreateReviewModal from '@components/models/reviews/CreateReviewModal';
 
 const FacilityDetailPage: React.FC = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
