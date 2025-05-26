@@ -24,7 +24,7 @@ import DeleteFacilityButton from '@components/models/facilities/DeleteFacilityBu
 import UpdateFacilityButton from '@components/models/facilities/UpdateFacilityButton';
 import UploadFacilityImage from '@components/models/facilities/UploadFacilityImage';
 import { ReviewCard } from '@components/models/reviews/ReviewCard/ReviewCard';
-import UploadReviewImage from '@components/models/reviews/UploadReviewImage';
+import UploadReviewImageInput from '@components/models/reviews/UploadReviewImageInput';
 import CreateReviewModal from '@components/models/reviews/CreateReviewModal';
 
 const FacilityDetailPage: React.FC = () => {
@@ -206,7 +206,7 @@ const FacilityDetailPage: React.FC = () => {
                 <Box>
                   <Text>写真</Text>
                   {/* 画像ファイルアップデート用コンポーネント */}
-                  <UploadReviewImage facilityId={facilityId} />
+                  <UploadReviewImageInput facilityId={facilityId} />
                 </Box>
               </TabPanel>
               <TabPanel>
