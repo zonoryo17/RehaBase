@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
-import reviewStyle from './reviewComponents.module.css';
+import styles from './ReviewCard.module.css';
 import { type FC, useEffect, useState } from 'react';
 import { supabase } from '@utils/supabaseClient';
 import { useRouter } from 'next/router';
@@ -10,7 +10,7 @@ type Props = {
   facilityId: string | string[] | undefined;
 };
 
-const ReviewComponents: FC<Props> = ({ facilityId }) => {
+export const ReviewCard: FC<Props> = ({ facilityId }) => {
   const [reviews, setReviews] = useState<Review[] | null>([]);
   const router = useRouter();
 
@@ -80,7 +80,7 @@ const ReviewComponents: FC<Props> = ({ facilityId }) => {
             >
               {title}
             </Text>
-            <Text className={reviewStyle.reviewContent} w="30rem" pr="10">
+            <Text className={styles.reviewContent} w="30rem" pr="10">
               {content}
             </Text>
             <Box position="absolute" right="0" bottom="0">
@@ -100,5 +100,3 @@ const ReviewComponents: FC<Props> = ({ facilityId }) => {
     </>
   );
 };
-
-export default ReviewComponents;
