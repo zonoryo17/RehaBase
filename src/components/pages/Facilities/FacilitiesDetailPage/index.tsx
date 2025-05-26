@@ -17,15 +17,15 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BsArrowLeftCircle } from 'react-icons/bs';
-import ReviewComponents from '@components/models/reviews/ReviewComponents/reviewComponents';
-import CreateReviewModal from '@components/models/reviews/createReviewModal';
-import UploadReviewImage from '@components/models/reviews/uploadReviewImage';
-import UploadFacilityImage from '@components/pages/Facilities/FacilitiesDetailPage/UploadFacilityImage';
 import ReactStars from 'react-stars';
 import { supabase } from '@utils/supabaseClient';
-import DeleteFacilityButton from './DeleteFacilityButton';
-import UpdateFacilityButton from './UpdateFacilityButton';
 import type { Facility } from '@type/facility';
+import DeleteFacilityButton from '@components/models/facilities/DeleteFacilityButton';
+import UpdateFacilityButton from '@components/models/facilities/UpdateFacilityButton';
+import UploadFacilityImage from '@components/models/facilities/UploadFacilityImage';
+import { ReviewCard } from '@components/models/reviews/ReviewCard/ReviewCard';
+import UploadReviewImageInput from '@components/models/reviews/UploadReviewImageInput';
+import CreateReviewModal from '@components/models/reviews/CreateReviewModal';
 
 const FacilityDetailPage: React.FC = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
@@ -54,24 +54,8 @@ const FacilityDetailPage: React.FC = () => {
       if (error instanceof Error) alert(error.message);
     }
   };
+
   if (!facility) return <p>loading...</p>;
-  const {
-    id,
-    name,
-    explanation,
-    menu,
-    menu2,
-    menu3,
-    menu4,
-    menu5,
-    price,
-    price2,
-    price3,
-    price4,
-    price5,
-    address,
-    phone_number,
-  } = facility;
 
   //施設の総合点の取得
   const getTotalRating = async () => {
@@ -118,7 +102,7 @@ const FacilityDetailPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>{name}/RehaBase</title>
+        <title>{facility.name}/RehaBase</title>
       </Head>
       <Flex>
         <Link href="/facilities">
@@ -130,7 +114,10 @@ const FacilityDetailPage: React.FC = () => {
         </Link>
         <Spacer />
         <Box mr="20%" mt="10">
-          <CreateReviewModal facilityName={name} facilityId={id ?? ''} />
+          <CreateReviewModal
+            facilityName={facility.name}
+            facilityId={facility.id ?? ''}
+          />
         </Box>
       </Flex>
       <Center>
@@ -147,7 +134,7 @@ const FacilityDetailPage: React.FC = () => {
           position="relative"
         >
           <Heading display="flex" mt="10px" mb="5px" px="20px">
-            <Text fontSize="2xl">{name}</Text>
+            <Text fontSize="2xl">{facility.name}</Text>
             <Spacer />
             <>
               <UpdateFacilityButton facility={facility} />
@@ -179,39 +166,39 @@ const FacilityDetailPage: React.FC = () => {
                 <Flex>
                   <UploadFacilityImage />
                   <Box ml={5}>
-                    <Text>病院名：{name}</Text>
-                    <Text>病院紹介：{explanation}</Text>
+                    <Text>病院名：{facility.name}</Text>
+                    <Text>病院紹介：{facility.explanation}</Text>
                   </Box>
                 </Flex>
                 <Box>
-                  <ReviewComponents facilityId={facilityId} />
+                  <ReviewCard facilityId={facilityId} />
                 </Box>
               </TabPanel>
               <TabPanel>
-                <Text>リハビリ内容一覧：{menu}</Text>
+                <Text>リハビリ内容一覧：{facility.menu}</Text>
               </TabPanel>
               <TabPanel>
                 <Text>【費用目安】</Text>
-                <Text>　{price}</Text>
+                <Text>　{facility.price}</Text>
                 <Text>【個別費用】</Text>
-                {menu2 && (
+                {facility.menu2 && (
                   <Text>
-                    　＜{menu2}＞{price2}
+                    　＜{facility.menu2}＞{facility.price2}
                   </Text>
                 )}
-                {menu3 && (
+                {facility.menu3 && (
                   <Text>
-                    　＜{menu3}＞{price3}
+                    　＜{facility.menu3}＞{facility.price3}
                   </Text>
                 )}
-                {menu4 && (
+                {facility.menu4 && (
                   <Text>
-                    　＜{menu4}＞{price4}
+                    　＜{facility.menu4}＞{facility.price4}
                   </Text>
                 )}
-                {menu5 && (
+                {facility.menu5 && (
                   <Text>
-                    　＜{menu5}＞{price5}
+                    　＜{facility.menu5}＞{facility.price5}
                   </Text>
                 )}
               </TabPanel>
@@ -219,12 +206,12 @@ const FacilityDetailPage: React.FC = () => {
                 <Box>
                   <Text>写真</Text>
                   {/* 画像ファイルアップデート用コンポーネント */}
-                  <UploadReviewImage facilityId={facilityId} />
+                  <UploadReviewImageInput facilityId={facilityId} />
                 </Box>
               </TabPanel>
               <TabPanel>
-                <p>住所：{address}</p>
-                <p>電話番号：{phone_number}</p>
+                <p>住所：{facility.address}</p>
+                <p>電話番号：{facility.phone_number}</p>
               </TabPanel>
             </TabPanels>
           </Tabs>

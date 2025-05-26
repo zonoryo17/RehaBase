@@ -18,7 +18,7 @@ type Props = {
 };
 
 //画像ファイルのアップロードコンポーネント
-const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
+const UploadReviewImageInput: React.FC<Props> = ({ facilityId }) => {
   const [facilityReviewImageUrls, setFacilityReviewImageUrls] = useState<
     { image_url: string }[]
   >([]);
@@ -164,4 +164,4 @@ const UploadReviewImage: React.FC<Props> = ({ facilityId }) => {
   );
 };
 
-export default UploadReviewImage;
+export default UploadReviewImageInput;
