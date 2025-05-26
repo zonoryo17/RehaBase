@@ -25,7 +25,7 @@ import UpdateFacilityButton from '@components/models/facilities/UpdateFacilityBu
 import UploadFacilityImage from '@components/models/facilities/UploadFacilityImage';
 import { ReviewCard } from '@components/models/reviews/ReviewCard/ReviewCard';
 import UploadReviewImageInput from '@components/models/reviews/UploadReviewImageInput';
-import CreateReviewModal from '@components/models/reviews/CreateReviewModal';
+import CreateReviewModal from '@components/models/reviews/CreateModal';
 
 const FacilityDetailPage: React.FC = () => {
   const [facility, setFacility] = useState<Facility | null>(null);
